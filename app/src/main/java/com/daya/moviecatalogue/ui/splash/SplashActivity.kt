@@ -2,15 +2,13 @@ package com.daya.moviecatalogue.ui.splash
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.app.AppCompatActivity
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.ui.main.MainActivity
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,14 +23,16 @@ class SplashActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+        intentIntoMainActivity()
+    }
 
-        lifecycleScope.launch {
-            delay(300)
+     fun intentIntoMainActivity() {
+        Handler().postDelayed(Runnable {
             val intent = Intent(this@SplashActivity, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
-        }
+        },300)
     }
 }
