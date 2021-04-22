@@ -1,5 +1,6 @@
 package com.daya.moviecatalogue.ui.main.tvshow
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.daya.moviecatalogue.R
+import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.MainViewModel
 import com.daya.moviecatalogue.ui.main.movie.MovieRecyclerViewAdapter
 
@@ -27,7 +29,8 @@ class TvShowFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = MovieRecyclerViewAdapter(mainViewModel.getMovie){
-                    Toast.makeText(context, it.title, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, DetailActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

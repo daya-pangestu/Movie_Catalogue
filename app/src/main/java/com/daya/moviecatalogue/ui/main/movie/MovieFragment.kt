@@ -1,5 +1,6 @@
 package com.daya.moviecatalogue.ui.main.movie
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.daya.moviecatalogue.R
+import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.MainViewModel
 
 class MovieFragment : Fragment() {
@@ -25,7 +27,8 @@ class MovieFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = MovieRecyclerViewAdapter(mainViewModel.getMovie){
-                    Toast.makeText(context, it.title, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, DetailActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
