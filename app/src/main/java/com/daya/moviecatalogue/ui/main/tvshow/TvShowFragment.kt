@@ -23,12 +23,11 @@ class TvShowFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-        // Set the adapter
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = MovieRecyclerViewAdapter(mainViewModel.getMovie){
+                adapter = TvShowRecyclerViewAdapter(mainViewModel.getTvShow){
                     val intent = Intent(context, DetailActivity::class.java)
                     startActivity(intent)
                 }

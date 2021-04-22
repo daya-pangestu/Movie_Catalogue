@@ -3,6 +3,7 @@ package com.daya.moviecatalogue.ui.main.tvshow
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ItemTvshowBinding
 
@@ -13,7 +14,6 @@ class TvShowRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
         val binding = ItemTvshowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return  TvViewHolder(binding){
             val item = values[it]
             onItemClick(item)
@@ -32,15 +32,14 @@ class TvShowRecyclerViewAdapter(
             itemView.setOnClickListener { onItemClick(absoluteAdapterPosition) }
         }
 
-        fun bind(tvshow: TvShow) {
-            //Load image with glide
-            binding.tvTitle.text = tvshow.title
-            binding.tvDesc.text = tvshow.description
-            binding.tvGenre.text = tvshow.genre
-            binding.tvScore.text = tvshow.user_score.toString()
-
+        fun bind(tvShow: TvShow) {
+            binding.tvTitle.text = tvShow.title
+            binding.tvDesc.text = tvShow.description
+            binding.tvGenre.text = tvShow.genre
+            binding.tvScore.text = tvShow.user_score.toString()
+            Glide.with(itemView.context)
+                .load(tvShow.image_url)
+                .into(binding.ivPoster)
         }
     }
-
-
 }

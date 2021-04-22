@@ -33,8 +33,10 @@ class DetailActivityTest {
         val movieIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java).apply {
             putExtra(DETAIL_EXTRA_MOVIE,movie)
         }
-        val scenario = launchActivity<DetailActivity>(movieIntent)
+
+        launchActivity<DetailActivity>(movieIntent)
         onView(withId(R.id.detail_tv_title)).check(matches(withText("${movie.title}(${movie.year})")))
+        onView(withId(R.id.detail_tv_desc)).check(matches(withText(movie.description)))
         onView(withId(R.id.detail_tv_release_date)).check(matches(withText(movie.release_date)))
         onView(withId(R.id.detail_tv_genre)).check(matches(withText("${movie.rate} | ${movie.genre}")))
         onView(withId(R.id.detail_tv_score)).check(matches(withText(movie.user_score.toString())))
@@ -55,11 +57,24 @@ class DetailActivityTest {
         val tvShowIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java).apply {
             putExtra(DETAIL_EXTRA_TV_SHOW,tvShow)
         }
-        val scenario = launchActivity<DetailActivity>(tvShowIntent)
+        launchActivity<DetailActivity>(tvShowIntent)
         onView(withId(R.id.detail_tv_title)).check(matches(withText("${tvShow.title}(${tvShow.year})")))
         onView(withId(R.id.detail_tv_desc)).check(matches(withText(tvShow.description)))
         onView(withId(R.id.detail_tv_release_date)).check(matches(withText("")))
         onView(withId(R.id.detail_tv_genre)).check(matches(withText("${tvShow.rate} | ${tvShow.genre}")))
         onView(withId(R.id.detail_tv_score)).check(matches(withText(tvShow.user_score.toString())))
     }
+
+    @Test
+    fun `detail should display no data`() {
+        val nullData : TvShow? = null
+        val noDataIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java).apply {
+            putExtra(DETAIL_EXTRA_TV_SHOW,nullData )
+        }
+        launchActivity<DetailActivity>(noDataIntent)
+
+        //todo add logic for no data
+
+    }
+
 }

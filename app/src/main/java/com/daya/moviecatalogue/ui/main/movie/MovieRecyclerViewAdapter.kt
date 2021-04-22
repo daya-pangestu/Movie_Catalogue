@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.movie.Movie
 import com.daya.moviecatalogue.databinding.ItemMovieBinding
 
-
 class MovieRecyclerViewAdapter(
         private val values: List<Movie>,
         private val onItemClick : (Movie) -> Unit
@@ -15,7 +14,6 @@ class MovieRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return  ViewHolder(binding){
             val item = values[it]
             onItemClick(item)
@@ -28,7 +26,8 @@ class MovieRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(private val binding: ItemMovieBinding, onItemClick: (Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemMovieBinding, onItemClick: (Int) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener { onItemClick(absoluteAdapterPosition) }
         }
@@ -40,7 +39,9 @@ class MovieRecyclerViewAdapter(
             binding.tvGenre.text = movie.genre
             binding.tvReleaseDate.text = movie.release_date
             binding.tvScore.text = movie.user_score.toString()
-
+            Glide.with(itemView.context)
+                .load(movie.image_url)
+                .into(binding.ivPoster)
         }
     }
 }
