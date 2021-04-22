@@ -15,6 +15,7 @@ import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.detail.DetailActivity
+import com.daya.moviecatalogue.ui.util.RecyclerViewItemCountAssertion
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,18 +28,22 @@ class MovieFragmentInstrumentedTest{
     @Test
     fun `recyclerview should load all getListMovie`() {
         launchFragmentInContainer<MovieFragment>()
-        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_movie)).perform(
+
+        onView(withId(R.id.rv_list)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.rv_list)).check(RecyclerViewItemCountAssertion(10))
+
+        onView(withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 dummyMovie.size
-            ),click()
+            )
         )
     }
 
     @Test
     fun `item recyclerview movie click should intent into detail`() {
-       val scenario = launchFragmentInContainer<MovieFragment>()
-        onView(withId(R.id.rv_movie)).perform(
+        val scenario = launchFragmentInContainer<MovieFragment>()
+        onView(withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             ),click()

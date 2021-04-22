@@ -9,11 +9,13 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.detail.DetailActivity
+import com.daya.moviecatalogue.ui.util.RecyclerViewItemCountAssertion
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,9 +28,12 @@ class TvShowFragmentInstrumentedTest{
     @Test
     fun `recyclerview should load all getListTvShow`() {
         launchFragmentInContainer<TvShowFragment>()
-        onView(ViewMatchers.withId(R.id.rv_movie))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(ViewMatchers.withId(R.id.rv_movie)).perform(
+
+        onView(ViewMatchers.withId(R.id.rv_list)).check(ViewAssertions.matches(isDisplayed()))
+
+        onView(ViewMatchers.withId(R.id.rv_list)).check(RecyclerViewItemCountAssertion(10))
+
+        onView(ViewMatchers.withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 dummyTvShow.size
             )
@@ -38,9 +43,9 @@ class TvShowFragmentInstrumentedTest{
     @Test
     fun `item recyclerview movie click should intent into detail`() {
         val scenario = launchFragmentInContainer<TvShowFragment>()
-        onView(ViewMatchers.withId(R.id.rv_movie)).perform(
+        onView(ViewMatchers.withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyTvShow.size
+                0
             ),click()
         )
         scenario.onFragment{
