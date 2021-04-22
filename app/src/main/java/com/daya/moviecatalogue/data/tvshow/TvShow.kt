@@ -1,5 +1,9 @@
 package com.daya.moviecatalogue.data.tvshow
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class TvShow(
         val title: String,
         val year : Int,
@@ -7,4 +11,4 @@ data class TvShow(
         val genre: String,
         val rate: String,
         val user_score: Int,
-)
+) : Parcelable
