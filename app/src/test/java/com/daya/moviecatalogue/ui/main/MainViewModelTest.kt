@@ -22,13 +22,13 @@ class MainViewModelTest{
     @Test
     fun `getMovie should not empty`() {
         val listMovie = viewmodel.getMovie
-        assertThat(listMovie).isNotNull()
+        assertThat(listMovie).isNotEmpty()
     }
 
     @Test
     fun `getTvShow should not null`() {
         val listTvShow = viewmodel.getMovie
-        assertThat(listTvShow).isNotEmpty()
+        assertThat(listTvShow).isNotNull()
     }
 
     @Test
