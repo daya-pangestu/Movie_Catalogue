@@ -3,6 +3,7 @@ package com.daya.moviecatalogue.ui.main.movie
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.movie.Movie
 import com.daya.moviecatalogue.databinding.ItemMovieBinding
 
@@ -33,7 +34,13 @@ class MovieRecyclerViewAdapter(
         }
 
         fun bind(movie: Movie) {
+            //Load image with glide
             binding.tvTitle.text = movie.title
+            binding.tvDesc.text = movie.description
+            binding.tvGenre.text = movie.genre
+            binding.tvReleaseDate.text = movie.release_date
+            binding.tvScore.text = movie.user_score.toString()
+
         }
     }
 }
