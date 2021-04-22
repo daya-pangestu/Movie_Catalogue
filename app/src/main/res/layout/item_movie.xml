@@ -54,7 +54,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-
             app:layout_constraintBottom_toTopOf="@+id/tv_release_date"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             tools:text="action,comedy,drama" />
