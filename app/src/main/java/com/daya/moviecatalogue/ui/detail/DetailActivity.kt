@@ -2,6 +2,7 @@ package com.daya.moviecatalogue.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -19,6 +20,10 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.apply {
+            title = "Detail"
+            setDisplayHomeAsUpEnabled(true)
+        }
         viewModel.movie = intent.getParcelableExtra(DETAIL_EXTRA_MOVIE)
         viewModel.tvShow =  intent.getParcelableExtra(DETAIL_EXTRA_TV_SHOW)
         when {
@@ -66,5 +71,15 @@ class DetailActivity : AppCompatActivity() {
         const val DETAIL_EXTRA_MOVIE = "detail_extra_movie"
         const val DETAIL_EXTRA_TV_SHOW = "detail_extra_tv_show"
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else ->super.onOptionsItemSelected(item)
+        }
     }
 }
