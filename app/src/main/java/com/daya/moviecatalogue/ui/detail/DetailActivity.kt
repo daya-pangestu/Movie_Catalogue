@@ -3,29 +3,30 @@ package com.daya.moviecatalogue.ui.detail
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.movie.Movie
 import com.daya.moviecatalogue.data.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityDetailBinding 
+    private lateinit var binding : ActivityDetailBinding
+
+    private val viewModel by viewModels<DetailViewModel>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val movieIntent = intent.getParcelableExtra<Movie>(DETAIL_EXTRA_MOVIE)
-        val tvShowIntent = intent.getParcelableExtra<TvShow>(DETAIL_EXTRA_TV_SHOW)
+        viewModel.movie = intent.getParcelableExtra(DETAIL_EXTRA_MOVIE)
+        viewModel.tvShow =  intent.getParcelableExtra(DETAIL_EXTRA_TV_SHOW)
         when {
-            movieIntent != null -> {
-                renderWithMovie(movieIntent)
-            }
-            tvShowIntent != null -> {
-                renderWithTvShow(tvShowIntent)
-            }
+            viewModel.movie != null -> renderWithMovie(viewModel.movie!!)
+            viewModel.tvShow != null -> renderWithTvShow(viewModel.tvShow!!)
             else -> {
                 Toast.makeText(this@DetailActivity, "cannot load detail", Toast.LENGTH_SHORT).show()
+                renderWithoutData()
             }
         }
     }
@@ -39,7 +40,9 @@ class DetailActivity : AppCompatActivity() {
             detailTvReleaseDate.text = movie.release_date
             detailTvScore.text = movie.user_score.toString()
 
-            //TODO load image
+            Glide.with(this@DetailActivity)
+                .load(movie.image_url)
+                .into(binding.detailIvPoster)
         }
     }
 
@@ -50,13 +53,13 @@ class DetailActivity : AppCompatActivity() {
             detailTvGenre.text = "${tvShow.rate} | ${tvShow.genre}"
             detailTvDesc.text = tvShow.description
             detailTvScore.text = tvShow.user_score.toString()
-            //TODO load image
-        }
+            Glide.with(this@DetailActivity)
+                .load(tvShow.image_url)
+                .into(binding.detailIvPoster)        }
     }
 
     private fun renderWithoutData() {
         binding.root.isVisible = false
-            //TODO load image
     }
 
     companion object {
