@@ -11,5 +11,6 @@ data class Movie(
     val rate: String,
     val release_date: String,
     val user_score: Int,
-    val year: Int
+    val year: Int,
+    val image_url: Int = 0
 ) : Parcelable
