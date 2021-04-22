@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.movie.Movie
 import com.daya.moviecatalogue.data.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
@@ -21,17 +22,20 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.apply {
-            title = "Detail"
+            title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)
         }
-        viewModel.movie = intent.getParcelableExtra(DETAIL_EXTRA_MOVIE)
-        viewModel.tvShow =  intent.getParcelableExtra(DETAIL_EXTRA_TV_SHOW)
+        val movie = intent.getStringExtra(DETAIL_EXTRA_MOVIE)
+        val tvShow  =  intent.getStringExtra(DETAIL_EXTRA_TV_SHOW)
+
         when {
-            viewModel.movie != null -> renderWithMovie(viewModel.movie!!)
-            viewModel.tvShow != null -> renderWithTvShow(viewModel.tvShow!!)
-            else -> {
-                Toast.makeText(this@DetailActivity, "cannot load detail", Toast.LENGTH_SHORT).show()
-                renderWithoutData()
+            movie != null -> {
+                val currentMovie = viewModel.getCurrentMovieByTitle(movie)
+                renderWithMovie(currentMovie)
+            }
+            tvShow != null -> {
+                val currentTvShow = viewModel.getCurrentTvShowByTitle(tvShow)
+                renderWithTvShow(currentTvShow)
             }
         }
     }
@@ -63,9 +67,6 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding.detailIvPoster)        }
     }
 
-    private fun renderWithoutData() {
-        binding.root.isVisible = false
-    }
 
     companion object {
         const val DETAIL_EXTRA_MOVIE = "detail_extra_movie"

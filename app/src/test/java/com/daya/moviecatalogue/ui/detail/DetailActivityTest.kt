@@ -54,8 +54,11 @@ class DetailActivityTest {
             user_score = 89
         )
 
-        val tvShowIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java).apply {
-            putExtra(DETAIL_EXTRA_TV_SHOW,tvShow)
+        val tvShowIntent = Intent(
+            ApplicationProvider.getApplicationContext(),
+            DetailActivity::class.java
+        ).apply {
+            putExtra(DETAIL_EXTRA_TV_SHOW, tvShow)
         }
         launchActivity<DetailActivity>(tvShowIntent)
         onView(withId(R.id.detail_tv_title)).check(matches(withText("${tvShow.title}(${tvShow.year})")))
@@ -65,16 +68,4 @@ class DetailActivityTest {
         onView(withId(R.id.detail_tv_score)).check(matches(withText(tvShow.user_score.toString())))
     }
 
-    @Test
-    fun `detail should display no data`() {
-        val nullData : TvShow? = null
-        val noDataIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java).apply {
-            putExtra(DETAIL_EXTRA_TV_SHOW,nullData )
-        }
-        launchActivity<DetailActivity>(noDataIntent)
-
-        //todo add logic for no data
-
     }
-
-}

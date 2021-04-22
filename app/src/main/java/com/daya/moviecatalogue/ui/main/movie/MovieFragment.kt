@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.ui.detail.DetailActivity
+import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.main.MainViewModel
 
 class MovieFragment : Fragment() {
@@ -27,7 +28,9 @@ class MovieFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = MovieRecyclerViewAdapter(mainViewModel.getMovie){
-                    val intent = Intent(context, DetailActivity::class.java)
+                    val intent = Intent(context, DetailActivity::class.java).apply {
+                        putExtra(DETAIL_EXTRA_MOVIE,it.title)
+                    }
                     startActivity(intent)
                 }
             }

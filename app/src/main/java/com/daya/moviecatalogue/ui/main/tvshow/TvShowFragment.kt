@@ -28,7 +28,9 @@ class TvShowFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = TvShowRecyclerViewAdapter(mainViewModel.getTvShow){
-                    val intent = Intent(context, DetailActivity::class.java)
+                    val intent = Intent(context, DetailActivity::class.java).apply {
+                        putExtra(DetailActivity.DETAIL_EXTRA_TV_SHOW,it.title)
+                    }
                     startActivity(intent)
                 }
             }
