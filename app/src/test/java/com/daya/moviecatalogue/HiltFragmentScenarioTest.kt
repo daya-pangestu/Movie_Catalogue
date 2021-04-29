@@ -1,20 +1,21 @@
-package com.daya.moviecatalogue.ui.main.movie
+package com.daya.moviecatalogue
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.daya.moviecatalogue.ui.main.movie.MovieFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import launchFragmentInHiltContainer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
-class MovieTestHilt {
+@RunWith(AndroidJUnit4::class)
+class HiltFragmentScenarioTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setup() {
@@ -23,8 +24,7 @@ class MovieTestHilt {
 
     @Test
     fun testLaunchFragment() {
-        assertThat("ew").isEqualTo("ew")
-
+        launchFragmentInHiltContainer<MovieFragment> {  }
     }
 
 }

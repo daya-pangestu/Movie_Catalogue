@@ -43,6 +43,10 @@ android {
     }
 }
 
+hilt {
+    enableTransformForLocalTests = true
+}
+
 dependencies {
     //view
     implementation "androidx.cardview:cardview:1.0.0"

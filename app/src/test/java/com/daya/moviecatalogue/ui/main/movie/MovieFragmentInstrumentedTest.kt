@@ -1,7 +1,6 @@
 package com.daya.moviecatalogue.ui.main.movie
 
 import android.content.Intent
-import android.os.Looper.getMainLooper
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -14,10 +13,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.DataDummy
-import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.util.RecyclerViewItemCountAssertion
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows.shadowOf
@@ -49,7 +48,7 @@ class MovieFragmentInstrumentedTest{
 
         scenario.onFragment{
             val expectedIntent = Intent(it.context, DetailActivity::class.java)
-            val app = ApplicationProvider.getApplicationContext<MovieCatApplication>()
+            val app = ApplicationProvider.getApplicationContext<HiltTestApplication>()
             val actual = shadowOf(app).nextStartedActivity
             assertThat(expectedIntent.component).isEqualTo(actual.component)
         }

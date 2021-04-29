@@ -13,10 +13,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.DataDummy
-import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.util.RecyclerViewItemCountAssertion
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows
@@ -50,7 +50,7 @@ class TvShowFragmentInstrumentedTest{
         )
         scenario.onFragment{
             val expectedIntent = Intent(it.context, DetailActivity::class.java)
-            val app = ApplicationProvider.getApplicationContext<MovieCatApplication>()
+            val app = ApplicationProvider.getApplicationContext<HiltTestApplication>()
             val actual = Shadows.shadowOf(app).nextStartedActivity
             assertThat(expectedIntent.component).isEqualTo(actual.component)
         }

@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.main.MainActivity
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,7 +35,7 @@ class SplashActivityInstrumentedTest {
             it.intentIntoMainActivity()
             ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
             val expectedIntent = Intent(it, MainActivity::class.java)
-            val app = ApplicationProvider.getApplicationContext<MovieCatApplication>()
+            val app = ApplicationProvider.getApplicationContext<HiltTestApplication>()
             val actual = shadowOf(app).nextStartedActivity
             assertThat(expectedIntent.component).isEqualTo(actual.component)
         }
