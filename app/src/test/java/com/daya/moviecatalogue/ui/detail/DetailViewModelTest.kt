@@ -9,13 +9,13 @@ import org.junit.Test
 
 class DetailViewModelTest {
 
-    private lateinit var viewmodel: DetailViewModel
+    private lateinit var viewModel: DetailViewModel
     private lateinit var dummyMovie : Movie
     private lateinit var dummyTvShow : TvShow
 
     @Before
     fun setUp() {
-        viewmodel = DetailViewModel()
+        viewModel = DetailViewModel()
         dummyMovie = DataDummy.getListMovie()[1]
         dummyTvShow = DataDummy.getListTvShow()[7]
     }
@@ -23,7 +23,7 @@ class DetailViewModelTest {
     @Test
     fun `getCurrentMovieByTitle should return movie based by title`() {
 
-        val movie = viewmodel.getCurrentMovieByTitle(dummyMovie.title)
+        val movie = viewModel.getCurrentMovieByTitle(dummyMovie.title)
 
         assertThat(movie).isNotNull()
         assertThat(dummyMovie.title).isEqualTo(movie.title)
@@ -39,7 +39,7 @@ class DetailViewModelTest {
     @Test
     fun `getCurrentTvShowByTitle should return tvShow based by title`() {
 
-        val tvShow = viewmodel.getCurrentTvShowByTitle(dummyTvShow.title)
+        val tvShow = viewModel.getCurrentTvShowByTitle(dummyTvShow.title)
 
         assertThat(tvShow).isNotNull()
         assertThat(dummyTvShow.title).isEqualTo(tvShow.title)

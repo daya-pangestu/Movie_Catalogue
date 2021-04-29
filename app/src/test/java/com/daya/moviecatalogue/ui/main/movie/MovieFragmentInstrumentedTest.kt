@@ -1,6 +1,7 @@
 package com.daya.moviecatalogue.ui.main.movie
 
 import android.content.Intent
+import android.os.Looper.getMainLooper
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -19,7 +20,7 @@ import com.daya.moviecatalogue.ui.util.RecyclerViewItemCountAssertion
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Shadows
+import org.robolectric.Shadows.shadowOf
 
 @RunWith(AndroidJUnit4::class)
 class MovieFragmentInstrumentedTest{
@@ -43,15 +44,13 @@ class MovieFragmentInstrumentedTest{
     @Test
     fun `item recyclerview movie click should intent into detail`() {
         val scenario = launchFragmentInContainer<MovieFragment>()
-        onView(withId(R.id.rv_list)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            ),click()
-        )
+
+        onView(withId(R.id.rv_list)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0), click() )
+
         scenario.onFragment{
             val expectedIntent = Intent(it.context, DetailActivity::class.java)
             val app = ApplicationProvider.getApplicationContext<MovieCatApplication>()
-            val actual = Shadows.shadowOf(app).nextStartedActivity
+            val actual = shadowOf(app).nextStartedActivity
             assertThat(expectedIntent.component).isEqualTo(actual.component)
         }
     }
