@@ -4,11 +4,9 @@ import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.daya.moviecatalogue.ui.MovieCatApplication
 import com.daya.moviecatalogue.ui.main.MainActivity
 import com.google.common.truth.Truth.assertThat
-import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,12 +19,12 @@ class SplashActivityInstrumentedTest {
     val activityRule = activityScenarioRule<SplashActivity>()
 
     @Test
-    fun `toolbar should be hidden`() {
+    fun `supportActionBar  should be hidden`() {
         val scenario = activityRule.scenario
         scenario.onActivity {
             val toolbar = it.supportActionBar
             assertThat(toolbar).isNotNull()
-            assertThat(toolbar).isNotEqualTo(toolbar!!.isShowing)
+            assertThat(toolbar).isNotEqualTo(!toolbar!!.isShowing)
         }
     }
 

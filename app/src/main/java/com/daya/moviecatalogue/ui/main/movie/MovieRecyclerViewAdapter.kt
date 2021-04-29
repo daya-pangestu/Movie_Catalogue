@@ -33,7 +33,6 @@ class MovieRecyclerViewAdapter(
         }
 
         fun bind(movie: Movie) {
-            //Load image with glide
             binding.tvTitle.text = movie.title
             binding.tvDesc.text = movie.description
             binding.tvGenre.text = movie.genre
