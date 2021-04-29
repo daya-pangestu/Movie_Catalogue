@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <ImageView
             android:id="@+id/iv_poster"
             android:layout_width="160dp"
@@ -50,12 +49,13 @@
 
         <TextView
             android:id="@+id/tv_genre"
-            style="@style/TextAppearance.AppCompat.Medium"
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_release_date"
+            app:layout_constraintBottom_toTopOf="@+id/tv_score"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc"
             tools:text="action,comedy,drama" />
 
         <TextView

@@ -1,8 +1,7 @@
 package com.daya.moviecatalogue.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.daya.moviecatalogue.R
+import androidx.appcompat.app.AppCompatActivity
 import com.daya.moviecatalogue.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -14,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.viewpager.adapter = MainPagerStateadapter(this)
-        TabLayoutMediator(binding.tablayout, binding.viewpager){ tab , position ->
+        binding.viewPager.adapter = MainPagerStateAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager){ tab , position ->
             tab.text = when (position) {
                 0 -> "Movie"
                 else -> "TvShow"
