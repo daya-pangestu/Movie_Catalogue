@@ -1,27 +1,33 @@
 package com.daya.moviecatalogue.di.idlingresource
 
 import androidx.test.espresso.idling.CountingIdlingResource
+import javax.inject.Inject
 
 interface IdlingResources {
+    var idlingResources : CountingIdlingResource?
     fun increment()
     fun decrement()
 }
 
-object ProductionIdlingResource : IdlingResources {
+class ProductionIdlingResource @Inject constructor() : IdlingResources {
     //do nothing in production
+    override var idlingResources : CountingIdlingResource? = null
     override fun increment() = Unit
     override fun decrement() = Unit
 }
 
-object EspressoIdlingResource : IdlingResources {
-    private const val RESOURCE = "GLOBAL"
-    val idlingResources = CountingIdlingResource(RESOURCE)
+class EspressoIdlingResource @Inject constructor() : IdlingResources {
+
+    override var idlingResources: CountingIdlingResource? = CountingIdlingResource(RESOURCE)
     override fun increment() {
-        idlingResources.increment()
+        idlingResources?.increment()
     }
 
     override fun decrement() {
-        idlingResources.decrement()
+        idlingResources?.decrement()
     }
 
+    companion object {
+        private const val RESOURCE = "GLOBAL"
+    }
 }

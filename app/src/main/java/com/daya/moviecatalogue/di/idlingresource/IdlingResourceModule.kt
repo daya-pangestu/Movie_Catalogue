@@ -9,12 +9,13 @@ import javax.inject.Qualifier
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class IdlingResourceModule {
+
+    @DebugIdlingRes
     @Binds
-    @EspressoIdlingRes
     abstract fun bindIdlingResourceEspresso(espressoIdlingResources: EspressoIdlingResource): IdlingResources
 
-    @Binds
     @ProductionIdlingRes
+    @Binds
     abstract fun bindIdlingResourceProduction(productionIdlingResourceModule: ProductionIdlingResource): IdlingResources
 
 }
@@ -22,7 +23,7 @@ abstract class IdlingResourceModule {
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class EspressoIdlingRes
+annotation class DebugIdlingRes
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
