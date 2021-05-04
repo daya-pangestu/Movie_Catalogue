@@ -1,8 +1,8 @@
 package com.daya.moviecatalogue.ui.detail
 
 import com.daya.moviecatalogue.data.DataDummy
-import com.daya.moviecatalogue.data.movie.Movie
-import com.daya.moviecatalogue.data.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test

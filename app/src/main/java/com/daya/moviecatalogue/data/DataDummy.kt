@@ -1,7 +1,7 @@
 package com.daya.moviecatalogue.data
 import com.daya.moviecatalogue.R
-import com.daya.moviecatalogue.data.movie.Movie
-import com.daya.moviecatalogue.data.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.tvshow.TvShow
 
 object DataDummy {
     fun getListMovie(): MutableList<Movie> {

@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.data.tvshow
+package com.daya.moviecatalogue.data.main.tvshow
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

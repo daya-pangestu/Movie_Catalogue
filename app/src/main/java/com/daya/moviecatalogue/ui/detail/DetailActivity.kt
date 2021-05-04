@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.R
-import com.daya.moviecatalogue.data.movie.Movie
-import com.daya.moviecatalogue.data.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {

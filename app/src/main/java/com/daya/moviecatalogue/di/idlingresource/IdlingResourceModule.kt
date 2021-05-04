@@ -12,7 +12,7 @@ abstract class IdlingResourceModule {
 
     @DebugIdlingRes
     @Binds
-    abstract fun bindIdlingResourceEspresso(espressoIdlingResources: EspressoIdlingResource): IdlingResources
+    abstract fun bindIdlingResourceEspresso(debugIdlingResources: DebugIdlingResource): IdlingResources
 
     @ProductionIdlingRes
     @Binds
