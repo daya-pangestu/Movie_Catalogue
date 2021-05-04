@@ -2,5 +2,5 @@ package com.daya.moviecatalogue.data.main.movie.response
 
 
 data class MovieResponse(
-    val results: List<Result>
+    val results: List<DetailMovie>
 )

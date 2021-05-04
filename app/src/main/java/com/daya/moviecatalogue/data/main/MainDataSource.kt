@@ -16,7 +16,7 @@ import kotlin.coroutines.resumeWithException
 
 interface MainDataSource {
     suspend fun getListMovies() : MovieResponse
-    fun getListTvShow() : TvShowResponse
+    suspend fun getListTvShow() : TvShowResponse
 }
 
 @Singleton
@@ -43,8 +43,21 @@ constructor(
         }
     }
 
-    override fun getListTvShow(): TvShowResponse {
-        val list : TvShowResponse? = null
-        return list!!
+    override suspend fun getListTvShow(): TvShowResponse =  suspendCancellableCoroutine {continuation ->
+        val client = api.discoverTvShow()
+        client.enqueue(object : Callback<TvShowResponse> {
+            override fun onResponse(call: Call<TvShowResponse>, response: Response<TvShowResponse>) {
+                val body : TvShowResponse = response.body() ?: return continuation.resumeWithException(Exception("body null"))
+                continuation.resume(body)
+            }
+
+            override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
+                continuation.resumeWithException(t)
+            }
+        })
+
+        continuation.invokeOnCancellation {
+            client.cancel()
+        }
     }
 }

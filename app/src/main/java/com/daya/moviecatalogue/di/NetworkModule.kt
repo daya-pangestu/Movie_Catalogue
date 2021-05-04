@@ -1,6 +1,8 @@
 package com.daya.moviecatalogue.di
 
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -13,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import javax.inject.Singleton
 
 @Module
@@ -67,5 +70,15 @@ interface TheMovieDbApi{
 
     @GET("discover/tv")
     fun discoverMovie() : Call<MovieResponse>
+
+    @GET("movie/{movie_id}")
+    fun getDetailMovie(
+            @Path("movie_id") movie_Id : Int
+    ) : Call<DetailMovie>
+
+    @GET("tv/{tv_id}")
+    fun getDetailTvShow(
+            @Path("tv_id") tv_id : Int
+    ) : Call<DetailTvShow>
 
 }

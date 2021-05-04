@@ -31,7 +31,7 @@ class IdlingResourceTest {
     }
 
     @Test
-    fun `debugIdlingresources should be null in production`() {
+    fun `debugIdlingresources should not be null in debug`() {
         assertThat(debugIdlingRes).isNotNull()
         assertThat(debugIdlingRes.idlingResources).isNotNull()
     }
