@@ -5,23 +5,15 @@ import com.daya.moviecatalogue.MainCoroutineRule
 import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
-import com.daya.moviecatalogue.data.main.RemoteDetailDataSource
-import com.daya.moviecatalogue.data.main.RemoteMainDataSource
-import com.daya.moviecatalogue.di.TheMovieDbApi
 import com.daya.moviecatalogue.getOrAwaitValue
 import com.daya.moviecatalogue.observeForTesting
 import com.google.common.truth.Truth.assertThat
-import com.jraska.livedata.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 
@@ -44,30 +36,31 @@ class MainViewModelTest{
     }
 
     @Test
-    fun `getMovie should not null`() {
-        val resMovies = viewModel.discoverMovie.getOrAwaitValue()
-        assertThat(resMovies).isNotNull()
-    }
+    fun `discoverMovie should return resource listMovies `() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(mainRepository.discoverMovies()).thenReturn(DataDummy.getListMovie())
 
-    @Test
-    fun `getMovie should not empty`() {
-        mainCoroutineRule.testDispatcher.runBlockingTest {
-            assertThat(viewModel.discoverMovie.value).isEqualTo(Resource.Loading)
-            delay(300)
-            assertThat(viewModel.discoverMovie.value).isEqualTo(Resource.Success(null))
+        //initial value
+        val resLoading = viewModel.discoverMovie.getOrAwaitValue()
+        assertThat(resLoading).isEqualTo(Resource.Loading)
+
+        //latest value
+        viewModel.discoverMovie.observeForTesting {
+                assertThat(viewModel.discoverMovie.value).isEqualTo(Resource.Success(DataDummy.getListMovie()))
         }
     }
 
-    @Test
-    fun `getTvShow should not null`() {
-        val listTvShow = viewModel.getMovie
-        assertThat(listTvShow).isNotNull()
-    }
 
     @Test
-    fun `getTvShow should not empty`() {
-        val listMovie = viewModel.getMovie
-        assertThat(listMovie).isNotEmpty()
-    }
+    fun `discoverTvShow should return resource tvShows`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(mainRepository.discoverTvShow()).thenReturn(DataDummy.getListTvShow())
 
+        //initial value
+        val resLoading = viewModel.discoverTvShow.getOrAwaitValue()
+        assertThat(resLoading).isEqualTo(Resource.Loading)
+
+        //latest value
+        viewModel.discoverTvShow.observeForTesting {
+            assertThat(viewModel.discoverTvShow.value).isEqualTo(Resource.Success(DataDummy.getListTvShow()))
+        }
+    }
 }

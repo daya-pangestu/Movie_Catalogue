@@ -2,11 +2,9 @@ package com.daya.moviecatalogue.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
 import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
-import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.di.coroutine.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,7 +22,7 @@ constructor(
 
     val getTvShow = DataDummy.getListTvShow()
 
-    private val _dicoverMovies = liveData(coroutineDispatcher) {
+    private val _discoverMovies = liveData(coroutineDispatcher) {
         emit(Resource.Loading)
         try {
             val list = mainRepository.discoverMovies()
@@ -34,11 +32,10 @@ constructor(
         }
     }
 
-    val discoverMovie = _dicoverMovies
+    val discoverMovie = _discoverMovies
 
 
-
-    private val _dicoverTvShow = liveData {
+    private val _discoverTvShow = liveData {
         emit(Resource.Loading)
         try {
             val list = mainRepository.discoverTvShow()
@@ -48,6 +45,6 @@ constructor(
         }
     }
 
-    val discoverTvShow = _dicoverTvShow
+    val discoverTvShow = _discoverTvShow
 
 }
