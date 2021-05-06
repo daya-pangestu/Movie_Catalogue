@@ -34,7 +34,6 @@ constructor(
 
     val discoverMovie = _discoverMovies
 
-
     private val _discoverTvShow = liveData {
         emit(Resource.Loading)
         try {

@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowFragment : Fragment() {
     private val mainViewModel by activityViewModels<MainViewModel>()
 

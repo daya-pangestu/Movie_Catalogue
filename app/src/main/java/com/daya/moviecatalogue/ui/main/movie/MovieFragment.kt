@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.daya.moviecatalogue.R
+import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.main.MainViewModel
@@ -28,13 +30,29 @@ class MovieFragment : Fragment() {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = MovieRecyclerViewAdapter(mainViewModel.getMovie){
-                    val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(DETAIL_EXTRA_MOVIE,it.title)
+            }
+            mainViewModel.discoverMovie.observe(viewLifecycleOwner){
+                when (it) {
+                    is Resource.Loading -> {
+
                     }
-                    startActivity(intent)
+                    is Resource.Success -> {
+                        val listMovie = it.data
+
+                        view.adapter = MovieRecyclerViewAdapter(listMovie) {
+                            val intent = Intent(context, DetailActivity::class.java).apply {
+                                putExtra(DETAIL_EXTRA_MOVIE, it.title)
+                            }
+                            startActivity(intent)
+                        }
+                    }
+                    is Resource.Error -> {
+
+                    }
                 }
             }
+
+
         }
         return view
     }
