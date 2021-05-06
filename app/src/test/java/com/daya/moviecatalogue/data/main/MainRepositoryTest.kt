@@ -35,11 +35,11 @@ class MainRepositoryTest {
         val movieResponse = adapter.fromJson(movieJsonString)
         runBlocking {
             whenever(mainDataSource.getListMovies()).thenReturn(movieResponse)
-            val listMovie = mainRepository.discoverMovies()
+            val actualListMovie = mainRepository.discoverMovies()
             verify(mainDataSource).getListMovies()
 
-            assertThat(listMovie).isNotNull()
-            assertThat(listMovie.results.size).isAtLeast(5)
+            assertThat(actualListMovie).isNotNull()
+            assertThat(actualListMovie.results.size).isAtLeast(5)
         }
     }
 
@@ -47,9 +47,9 @@ class MainRepositoryTest {
     fun `discoverTvShow should return TvShowResponse`() {
         val tvShowJsonString = Fake.discoverTvShowSuccesFul
         val adapter = moshi.adapter(TvShowResponse::class.java)
-        val tvShowResponse = adapter.fromJson(tvShowJsonString)
+        val expectedTvShowResponse = adapter.fromJson(tvShowJsonString)
         runBlocking {
-            whenever(mainDataSource.getListTvShow()).thenReturn(tvShowResponse)
+            whenever(mainDataSource.getListTvShow()).thenReturn(expectedTvShowResponse)
             val listTvShow = mainRepository.discoverTvShow()
             verify(mainDataSource).getListTvShow()
 
