@@ -17,7 +17,7 @@ import kotlin.coroutines.resumeWithException
 
 interface DetailDataSource {
     suspend fun getDetailTvShow(tvShowId : Int) : DetailTvShow
-    suspend fun getDetailMovi(movieId : Int) : DetailMovie
+    suspend fun getDetailMovie(movieId : Int) : DetailMovie
 }
 
 @Singleton
@@ -45,7 +45,7 @@ constructor(
         }
     }
 
-    override suspend  fun getDetailMovi(movieId: Int): DetailMovie = suspendCancellableCoroutine {continuation ->
+    override suspend  fun getDetailMovie(movieId: Int): DetailMovie = suspendCancellableCoroutine { continuation ->
         val client = api.getDetailMovie(movieId)
 
         client.enqueue(object : Callback<DetailMovie>{
