@@ -1,10 +1,11 @@
 package com.daya.moviecatalogue.data.main
 
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.mapToMovie
+import com.daya.moviecatalogue.maptoTvShow
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 @Singleton
 class MainRepository
@@ -13,12 +14,12 @@ constructor(
         private val detailDataSource: RemoteDetailDataSource,
         private val mainDataSource: RemoteMainDataSource
 ){
-    suspend fun discoverMovies() = mainDataSource.getListMovies()
+    suspend fun discoverMovies() = mainDataSource.getListMovies().results.map {it.mapToMovie()}
 
-    suspend fun discoverTvShow() = mainDataSource.getListTvShow()
+    suspend fun discoverTvShow() = mainDataSource.getListTvShow().results.map { it.maptoTvShow() }
 
-    suspend fun getDetailMovie(movieId: Int): DetailMovie = detailDataSource.getDetailMovie(movieId)
+    suspend fun getDetailMovie(movieId: Int): Movie = detailDataSource.getDetailMovie(movieId).mapToMovie()
 
-    suspend fun getDetailTvShow(tvShowId: Int): DetailTvShow = detailDataSource.getDetailTvShow(tvShowId)
+    suspend fun getDetailTvShow(tvShowId: Int): TvShow = detailDataSource.getDetailTvShow(tvShowId).maptoTvShow()
 
 }

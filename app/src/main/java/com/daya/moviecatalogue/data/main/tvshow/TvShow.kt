@@ -11,5 +11,5 @@ data class TvShow(
         val genre: String,
         val rate: String,
         val user_score: Int,
-        val image_url: Int = 0
+        val image_url: String = ""
 ) : Parcelable

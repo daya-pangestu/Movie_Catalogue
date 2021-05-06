@@ -2,14 +2,17 @@ package com.daya.moviecatalogue.ui.detail
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
+import com.daya.moviecatalogue.loadImage
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
@@ -47,10 +50,8 @@ class DetailActivity : AppCompatActivity() {
             detailTvDesc.text = movie.description
             detailTvReleaseDate.text = movie.release_date
             detailTvScore.text = movie.user_score.toString()
+            detailIvPoster.loadImage(movie.image_url)
 
-            Glide.with(this@DetailActivity)
-                .load(movie.image_url)
-                .into(binding.detailIvPoster)
         }
     }
 
@@ -61,11 +62,10 @@ class DetailActivity : AppCompatActivity() {
             detailTvGenre.text = "${tvShow.rate} | ${tvShow.genre}"
             detailTvDesc.text = tvShow.description
             detailTvScore.text = tvShow.user_score.toString()
-            Glide.with(this@DetailActivity)
-                .load(tvShow.image_url)
-                .into(binding.detailIvPoster)        }
-    }
+            detailIvPoster.loadImage(tvShow.image_url)
 
+        }
+    }
 
     companion object {
         const val DETAIL_EXTRA_MOVIE = "detail_extra_movie"

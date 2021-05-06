@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ItemTvshowBinding
+import com.daya.moviecatalogue.loadImage
 
 class TvShowRecyclerViewAdapter(
     private val values: List<TvShow>,
@@ -37,9 +38,7 @@ class TvShowRecyclerViewAdapter(
             binding.tvDesc.text = tvShow.description
             binding.tvGenre.text = tvShow.genre
             binding.tvScore.text = tvShow.user_score.toString()
-            Glide.with(itemView.context)
-                .load(tvShow.image_url)
-                .into(binding.ivPoster)
+            binding.ivPoster.loadImage(tvShow.image_url)
         }
     }
 }

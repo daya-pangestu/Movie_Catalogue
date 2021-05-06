@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.databinding.ItemMovieBinding
+import com.daya.moviecatalogue.loadImage
 
 class MovieRecyclerViewAdapter(
         private val values: List<Movie>,
@@ -38,9 +39,7 @@ class MovieRecyclerViewAdapter(
             binding.tvGenre.text = movie.genre
             binding.tvReleaseDate.text = movie.release_date
             binding.tvScore.text = movie.user_score.toString()
-            Glide.with(itemView.context)
-                .load(movie.image_url)
-                .into(binding.ivPoster)
+            binding.ivPoster.loadImage(movie.image_url)
         }
     }
 }
