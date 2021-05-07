@@ -8,19 +8,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
+import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MovieFragment : Fragment() {
 
-    private val mainViewModel by activityViewModels<MainViewModel>()
+    val mainViewModel by viewModels<MainViewModel>()
+
+    @Inject
+    lateinit var idlingResources: IdlingResources
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,9 +40,10 @@ class MovieFragment : Fragment() {
             mainViewModel.discoverMovie.observe(viewLifecycleOwner){
                 when (it) {
                     is Resource.Loading -> {
-
+                        idlingResources.increment()
                     }
                     is Resource.Success -> {
+                        idlingResources.decrement()
                         val listMovie = it.data
 
                         view.adapter = MovieRecyclerViewAdapter(listMovie) {
@@ -47,14 +54,11 @@ class MovieFragment : Fragment() {
                         }
                     }
                     is Resource.Error -> {
-
+                        idlingResources.decrement()
                     }
                 }
             }
-
-
         }
         return view
     }
-
 }

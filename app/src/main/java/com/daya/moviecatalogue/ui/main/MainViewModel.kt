@@ -15,7 +15,6 @@ class MainViewModel
 constructor(
     private val mainRepository: MainRepository,
     @MainDispatcher coroutineDispatcher: CoroutineDispatcher
-
 ): ViewModel() {
 
     val getMovie = DataDummy.getListMovie()

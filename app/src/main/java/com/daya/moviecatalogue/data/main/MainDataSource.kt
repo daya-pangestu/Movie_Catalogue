@@ -3,8 +3,6 @@ package com.daya.moviecatalogue.data.main
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
-import com.daya.moviecatalogue.di.idlingresource.IdlingResources
-import com.daya.moviecatalogue.di.idlingresource.ProductionIdlingRes
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
