@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.main.movie.Movie
@@ -27,19 +28,20 @@ class DetailActivity : AppCompatActivity() {
             title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)
         }
-        val movie = intent.getStringExtra(DETAIL_EXTRA_MOVIE)
-        val tvShow  =  intent.getStringExtra(DETAIL_EXTRA_TV_SHOW)
+        val movie = intent.getParcelableExtra<Movie>(DETAIL_EXTRA_MOVIE)
+        val tvShow  =  intent.getParcelableExtra<TvShow>(DETAIL_EXTRA_TV_SHOW)
 
         when {
             movie != null -> {
-                val currentMovie = viewModel.getCurrentMovieByTitle(movie)
-                renderWithMovie(currentMovie)
+                viewModel.submitMovie(movie)
             }
             tvShow != null -> {
-                val currentTvShow = viewModel.getCurrentTvShowByTitle(tvShow)
-                renderWithTvShow(currentTvShow)
+                viewModel.submitTvShow(tvShow)
             }
         }
+
+        viewModel.observeMovie().observe(this,Observer(::renderWithMovie))
+        viewModel.observeTvShow().observe(this,Observer(::renderWithTvShow))
     }
 
     private fun renderWithMovie(movie: Movie) {
@@ -83,3 +85,4 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 }
+

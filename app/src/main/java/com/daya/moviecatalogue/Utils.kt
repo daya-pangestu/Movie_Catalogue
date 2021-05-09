@@ -17,7 +17,7 @@ fun ImageView.loadImage(url: String) {
 
     } else {
         //it from API
-        val fullImageUrl = "${url}"
+        val fullImageUrl = "$URI_IMAGE$url"
         Glide.with(this.context)
             .load(fullImageUrl)
             .into(this)
@@ -27,8 +27,8 @@ fun ImageView.loadImage(url: String) {
 
 fun DetailMovie.mapToMovie(): Movie {
     return Movie(
-        title = this.title,
-        description = this.overview,
+        title = this.title ?: "",
+        description = this.overview ?: "",
         image_url = this.poster_path,
         release_date = this.release_date,
         user_score = (this.vote_average * 10).toInt(),
@@ -49,3 +49,5 @@ fun DetailTvShow.maptoTvShow(): TvShow {
         rate = ""
     )
 }
+
+private const val URI_IMAGE = "https://image.tmdb.org/t/p/w500"

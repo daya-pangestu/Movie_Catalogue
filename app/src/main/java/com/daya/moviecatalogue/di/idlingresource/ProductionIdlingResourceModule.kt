@@ -9,12 +9,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ProductionIdlingResources {
+abstract class ProductionIdlingResourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindIdlingResourceEspresso(debugIdlingResources: ProductionIdlingResource): IdlingResources
-
+    abstract fun bindIdlingResourceEspresso(prodIdlingResources: ProductionIdlingResource): IdlingResources
 }
 
 //

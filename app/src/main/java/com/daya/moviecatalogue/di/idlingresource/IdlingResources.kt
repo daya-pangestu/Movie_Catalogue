@@ -16,7 +16,8 @@ class ProductionIdlingResource @Inject constructor() : IdlingResources {
     override fun decrement() = Unit
 }
 
-class DebugIdlingResource @Inject constructor() : IdlingResources {
+object DebugIdlingResource: IdlingResources {
+    private const val RESOURCE = "GLOBAL"
 
     override var idlingResources: CountingIdlingResource? = CountingIdlingResource(RESOURCE)
     override fun increment() {
@@ -28,7 +29,5 @@ class DebugIdlingResource @Inject constructor() : IdlingResources {
         if (isIdle) idlingResources?.decrement()
     }
 
-    companion object {
-        private const val RESOURCE = "GLOBAL"
-    }
+
 }

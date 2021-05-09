@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.ui.util
+package com.daya.moviecatalogue
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

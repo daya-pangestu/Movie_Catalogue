@@ -68,7 +68,7 @@ interface TheMovieDbApi{
     @GET("discover/tv")
     fun discoverTvShow() : Call<TvShowResponse>
 
-    @GET("discover/tv")
+    @GET("discover/movie")
     fun discoverMovie() : Call<MovieResponse>
 
     @GET("movie/{movie_id}")
