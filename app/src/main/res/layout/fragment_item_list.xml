@@ -8,19 +8,17 @@
     android:layout_marginHorizontal="8dp"
     tools:context=".ui.main.movie.MovieFragment" >
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        android:id="@+id/rv_list"
+        tools:listitem="@layout/item_movie"
+        />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layoutManager="LinearLayoutManager"-->
-<!--        android:id="@+id/rv_list"-->
-<!--        tools:listitem="@layout/item_movie"-->
-<!--        />-->
-
-    <Button
+    <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
-        android:text="dong"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

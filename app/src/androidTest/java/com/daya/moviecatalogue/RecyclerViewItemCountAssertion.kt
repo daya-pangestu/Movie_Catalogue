@@ -14,11 +14,10 @@ class RecyclerViewItemCountAssertion(private val expectedCount: Int = 0,private 
         if (expectedCount == 0 && isAtLeast == 0) throw Exception("either expectedCount or isAtleast have more than 0 value")
         val recyclerView = view as RecyclerView
         val adapter = recyclerView.adapter
-        if (adapter == null) throw NullPointerException("adapter is null")
         if (isAtLeast > 0) {
-            assertThat(adapter.itemCount).isAtLeast(isAtLeast)
+            assertThat(adapter!!.itemCount).isAtLeast(isAtLeast)
             return
         }
-        assertThat(adapter.itemCount).isEqualTo(expectedCount)
+        assertThat(adapter!!.itemCount).isEqualTo(expectedCount)
     }
 }

@@ -16,17 +16,17 @@ class ProductionIdlingResource @Inject constructor() : IdlingResources {
     override fun decrement() = Unit
 }
 
-object DebugIdlingResource: IdlingResources {
+object DebugIdlingResource {
     private const val RESOURCE = "GLOBAL"
 
-    override var idlingResources: CountingIdlingResource? = CountingIdlingResource(RESOURCE)
-    override fun increment() {
-        idlingResources?.increment()
+     var idlingResources: CountingIdlingResource = CountingIdlingResource(RESOURCE)
+
+     fun increment() {
+        idlingResources.increment()
     }
 
-    override fun decrement() {
-        val isIdle : Boolean = idlingResources?.isIdleNow ?: false
-        if (isIdle) idlingResources?.decrement()
+     fun decrement() {
+         idlingResources.decrement()
     }
 
 
