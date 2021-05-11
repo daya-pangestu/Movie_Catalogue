@@ -100,6 +100,10 @@ dependencies {
     //timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    //viewbindingdelegate
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.6'
+
+
     //junit
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'junit:junit:4.13.2'
@@ -118,6 +122,11 @@ dependencies {
 
     testImplementation "androidx.test:rules:1.4.0-alpha06"
     androidTestImplementation "androidx.test:rules:1.4.0-alpha06"
+
+    //instantTaskExecutorRule
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
 
     //assertion
     testImplementation 'androidx.test.ext:junit-ktx:1.1.2'
