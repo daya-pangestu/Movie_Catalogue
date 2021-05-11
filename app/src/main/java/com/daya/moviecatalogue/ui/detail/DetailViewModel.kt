@@ -19,31 +19,31 @@ constructor(
     private val listMovie = DataDummy.getListMovie()
     private val listTvShow = DataDummy.getListTvShow()
 
-    private val movieLiveData = MutableLiveData<Movie>()
+    private val movieIdLiveData = MutableLiveData<Int>()
 
-    private val tvShowLiveData = MutableLiveData<TvShow>()
+    private val tvShowIdLiveData = MutableLiveData<Int>()
 
-    fun submitTvShow(tvShow: TvShow) {
-        tvShowLiveData.value = tvShow
+    fun submitTvShow(tvShowId: Int) {
+        tvShowIdLiveData.value = tvShowId
     }
 
-    fun submitMovie(movie: Movie) {
-        movieLiveData.value = movie
+    fun submitMovie(movieId: Int) {
+        movieIdLiveData.value = movieId
     }
 
-    fun getCurrentMovieByTitle(title: String): Movie {
+    fun getCurrentMovieById(title: String): Movie {
         return listMovie.first { it.title == title }
     }
 
-    fun getCurrentTvShowByTitle(title: String): TvShow {
+    fun getCurrentTvShowById(title: String): TvShow {
         return listTvShow.first { it.title == title }
     }
 
-    fun observeMovie() = movieLiveData.switchMap {
+    fun observeMovie() = movieIdLiveData.switchMap {
         liveData {
+            emit(Resource.Loading)
             try {
-                emit(Resource.Loading)
-                val data = repository.getDetailMovie(it.id)
+                val data = repository.getDetailMovie(it)
                 emit(Resource.Success(data))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))
@@ -51,11 +51,11 @@ constructor(
         }
     }
 
-    fun observeTvShow() = tvShowLiveData.switchMap {
+    fun observeTvShow() = tvShowIdLiveData.switchMap {
         liveData {
+            emit(Resource.Loading)
             try {
-                emit(Resource.Loading)
-                val data = repository.getDetailTvShow(it.id)
+                val data = repository.getDetailTvShow(it)
                 emit(Resource.Success(data))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))

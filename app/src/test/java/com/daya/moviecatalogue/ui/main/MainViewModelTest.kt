@@ -49,7 +49,6 @@ class MainViewModelTest{
         }
     }
 
-
     @Test
     fun `discoverTvShow should return resource tvShows`() = mainCoroutineRule.testDispatcher.runBlockingTest {
         whenever(mainRepository.discoverTvShow()).thenReturn(DataDummy.getListTvShow())

@@ -14,12 +14,15 @@ import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
+import com.daya.moviecatalogue.di.idlingresource.DebugIdlingResource
 import com.daya.moviecatalogue.loadImage
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
 
     private val viewModel by viewModels<DetailViewModel>()
+
+
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +32,15 @@ class DetailActivity : AppCompatActivity() {
             title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)
         }
-        var movie = intent.getParcelableExtra<Movie>(DETAIL_EXTRA_MOVIE)
-        var tvShow  =  intent.getParcelableExtra<TvShow>(DETAIL_EXTRA_TV_SHOW)
+        var movie = intent.getIntExtra(DETAIL_EXTRA_MOVIE,0)
+        var tvShow  =  intent.getIntExtra(DETAIL_EXTRA_TV_SHOW,0)
 
+        DebugIdlingResource.increment()
         when {
-            movie != null -> {
+            movie == 0 -> {
                 viewModel.submitMovie(movie)
             }
-            tvShow != null -> {
+            tvShow == 0 -> {
                 viewModel.submitTvShow(tvShow)
             }
         }
@@ -44,11 +48,14 @@ class DetailActivity : AppCompatActivity() {
         viewModel.observeMovie().observe(this){
             when (it) {
                 is Resource.Loading -> {
+
                 }
                 is Resource.Success -> {
+                    DebugIdlingResource.decrement()
                     renderWithMovie(it.data)
                 }
                 is Resource.Error -> {
+                    DebugIdlingResource.decrement()
                 }
             }
         }
@@ -57,9 +64,11 @@ class DetailActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
+                    DebugIdlingResource.decrement()
                     renderWithTvShow(it.data)
                 }
                 is Resource.Error -> {
+                    DebugIdlingResource.decrement()
                 }
             }
         }
@@ -79,6 +88,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun renderWithTvShow(tvShow: TvShow) {
+        DebugIdlingResource.decrement()
         binding.apply {
             root.isVisible = true
             detailTvTitle.text = "${tvShow.title}(${tvShow.year})"

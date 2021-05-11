@@ -73,14 +73,4 @@ class RemoteDetailDataSourceTest {
             assertThat(actual).isEqualTo(expected)
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
