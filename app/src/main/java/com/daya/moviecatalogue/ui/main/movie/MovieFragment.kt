@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.databinding.FragmentItemListBinding
@@ -25,11 +26,10 @@ class MovieFragment : Fragment(R.layout.fragment_item_list) {
 
     val mainViewModel by activityViewModels<MainViewModel>()
 
-    private lateinit var binding: FragmentItemListBinding
+    private val binding by viewBinding<FragmentItemListBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentItemListBinding.bind(view)
 
         binding.apply {
             with(rvList) {
@@ -70,4 +70,5 @@ class MovieFragment : Fragment(R.layout.fragment_item_list) {
             }
         }
     }
+
 }

@@ -27,6 +27,7 @@ fun ImageView.loadImage(url: String) {
 
 fun DetailMovie.mapToMovie(): Movie {
     return Movie(
+        id = this.id,
         title = this.title ?: "",
         description = this.overview ?: "",
         image_url = this.poster_path,
@@ -40,6 +41,7 @@ fun DetailMovie.mapToMovie(): Movie {
 
 fun DetailTvShow.maptoTvShow(): TvShow {
     return TvShow(
+        id = this.id,
         title = this.name,
         description = this.overview,
         image_url = this.poster_path,

@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.R
+import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
@@ -28,8 +29,8 @@ class DetailActivity : AppCompatActivity() {
             title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)
         }
-        val movie = intent.getParcelableExtra<Movie>(DETAIL_EXTRA_MOVIE)
-        val tvShow  =  intent.getParcelableExtra<TvShow>(DETAIL_EXTRA_TV_SHOW)
+        var movie = intent.getParcelableExtra<Movie>(DETAIL_EXTRA_MOVIE)
+        var tvShow  =  intent.getParcelableExtra<TvShow>(DETAIL_EXTRA_TV_SHOW)
 
         when {
             movie != null -> {
@@ -40,8 +41,28 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeMovie().observe(this,Observer(::renderWithMovie))
-        viewModel.observeTvShow().observe(this,Observer(::renderWithTvShow))
+        viewModel.observeMovie().observe(this){
+            when (it) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    renderWithMovie(it.data)
+                }
+                is Resource.Error -> {
+                }
+            }
+        }
+        viewModel.observeTvShow().observe(this){
+            when (it) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    renderWithTvShow(it.data)
+                }
+                is Resource.Error -> {
+                }
+            }
+        }
     }
 
     private fun renderWithMovie(movie: Movie) {

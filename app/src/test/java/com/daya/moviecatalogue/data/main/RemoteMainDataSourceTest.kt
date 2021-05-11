@@ -16,8 +16,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class RemoteMainDataSourceTest {
     val mockWebServer = MockWebServer()
-    val moshi =Moshi.Builder().build()
-    val api = Retrofit.Builder()
+    val moshi: Moshi =Moshi.Builder().build()
+    val api: TheMovieDbApi = Retrofit.Builder()
         .baseUrl(mockWebServer.url("/"))
         .addConverterFactory(
             MoshiConverterFactory.create(

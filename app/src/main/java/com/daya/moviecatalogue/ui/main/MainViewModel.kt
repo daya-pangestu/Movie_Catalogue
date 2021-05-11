@@ -33,17 +33,17 @@ constructor(
     }
 //
     val discoverMovie = _discoverMovies
-//
-//    private val _discoverTvShow = liveData {
-//        emit(Resource.Loading)
-//        try {
-//            val list = mainRepository.discoverTvShow()
-//            emit(Resource.Success(list))
-//        } catch (e: Exception) {
-//            emit(Resource.Error(e.message))
-//        }
-//    }
-//
-//    val discoverTvShow = _discoverTvShow
+
+    private val _discoverTvShow = liveData {
+        emit(Resource.Loading)
+        try {
+            val list = mainRepository.discoverTvShow()
+            emit(Resource.Success(list))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.message))
+        }
+    }
+
+    val discoverTvShow = _discoverTvShow
 
 }

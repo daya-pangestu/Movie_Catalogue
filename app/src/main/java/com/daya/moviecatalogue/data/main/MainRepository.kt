@@ -1,6 +1,7 @@
 package com.daya.moviecatalogue.data.main
 
 import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.maptoTvShow
@@ -14,7 +15,7 @@ constructor(
         private val detailDataSource: RemoteDetailDataSource,
         private val mainDataSource: RemoteMainDataSource
 ){
-    suspend fun discoverMovies() = mainDataSource.getListMovies().results.map {it.mapToMovie()}
+    suspend fun discoverMovies() = mainDataSource.getListMovies().results.map { it.mapToMovie() }
 
     suspend fun discoverTvShow() = mainDataSource.getListTvShow().results.map { it.maptoTvShow() }
 

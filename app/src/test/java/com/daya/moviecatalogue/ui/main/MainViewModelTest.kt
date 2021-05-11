@@ -37,30 +37,30 @@ class MainViewModelTest{
 
     @Test
     fun `discoverMovie should return resource listMovies `() = mainCoroutineRule.testDispatcher.runBlockingTest {
-//        whenever(mainRepository.discoverMovies()).thenReturn(DataDummy.getListMovie())
-//
-//        //initial value
-//        val resLoading = viewModel.discoverMovie.getOrAwaitValue()
-//        assertThat(resLoading).isEqualTo(Resource.Loading)
-//
-//        //latest value
-//        viewModel.discoverMovie.observeForTesting {
-//                assertThat(viewModel.discoverMovie.value).isEqualTo(Resource.Success(DataDummy.getListMovie()))
-//        }
+        whenever(mainRepository.discoverMovies()).thenReturn(DataDummy.getListMovie())
+
+        //initial value
+        val resLoading = viewModel.discoverMovie.getOrAwaitValue()
+        assertThat(resLoading).isEqualTo(Resource.Loading)
+
+        //latest value
+        viewModel.discoverMovie.observeForTesting {
+                assertThat(viewModel.discoverMovie.value).isEqualTo(Resource.Success(DataDummy.getListMovie()))
+        }
     }
 
 
     @Test
     fun `discoverTvShow should return resource tvShows`() = mainCoroutineRule.testDispatcher.runBlockingTest {
-//        whenever(mainRepository.discoverTvShow()).thenReturn(DataDummy.getListTvShow())
-//
-//        //initial value
-//        val resLoading = viewModel.discoverTvShow.getOrAwaitValue()
-//        assertThat(resLoading).isEqualTo(Resource.Loading)
-//
-//        //latest value
-//        viewModel.discoverTvShow.observeForTesting {
-//            assertThat(viewModel.discoverTvShow.value).isEqualTo(Resource.Success(DataDummy.getListTvShow()))
-//        }
+        whenever(mainRepository.discoverTvShow()).thenReturn(DataDummy.getListTvShow())
+
+        //initial value
+        val resLoading = viewModel.discoverTvShow.getOrAwaitValue()
+        assertThat(resLoading).isEqualTo(Resource.Loading)
+
+        //latest value
+        viewModel.discoverTvShow.observeForTesting {
+            assertThat(viewModel.discoverTvShow.value).isEqualTo(Resource.Success(DataDummy.getListTvShow()))
+        }
     }
 }

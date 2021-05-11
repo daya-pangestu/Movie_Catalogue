@@ -1,23 +1,41 @@
 package com.daya.moviecatalogue.ui.detail
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.daya.moviecatalogue.MainCoroutineRule
 import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.data.Resource
+import com.daya.moviecatalogue.data.main.MainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.getOrAwaitValue
+import com.daya.moviecatalogue.observeForTesting
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+@ExperimentalCoroutinesApi
 class DetailViewModelTest {
 
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private val dummyMovie : Movie = DataDummy.getListMovie()[1]
+    private val dummyTvShow : TvShow = DataDummy.getListTvShow()[7]
+
     private lateinit var viewModel: DetailViewModel
-    private lateinit var dummyMovie : Movie
-    private lateinit var dummyTvShow : TvShow
+    private var repository = mock<MainRepository>()
 
     @Before
     fun setUp() {
-        viewModel = DetailViewModel()
-        dummyMovie = DataDummy.getListMovie()[1]
-        dummyTvShow = DataDummy.getListTvShow()[7]
+        viewModel = DetailViewModel(repository)
     }
 
     @Test
@@ -49,5 +67,23 @@ class DetailViewModelTest {
         assertThat(dummyTvShow.rate).isEqualTo(tvShow.rate)
         assertThat(dummyTvShow.user_score).isEqualTo(tvShow.user_score)
         assertThat(dummyTvShow.year).isEqualTo(tvShow.year)
+    }
+
+    @Test
+    fun `observeMovie should return movie based by id`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(repository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+
+        viewModel.submitMovie(dummyMovie)
+
+        val resLoading = viewModel.observeMovie().getOrAwaitValue()
+        assertThat(resLoading).isEqualTo(Resource.Loading)
+
+        viewModel.observeMovie().observeForTesting {
+            assertThat(viewModel.observeMovie().value).isEqualTo(Resource.Success(dummyMovie))
+        }
+    }
+
+    @Test
+    fun `observeTvShow should return tvShow based by id`() {
     }
 }
