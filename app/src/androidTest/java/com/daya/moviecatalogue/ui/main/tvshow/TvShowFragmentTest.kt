@@ -1,11 +1,9 @@
 package com.daya.moviecatalogue.ui.main.tvshow
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
@@ -16,10 +14,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.RecyclerViewItemCountAssertion
-import com.daya.moviecatalogue.di.idlingresource.DebugIdlingResource
+import com.daya.moviecatalogue.di.idlingresource.IdlingResources
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.launchFragmentInHiltContainer
 import com.daya.moviecatalogue.ui.detail.DetailActivity
-import com.daya.moviecatalogue.ui.main.movie.MovieFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
@@ -28,6 +26,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -37,15 +36,18 @@ class TvShowFragmentTest {
     @get:Rule(order = 0)
     var hiltAndroidRule = HiltAndroidRule(this)
 
+
+    val testIdlingResource = TestIdlingResource
+
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
-        IdlingRegistry.getInstance().register(DebugIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().register(testIdlingResource.idlingResources)
     }
 
     @After
     fun tearDown() {
-        IdlingRegistry.getInstance().unregister(DebugIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().unregister(testIdlingResource.idlingResources)
     }
 
     @Test

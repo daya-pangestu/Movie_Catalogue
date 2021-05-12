@@ -18,10 +18,6 @@ constructor(
     private val mainRepository: MainRepository,
 ): ViewModel() {
 
-    val getMovie = DataDummy.getListMovie()
-
-    val getTvShow = DataDummy.getListTvShow()
-
     private val _discoverMovies = liveData {
         emit(Resource.Loading)
         try {

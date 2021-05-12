@@ -2,28 +2,25 @@ package com.daya.moviecatalogue.ui.detail
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
-import com.daya.moviecatalogue.di.idlingresource.DebugIdlingResource
+import com.daya.moviecatalogue.di.idlingresource.IdlingResources
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
 
     private val viewModel by viewModels<DetailViewModel>()
 
-
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -35,12 +32,13 @@ class DetailActivity : AppCompatActivity() {
         var movie = intent.getIntExtra(DETAIL_EXTRA_MOVIE,0)
         var tvShow  =  intent.getIntExtra(DETAIL_EXTRA_TV_SHOW,0)
 
-        DebugIdlingResource.increment()
         when {
-            movie == 0 -> {
+            movie != 0 -> {
+                TestIdlingResource.increment()
                 viewModel.submitMovie(movie)
             }
-            tvShow == 0 -> {
+            tvShow != 0 -> {
+                TestIdlingResource.increment()
                 viewModel.submitTvShow(tvShow)
             }
         }
@@ -48,27 +46,27 @@ class DetailActivity : AppCompatActivity() {
         viewModel.observeMovie().observe(this){
             when (it) {
                 is Resource.Loading -> {
-
                 }
                 is Resource.Success -> {
-                    DebugIdlingResource.decrement()
+                    TestIdlingResource.decrement()
                     renderWithMovie(it.data)
                 }
                 is Resource.Error -> {
-                    DebugIdlingResource.decrement()
+                    TestIdlingResource.decrement()
                 }
             }
         }
         viewModel.observeTvShow().observe(this){
             when (it) {
                 is Resource.Loading -> {
+
                 }
                 is Resource.Success -> {
-                    DebugIdlingResource.decrement()
+                    TestIdlingResource.decrement()
                     renderWithTvShow(it.data)
                 }
                 is Resource.Error -> {
-                    DebugIdlingResource.decrement()
+                    TestIdlingResource.decrement()
                 }
             }
         }
@@ -88,7 +86,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun renderWithTvShow(tvShow: TvShow) {
-        DebugIdlingResource.decrement()
         binding.apply {
             root.isVisible = true
             detailTvTitle.text = "${tvShow.title}(${tvShow.year})"
@@ -96,7 +93,6 @@ class DetailActivity : AppCompatActivity() {
             detailTvDesc.text = tvShow.description
             detailTvScore.text = tvShow.user_score.toString()
             detailIvPoster.loadImage(tvShow.image_url)
-
         }
     }
 
@@ -109,11 +105,15 @@ class DetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+               onBackPressed()
                 true
             }
             else ->super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }
 
