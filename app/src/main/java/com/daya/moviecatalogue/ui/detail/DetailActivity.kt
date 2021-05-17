@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
@@ -71,6 +72,10 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.observeIsFavorite.observe(this){
+            invalidateOptionsMenu()
+        }
     }
 
     private fun renderWithMovie(movie: Movie) {
@@ -107,11 +112,15 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-
+        if (viewModel.observeIsFavorite.value == true) {
+            menu?.findItem(R.id.action_favorite)?.icon =
+                ContextCompat.getDrawable(this@DetailActivity,R.drawable.ic_baseline_favorite_24)
+        } else{
+            menu?.findItem(R.id.action_favorite)?.icon =
+                ContextCompat.getDrawable(this@DetailActivity,R.drawable.ic_baseline_favorite_border_24)
+        }
         return super.onPrepareOptionsMenu(menu)
     }
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

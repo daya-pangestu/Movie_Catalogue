@@ -19,5 +19,5 @@ interface TvShowDao {
     fun deleteTvShow(TvShow: TvShowEntity)
 
     @Query("SELECT * from tvShow_entity WHERE tvShowId = :tvShowId")
-    fun getTvShowById(tvShowId: Int): Flow<TvShowEntity>
+    fun getTvShowById(tvShowId: Int): Flow<TvShowEntity?>
 }

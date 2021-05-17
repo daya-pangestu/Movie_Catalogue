@@ -75,13 +75,13 @@ class LocalDetailDataSource
 constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao
-) : DetailDataSource<Flow<MovieEntity>,Flow<TvShowEntity>> {
+) : DetailDataSource<Flow<MovieEntity?>,Flow<TvShowEntity?>> {
 
-    override suspend fun getDetailMovie(movieId: Int): Flow<MovieEntity> {
+    override suspend fun getDetailMovie(movieId: Int): Flow<MovieEntity?> {
         return movieDao.getMovieById(movieId)
     }
 
-    override suspend fun getDetailTvShow(tvShowId: Int): Flow<TvShowEntity> {
+    override suspend fun getDetailTvShow(tvShowId: Int): Flow<TvShowEntity?> {
         return tvShowDao.getTvShowById(tvShowId)
     }
 

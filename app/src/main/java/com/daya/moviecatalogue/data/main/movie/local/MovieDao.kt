@@ -15,5 +15,5 @@ interface MovieDao {
     fun deleteMovie(movie: MovieEntity)
 
     @Query("SELECT * from movie_entity WHERE movieId = :movieId")
-    fun getMovieById(movieId : Int) : Flow<MovieEntity>
+    fun getMovieById(movieId : Int) : Flow<MovieEntity?>
 }

@@ -18,12 +18,16 @@ constructor(
     private val movieIdLiveData = MutableLiveData<Int>()
     private val tvShowIdLiveData = MutableLiveData<Int>()
 
+    private val idForObserveFavorite = MutableLiveData<Int>()
+
     fun submitTvShow(tvShowId: Int) {
         tvShowIdLiveData.value = tvShowId
+        idForObserveFavorite.value = tvShowId
     }
 
     fun submitMovie(movieId: Int) {
         movieIdLiveData.value = movieId
+        idForObserveFavorite.value = movieId
     }
 
     fun observeMovie() = movieIdLiveData.switchMap {
@@ -51,6 +55,10 @@ constructor(
         }
     }
 
-
-    fun observeIsFavorite() = repository.isFavorite()
+    val observeIsFavorite = idForObserveFavorite.switchMap {
+        liveData {
+            val data = repository.isFavorite(it)
+            emitSource(data.asLiveData())
+        }
+    }
 }
