@@ -61,4 +61,10 @@ constructor(
             emitSource(data.asLiveData())
         }
     }
+
+
+    fun addToFavorite() {
+        val movie = observeMovie().value
+        val tvShow = observeTvShow().value
+    }
 }

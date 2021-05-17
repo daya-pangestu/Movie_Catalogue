@@ -125,10 +125,14 @@ class DetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-               onBackPressed()
+                onBackPressed()
                 true
             }
-            else ->super.onOptionsItemSelected(item)
+            R.id.action_favorite -> {
+                viewModel.addToFavorite()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

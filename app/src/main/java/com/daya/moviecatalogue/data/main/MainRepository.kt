@@ -30,7 +30,6 @@ constructor(
 
     suspend fun getDetailTvShow(tvShowId: Int): TvShow = remoteDetailDataSource.getDetailTvShow(tvShowId).maptoTvShow()
 
-
     suspend fun isFavorite(id : Int): Flow<Boolean> {
         return localDetailDataSource.getDetailMovie(id)
             .zip(localDetailDataSource.getDetailTvShow(id)){ movieEntity, tvShowEntity ->
