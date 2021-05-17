@@ -36,7 +36,6 @@ class TvShowRecyclerViewAdapter(
         fun bind(tvShow: TvShow) {
             binding.tvTitle.text = tvShow.title
             binding.tvDesc.text = tvShow.description
-            binding.tvGenre.text = tvShow.genre
             binding.tvScore.text = tvShow.user_score.toString()
             binding.ivPoster.loadImage(tvShow.image_url)
         }

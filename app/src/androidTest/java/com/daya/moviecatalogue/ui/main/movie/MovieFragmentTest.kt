@@ -49,14 +49,11 @@ class MovieFragmentTest{
 
     @Test
     fun movie_Recyclerview_should_be_able_intent_to_detail_activity() {
-        //GIVEN
         launchFragmentInHiltContainer<MovieFragment>()
 
-        //WHEN
         onView(withId(R.id.rv_list)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_list)).check(RecyclerViewItemCountAssertion(expectedCount = 20))
 
-        //THEN
         Intents.init()
         onView(withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(

@@ -2,6 +2,7 @@ package com.daya.moviecatalogue.ui.detail
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -13,6 +14,7 @@ import com.daya.moviecatalogue.databinding.ActivityDetailBinding
 import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
+import com.daya.moviecatalogue.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,6 +69,7 @@ class DetailActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     TestIdlingResource.decrement()
+                    toast(getString(R.string.fail_to_load))
                 }
             }
         }
@@ -74,9 +77,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun renderWithMovie(movie: Movie) {
         binding.apply {
-            root.isVisible = true
+            detailPlaceholderDesc.text = getString(R.string.description)
             detailTvTitle.text = "${movie.title}(${movie.year})"
-            detailTvGenre.text = "${movie.rate} | ${movie.genre}"
             detailTvDesc.text = movie.description
             detailTvReleaseDate.text = movie.release_date
             detailTvScore.text = movie.user_score.toString()
@@ -87,9 +89,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun renderWithTvShow(tvShow: TvShow) {
         binding.apply {
-            root.isVisible = true
+            detailPlaceholderDesc.text = getString(R.string.description)
             detailTvTitle.text = "${tvShow.title}(${tvShow.year})"
-            detailTvGenre.text = "${tvShow.rate} | ${tvShow.genre}"
             detailTvDesc.text = tvShow.description
             detailTvScore.text = tvShow.user_score.toString()
             detailIvPoster.loadImage(tvShow.image_url)

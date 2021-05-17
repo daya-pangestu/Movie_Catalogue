@@ -36,7 +36,6 @@ class MovieRecyclerViewAdapter(
         fun bind(movie: Movie) {
             binding.tvTitle.text = movie.title
             binding.tvDesc.text = movie.description
-            binding.tvGenre.text = movie.genre
             binding.tvReleaseDate.text = movie.release_date
             binding.tvScore.text = movie.user_score.toString()
             binding.ivPoster.loadImage(movie.image_url)

@@ -3,4 +3,5 @@
     <string name="detail_toolbar_title">Detail</string>
     <string name="description">Description</string>
     <string name="poster_film">poster film</string>
+    <string name="fail_to_load">failed to load data</string>
 </resources>

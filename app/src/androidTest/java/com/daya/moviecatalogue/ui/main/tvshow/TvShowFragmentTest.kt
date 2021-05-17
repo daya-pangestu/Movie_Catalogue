@@ -52,16 +52,13 @@ class TvShowFragmentTest {
 
     @Test
     fun tvShow_Recyclerview_should_be_able_intent_to_detail_activity() {
-        //GIVEN
         launchFragmentInHiltContainer<TvShowFragment>()
 
-        //WHEN
         onView(withId(R.id.rv_list))
             .check(matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.rv_list))
             .check(RecyclerViewItemCountAssertion(expectedCount = 20))
 
-        //THEN
         Intents.init()
         onView(ViewMatchers.withId(R.id.rv_list)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
