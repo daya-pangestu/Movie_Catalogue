@@ -1,10 +1,13 @@
 package com.daya.moviecatalogue.data.main
 
-import com.daya.moviecatalogue.data.main.movie.Movie
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
-import com.daya.moviecatalogue.data.main.tvshow.TvShow
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.movie.local.MovieDao
+import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,9 +18,9 @@ import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-interface DetailDataSource {
-    suspend fun getDetailTvShow(tvShowId : Int) : DetailTvShow
-    suspend fun getDetailMovie(movieId : Int) : DetailMovie
+interface DetailDataSource<Movie,TvShow> {
+    suspend fun getDetailMovie(movieId : Int) : Movie
+    suspend fun getDetailTvShow(tvShowId : Int) : TvShow
 }
 
 @Singleton
@@ -25,17 +28,18 @@ class RemoteDetailDataSource
 @Inject
 constructor(
     private val api: TheMovieDbApi
-) : DetailDataSource {
-    override suspend  fun getDetailTvShow(tvShowId: Int): DetailTvShow = suspendCancellableCoroutine {continuation ->
-        val client = api.getDetailTvShow(tvShowId)
+) : DetailDataSource<DetailMovieResponse,DetailTvShowResponse> {
 
-        client.enqueue(object : Callback<DetailTvShow>{
-            override fun onResponse(call: Call<DetailTvShow>, response: Response<DetailTvShow>) {
+    override suspend  fun getDetailMovie(movieId: Int): DetailMovieResponse = suspendCancellableCoroutine { continuation ->
+        val client = api.getDetailMovie(movieId)
+
+        client.enqueue(object : Callback<DetailMovieResponse>{
+            override fun onResponse(call: Call<DetailMovieResponse>, response: Response<DetailMovieResponse>) {
                 val body = response.body() ?: return continuation.resumeWithException(Exception("response body null"))
                 continuation.resume(body)
             }
 
-            override fun onFailure(call: Call<DetailTvShow>, t: Throwable) {
+            override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
                 continuation.resumeWithException(t)
             }
         })
@@ -45,16 +49,16 @@ constructor(
         }
     }
 
-    override suspend  fun getDetailMovie(movieId: Int): DetailMovie = suspendCancellableCoroutine { continuation ->
-        val client = api.getDetailMovie(movieId)
+    override suspend  fun getDetailTvShow(tvShowId: Int): DetailTvShowResponse = suspendCancellableCoroutine { continuation ->
+        val client = api.getDetailTvShow(tvShowId)
 
-        client.enqueue(object : Callback<DetailMovie>{
-            override fun onResponse(call: Call<DetailMovie>, response: Response<DetailMovie>) {
+        client.enqueue(object : Callback<DetailTvShowResponse>{
+            override fun onResponse(call: Call<DetailTvShowResponse>, response: Response<DetailTvShowResponse>) {
                 val body = response.body() ?: return continuation.resumeWithException(Exception("response body null"))
                 continuation.resume(body)
             }
 
-            override fun onFailure(call: Call<DetailMovie>, t: Throwable) {
+            override fun onFailure(call: Call<DetailTvShowResponse>, t: Throwable) {
                 continuation.resumeWithException(t)
             }
         })
@@ -64,3 +68,22 @@ constructor(
         }
     }
 }
+
+@Singleton
+class LocalDetailDataSource
+@Inject
+constructor(
+    private val movieDao: MovieDao,
+    private val tvShowDao: TvShowDao
+) : DetailDataSource<Flow<MovieEntity>,Flow<TvShowEntity>> {
+
+    override suspend fun getDetailMovie(movieId: Int): Flow<MovieEntity> {
+        return movieDao.getMovieById(movieId)
+    }
+
+    override suspend fun getDetailTvShow(tvShowId: Int): Flow<TvShowEntity> {
+        return tvShowDao.getTvShowById(tvShowId)
+    }
+
+}
+

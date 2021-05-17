@@ -1,6 +1,6 @@
 package com.daya.moviecatalogue.data.main.movie.response
 
-data class DetailMovie(
+data class DetailMovieResponse(
     val adult: Boolean,
     val backdrop_path: String,
     val id: Int,

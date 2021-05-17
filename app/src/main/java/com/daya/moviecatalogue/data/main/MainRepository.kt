@@ -23,4 +23,8 @@ constructor(
 
     suspend fun getDetailTvShow(tvShowId: Int): TvShow = detailDataSource.getDetailTvShow(tvShowId).maptoTvShow()
 
+    fun isFavorite() {
+
+    }
+
 }

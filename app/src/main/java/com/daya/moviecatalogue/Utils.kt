@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.main.movie.Movie
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 
 private const val URI_IMAGE = "https://image.tmdb.org/t/p/w500"
 fun ImageView.loadImage(url: String) {
@@ -28,7 +28,7 @@ fun ImageView.loadImage(url: String) {
     }
 }
 
-fun DetailMovie.mapToMovie(): Movie {
+fun DetailMovieResponse.mapToMovie(): Movie {
     return Movie(
         id = this.id,
         title = this.title ?: "",
@@ -40,7 +40,7 @@ fun DetailMovie.mapToMovie(): Movie {
     )
 }
 
-fun DetailTvShow.maptoTvShow(): TvShow {
+fun DetailTvShowResponse.maptoTvShow(): TvShow {
     return TvShow(
         id = this.id,
         title = this.name,

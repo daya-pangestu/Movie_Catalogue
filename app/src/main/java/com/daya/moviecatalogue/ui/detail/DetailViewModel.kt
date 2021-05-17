@@ -15,7 +15,6 @@ class DetailViewModel
 constructor(
     private val repository: MainRepository
 ) : ViewModel() {
-
     private val movieIdLiveData = MutableLiveData<Int>()
     private val tvShowIdLiveData = MutableLiveData<Int>()
 
@@ -51,4 +50,7 @@ constructor(
             }
         }
     }
+
+
+    fun observeIsFavorite() = repository.isFavorite()
 }

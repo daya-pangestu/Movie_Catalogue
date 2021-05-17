@@ -1,7 +1,7 @@
 package com.daya.moviecatalogue.data.main
 
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
 import com.daya.moviecatalogue.fake.Fake
 import com.google.common.truth.Truth.assertThat
@@ -42,7 +42,7 @@ class RemoteDetailDataSourceTest {
                 .setBody(Fake.detailMovie)
         )
 
-        val jsonAdapter = moshi.adapter(DetailMovie::class.java)
+        val jsonAdapter = moshi.adapter(DetailMovieResponse::class.java)
         val expected = jsonAdapter.fromJson(Fake.detailMovie)
         assertThat(expected).isNotNull()
 
@@ -62,7 +62,7 @@ class RemoteDetailDataSourceTest {
                 .setBody(Fake.detalTvShow)
         )
 
-        val jsonAdapter = moshi.adapter(DetailTvShow::class.java)
+        val jsonAdapter = moshi.adapter(DetailTvShowResponse::class.java)
         val expected = jsonAdapter.fromJson(Fake.detalTvShow)
         assertThat(expected).isNotNull()
 

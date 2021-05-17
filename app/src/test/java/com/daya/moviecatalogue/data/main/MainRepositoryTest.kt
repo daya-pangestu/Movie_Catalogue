@@ -1,8 +1,8 @@
 package com.daya.moviecatalogue.data.main
 
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.fake.Fake
 import com.daya.moviecatalogue.mapToMovie
@@ -73,7 +73,7 @@ class MainRepositoryTest {
     @Test
     fun `getDetailMovie should return DetailMovie`() {
         val movieId = 460465 // mortal kombat
-        val adapter = moshi.adapter(DetailMovie::class.java)
+        val adapter = moshi.adapter(DetailMovieResponse::class.java)
         val detailMovieJsonString = Fake.detailMovie
         val expectedDetailMovie = adapter.fromJson(detailMovieJsonString)
 
@@ -93,7 +93,7 @@ class MainRepositoryTest {
     @Test
     fun `getDetailTvShow should return DetailTvShow`() {
         val movieId = 88396 //the falcon and winter soldier
-        val adapter = moshi.adapter(DetailTvShow::class.java)
+        val adapter = moshi.adapter(DetailTvShowResponse::class.java)
         val detailTvShowJsonString = Fake.detalTvShow
         val expectedDetailTvShow = adapter.fromJson(detailTvShowJsonString)
         val expectedTvShow = expectedDetailTvShow?.maptoTvShow()

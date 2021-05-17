@@ -1,6 +1,6 @@
 package com.daya.moviecatalogue.data.main.tvshow.response
 
-data class DetailTvShow(
+data class DetailTvShowResponse(
     val backdrop_path: String,
     val first_air_date: String,
     val genre_ids: List<Int>,

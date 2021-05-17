@@ -10,11 +10,14 @@ import kotlinx.coroutines.flow.Flow
 interface TvShowDao {
 
     @Query("SELECT * FROM tvShow_entity")
-    fun getTvShows() : Flow<TvShowEntity>
+    fun getTvShows() : Flow<List<TvShowEntity>>
 
     @Insert
     fun insertTvShow(TvShow: TvShowEntity)
 
     @Delete
     fun deleteTvShow(TvShow: TvShowEntity)
+
+    @Query("SELECT * from tvShow_entity WHERE tvShowId = :tvShowId")
+    fun getTvShowById(tvShowId: Int): Flow<TvShowEntity>
 }

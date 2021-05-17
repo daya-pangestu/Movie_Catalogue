@@ -1,8 +1,14 @@
 package com.daya.moviecatalogue.data.main
 
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.movie.local.MovieDao
+import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,9 +18,9 @@ import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-interface MainDataSource {
-    suspend fun getListMovies() : MovieResponse
-    suspend fun getListTvShow() : TvShowResponse
+interface MainDataSource<Movies,TvShows> {
+    suspend fun getListMovies() : Movies
+    suspend fun getListTvShow() : TvShows
 }
 
 @Singleton
@@ -22,7 +28,7 @@ class RemoteMainDataSource
 @Inject
 constructor(
    private val api : TheMovieDbApi,
-) : MainDataSource {
+) : MainDataSource<MovieResponse,TvShowResponse> {
     override suspend fun getListMovies(): MovieResponse = suspendCancellableCoroutine {continuation ->
         val client = api.discoverMovie()
         client.enqueue(object : Callback<MovieResponse> {
@@ -57,5 +63,20 @@ constructor(
         continuation.invokeOnCancellation {
             client.cancel()
         }
+    }
+}
+
+@Singleton
+class LocalMainDataSource
+@Inject
+constructor(
+    private val movieDao: MovieDao,
+    private val tvShowDao: TvShowDao
+) : MainDataSource<Flow<List<MovieEntity>>,Flow<List<TvShowEntity>>> {
+    override suspend fun getListMovies(): Flow<List<MovieEntity>> {
+        return  movieDao.getMovies()
+    }
+    override suspend fun getListTvShow(): Flow<List<TvShowEntity>> {
+        return tvShowDao.getTvShows()
     }
 }

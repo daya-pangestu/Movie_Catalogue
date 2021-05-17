@@ -1,8 +1,8 @@
 package com.daya.moviecatalogue.di
 
-import com.daya.moviecatalogue.data.main.movie.response.DetailMovie
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
-import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShow
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -74,11 +74,11 @@ interface TheMovieDbApi{
     @GET("movie/{movie_id}")
     fun getDetailMovie(
             @Path("movie_id") movie_Id : Int
-    ) : Call<DetailMovie>
+    ) : Call<DetailMovieResponse>
 
     @GET("tv/{tv_id}")
     fun getDetailTvShow(
             @Path("tv_id") tv_id : Int
-    ) : Call<DetailTvShow>
+    ) : Call<DetailTvShowResponse>
 
 }
