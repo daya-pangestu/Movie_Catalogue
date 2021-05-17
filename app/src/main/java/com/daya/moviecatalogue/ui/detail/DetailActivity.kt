@@ -1,17 +1,15 @@
 package com.daya.moviecatalogue.ui.detail
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
-import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
 import com.daya.moviecatalogue.toast
@@ -102,6 +100,18 @@ class DetailActivity : AppCompatActivity() {
         const val DETAIL_EXTRA_TV_SHOW = "detail_extra_tv_show"
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detail_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
