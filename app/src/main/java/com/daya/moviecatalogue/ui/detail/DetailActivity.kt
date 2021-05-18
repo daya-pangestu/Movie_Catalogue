@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
@@ -14,13 +13,14 @@ import com.daya.moviecatalogue.databinding.ActivityDetailBinding
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
 import com.daya.moviecatalogue.toast
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
 
-    private val viewModel by viewModels<DetailViewModel>()
+    private val viewModel by viewModels< DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +30,8 @@ class DetailActivity : AppCompatActivity() {
             title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)
         }
-        var movie = intent.getIntExtra(DETAIL_EXTRA_MOVIE,0)
-        var tvShow  =  intent.getIntExtra(DETAIL_EXTRA_TV_SHOW,0)
+        val movie = intent.getIntExtra(DETAIL_EXTRA_MOVIE,0)
+        val tvShow  =  intent.getIntExtra(DETAIL_EXTRA_TV_SHOW,0)
 
         when {
             movie != 0 -> {
@@ -44,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeMovie().observe(this){
+        viewModel.observeMovie.observe(this){
             when (it) {
                 is Resource.Loading -> {
                 }
@@ -57,7 +57,7 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.observeTvShow().observe(this){
+        viewModel.observeTvShow.observe(this){
             when (it) {
                 is Resource.Loading -> {
 
@@ -73,8 +73,28 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeIsFavorite.observe(this){
-            invalidateOptionsMenu()
+        viewModel.observeIsFavorite.observe(this){invalidateOptionsMenu()}
+        
+        viewModel.observeSaving.observe(this){
+            when (it) {
+                is Resource.Loading -> toast("adding to favorite")
+                is Resource.Success -> {
+                    toast("added to favorite")
+                    invalidateOptionsMenu()
+                }
+                is Resource.Error -> toast("error ${it.exceptionMessage}")
+            }
+        }
+        
+        viewModel.observeDeleting.observe(this){
+            when (it) {
+                is Resource.Loading -> toast("removing from favorite")
+                is Resource.Success -> {
+                    toast("removed from favorite")
+                    invalidateOptionsMenu()
+                }
+                is Resource.Error -> toast("error ${it.exceptionMessage}")
+            }
         }
     }
 
@@ -86,8 +106,8 @@ class DetailActivity : AppCompatActivity() {
             detailTvReleaseDate.text = movie.release_date
             detailTvScore.text = movie.user_score.toString()
             detailIvPoster.loadImage(movie.image_url)
-
         }
+        viewModel.startObserveIsFavorite(movie.id)
     }
 
     private fun renderWithTvShow(tvShow: TvShow) {
@@ -98,12 +118,13 @@ class DetailActivity : AppCompatActivity() {
             detailTvScore.text = tvShow.user_score.toString()
             detailIvPoster.loadImage(tvShow.image_url)
         }
+        viewModel.startObserveIsFavorite(tvShow.id)
+
     }
 
     companion object {
         const val DETAIL_EXTRA_MOVIE = "detail_extra_movie"
         const val DETAIL_EXTRA_TV_SHOW = "detail_extra_tv_show"
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,13 +133,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (viewModel.observeIsFavorite.value == true) {
-            menu?.findItem(R.id.action_favorite)?.icon =
-                ContextCompat.getDrawable(this@DetailActivity,R.drawable.ic_baseline_favorite_24)
-        } else{
-            menu?.findItem(R.id.action_favorite)?.icon =
-                ContextCompat.getDrawable(this@DetailActivity,R.drawable.ic_baseline_favorite_border_24)
-        }
+        val isFavorite = viewModel.observeIsFavorite.value == true
+        menu?.findItem(R.id.action_favorite)?.isVisible = !isFavorite
+        menu?.findItem(R.id.action_unfavorite)?.isVisible = isFavorite
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -130,6 +147,10 @@ class DetailActivity : AppCompatActivity() {
             }
             R.id.action_favorite -> {
                 viewModel.addToFavorite()
+                true
+            }
+            R.id.action_unfavorite -> {
+                viewModel.deleteFromFavorite()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -18,9 +18,7 @@ class MainRepository
 @Inject
 constructor(
     private val remoteDetailDataSource: RemoteDetailDataSource,
-    private val localDetailDataSource: LocalDetailDataSource,
     private val remoteMainDataSource: RemoteMainDataSource,
-    private val localMainDataSource: LocalMainDataSource
 ){
     suspend fun discoverMovies() = remoteMainDataSource.getListMovies().results.map { it.mapToMovie() }
 
@@ -30,11 +28,4 @@ constructor(
 
     suspend fun getDetailTvShow(tvShowId: Int): TvShow = remoteDetailDataSource.getDetailTvShow(tvShowId).maptoTvShow()
 
-    suspend fun isFavorite(id : Int): Flow<Boolean> {
-        return localDetailDataSource.getDetailMovie(id)
-            .zip(localDetailDataSource.getDetailTvShow(id)){ movieEntity, tvShowEntity ->
-                movieEntity != null || tvShowEntity != null
-            }
-
-    }
 }

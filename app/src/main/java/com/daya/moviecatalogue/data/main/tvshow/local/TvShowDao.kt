@@ -13,10 +13,10 @@ interface TvShowDao {
     fun getTvShows() : Flow<List<TvShowEntity>>
 
     @Insert
-    fun insertTvShow(TvShow: TvShowEntity)
+    fun insertTvShow(TvShow: TvShowEntity) : Long
 
     @Delete
-    fun deleteTvShow(TvShow: TvShowEntity)
+    fun deleteTvShow(TvShow: TvShowEntity) : Int
 
     @Query("SELECT * from tvShow_entity WHERE tvShowId = :tvShowId")
     fun getTvShowById(tvShowId: Int): Flow<TvShowEntity?>

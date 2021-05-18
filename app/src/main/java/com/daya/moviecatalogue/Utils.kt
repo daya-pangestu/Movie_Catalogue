@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
 import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 
 private const val URI_IMAGE = "https://image.tmdb.org/t/p/w500"
@@ -28,6 +30,7 @@ fun ImageView.loadImage(url: String) {
     }
 }
 
+//response to general
 fun DetailMovieResponse.mapToMovie(): Movie {
     return Movie(
         id = this.id,
@@ -48,6 +51,30 @@ fun DetailTvShowResponse.maptoTvShow(): TvShow {
         image_url = this.poster_path,
         user_score = (this.vote_average * 10).toInt(),
         year = this.first_air_date.take(4).toInt()
+    )
+}
+
+//general to entity
+fun Movie.mapToMovieEntity(): MovieEntity {
+    return MovieEntity(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        image_url = this.image_url,
+        release_date = this.release_date,
+        user_score = this.user_score,
+        year = this.year
+    )
+}
+
+fun TvShow.mapToTvShowEntity() : TvShowEntity {
+    return TvShowEntity(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        image_url = this.image_url,
+        user_score = this.user_score,
+        year = this.year
     )
 }
 

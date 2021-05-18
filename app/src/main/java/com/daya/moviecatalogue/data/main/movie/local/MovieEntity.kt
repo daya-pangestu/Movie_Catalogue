@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class MovieEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "movieId")
-    val id: Int = 0,
+    val id: Int,
     val title: String,
     val description: String,
     val release_date: String,
     val user_score: Int,
     val year: Int,
-    val image_url: String = "",
+    val image_url: String,
 )
