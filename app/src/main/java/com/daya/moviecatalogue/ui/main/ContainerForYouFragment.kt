@@ -8,19 +8,22 @@ import android.view.ViewGroup
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.databinding.FragmentContainerBinding
-import com.daya.moviecatalogue.databinding.FragmentItemListBinding
 import com.daya.moviecatalogue.ui.main.MainPagerStateAdapter
+import com.daya.moviecatalogue.ui.main.foryou.movie.MovieFragment
+import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ContainerFragment : Fragment(R.layout.fragment_container) {
+class ContainerForYouFragment : Fragment(R.layout.fragment_container) {
 
     private val binding by viewBinding<FragmentContainerBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = MainPagerStateAdapter(childFragmentManager,lifecycle)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager){ tab , position ->
+        val pagerAdapter = MainPagerStateAdapter(childFragmentManager, lifecycle)
+        pagerAdapter.addFragments(MovieFragment(),TvShowFragment())
+        binding.viewPager.adapter = pagerAdapter
+            TabLayoutMediator(binding.tabLayout, binding.viewPager){ tab , position ->
             tab.text = when (position) {
                 0 -> "Movie"
                 else -> "TvShow"

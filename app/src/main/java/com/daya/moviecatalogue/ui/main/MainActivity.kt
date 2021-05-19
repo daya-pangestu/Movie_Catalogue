@@ -2,6 +2,7 @@ package com.daya.moviecatalogue.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -10,9 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
-    val forYouFragment = ContainerFragment()
-    val favoriteFragment = ContainerFragment()
-    var activeFragment = forYouFragment
+    val forYouFragment = ContainerForYouFragment()
+    val favoriteFragment = ContainerFavFragment()
+    var activeFragment : Fragment = forYouFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                         .beginTransaction()
                         .hide(activeFragment)
                         .show(favoriteFragment)
-                    activeFragment = forYouFragment
+                    activeFragment = favoriteFragment
                 }
             }
         }
