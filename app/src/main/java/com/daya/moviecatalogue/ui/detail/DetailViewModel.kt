@@ -122,20 +122,21 @@ constructor(
             deleteMovie(it)
         }?: sanitaizeTvShow(observeTvShow.value){
             deleteTvShow(it)
-        }?: run {
+        } ?: run {
             Timber.d("both movie and tvshow are null")
         }
     }
 
     private fun deleteMovie(movie: Movie) = viewModelScope.launch {
-        _savingProgress.value = Resource.Loading
+        _deletingProgress.value = Resource.Loading
         try {
-            val rowId = async {
+            val rowDeleted = async {
                 localPersistRepository.deleteMovieFromFavorite(movie)
             }.await()
-            _deletingProgress.value = Resource.Success(rowId)
+
+            _deletingProgress.value = Resource.Success(rowDeleted)
         } catch (e: Exception) {
-            _savingProgress.value = Resource.Error(e.message)
+            _deletingProgress.value = Resource.Error(e.message)
         }
     }
 
@@ -147,7 +148,7 @@ constructor(
             }.await()
             _deletingProgress.value = Resource.Success(rowDeleted)
         } catch (e: Exception) {
-            _savingProgress.value = Resource.Error(e.message)
+            _deletingProgress.value = Resource.Error(e.message)
         }
     }
 

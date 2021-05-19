@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
@@ -48,11 +49,11 @@ class DetailViewModelTest {
         viewModel.submitMovie(dummyMovie.id)
 
         //initial value
-        assertThat(viewModel.observeMovie().getOrAwaitValue()).isEqualTo(Resource.Loading)
+        assertThat(viewModel.observeMovie.getOrAwaitValue()).isEqualTo(Resource.Loading)
 
         //latest value
-        viewModel.observeMovie().observeForTesting {
-            assertThat(viewModel.observeMovie().getOrAwaitValue()).isEqualTo(Resource.Loading)
+        viewModel.observeMovie.observeForTesting {
+            assertThat(viewModel.observeMovie.value).isEqualTo(Resource.Success(dummyMovie))
         }
     }
 
@@ -62,11 +63,136 @@ class DetailViewModelTest {
         viewModel.submitTvShow(dummyTvShow.id)
 
         //initial value
-        assertThat(viewModel.observeTvShow().getOrAwaitValue()).isEqualTo(Resource.Loading)
+        assertThat(viewModel.observeTvShow.getOrAwaitValue()).isEqualTo(Resource.Loading)
 
         //latest value
-        viewModel.observeTvShow().observeForTesting {
-            assertThat(viewModel.observeTvShow().getOrAwaitValue()).isEqualTo(Resource.Loading)
+        viewModel.observeTvShow.observeForTesting {
+            assertThat(viewModel.observeTvShow.value).isEqualTo(Resource.Success(dummyTvShow))
         }
     }
+
+    @Test
+    fun `observeIsFavorite should return true`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(localPersistRepository.isFavorite(dummyMovie.id)).thenReturn(true)
+        viewModel.startObserveIsFavorite(dummyMovie.id)
+
+        //initial value
+        assertThat(viewModel.observeIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
+
+        verify(localPersistRepository).isFavorite(dummyMovie.id)
+
+        //latest value
+        viewModel.observeIsFavorite.observeForTesting {
+            assertThat(viewModel.observeIsFavorite.value).isEqualTo(Resource.Success(true))
+        }
+    }
+
+    @Test
+    fun `observeIsFavorite should return false`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(localPersistRepository.isFavorite(dummyMovie.id)).thenReturn(false)
+        viewModel.startObserveIsFavorite(dummyMovie.id)
+
+        //initial value
+        assertThat(viewModel.observeIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
+
+        verify(localPersistRepository).isFavorite(dummyMovie.id)
+
+        //latest value
+        viewModel.observeIsFavorite.observeForTesting {
+            assertThat(viewModel.observeIsFavorite.value).isEqualTo(Resource.Success(false))
+        }
+    }
+
+    @Test
+    fun `addTofavorite should save movie`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        //make sure movie is loaded
+        whenever(mainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+        viewModel.submitMovie(dummyMovie.id)
+
+        viewModel.observeMovie.observeForTesting {
+            assertThat(viewModel.observeMovie.value).isEqualTo(Resource.Success(dummyMovie))
+        }
+
+        whenever(localPersistRepository.addMovieToFavorite(dummyMovie)).thenReturn(dummyMovie.id.toLong())
+
+        //call
+        viewModel.addToFavorite()
+
+        verify(localPersistRepository).addMovieToFavorite(dummyMovie)
+
+        //assert when movie get saved, observeSaving has the rowId
+        viewModel.observeSaving.observeForTesting {
+            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(dummyMovie.id.toLong()))
+        }
+    }
+
+    @Test
+    fun `addTofavorite should save tvShow`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        //make sure tvshow is loaded
+        whenever(mainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
+        viewModel.submitTvShow(dummyTvShow.id)
+
+        viewModel.observeTvShow.observeForTesting {
+            assertThat(viewModel.observeTvShow.value).isEqualTo(Resource.Success(dummyTvShow))
+        }
+
+        whenever(localPersistRepository.addTvShowToFavorite(dummyTvShow)).thenReturn(dummyTvShow.id.toLong())
+
+        //call
+        viewModel.addToFavorite()
+
+        verify(localPersistRepository).addTvShowToFavorite(dummyTvShow)
+
+        //assert when tvshow get saved, observeSaving has the rowId
+        viewModel.observeSaving.observeForTesting {
+            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(dummyTvShow.id.toLong()))
+        }
+    }
+
+    @Test
+    fun `deleteFromFavorite should delete movie`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        //make sure movie is loaded
+        whenever(mainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+        viewModel.submitMovie(dummyMovie.id)
+
+        viewModel.observeMovie.observeForTesting {
+            assertThat(viewModel.observeMovie.value).isEqualTo(Resource.Success(dummyMovie))
+        }
+
+        whenever(localPersistRepository.deleteMovieFromFavorite(dummyMovie)).thenReturn(1)
+
+        //call
+        viewModel.deleteFromFavorite()
+
+        verify(localPersistRepository).deleteMovieFromFavorite(dummyMovie)
+
+        //assert when movie get saved, observedeleting has the rowDeleted count
+        viewModel.observeDeleting.observeForTesting {
+            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(1))
+        }
+    }
+
+    @Test
+    fun `deleteFromFavorite should delete tvShow`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        //make sure TvShow is loaded
+        whenever(mainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
+        viewModel.submitTvShow(dummyTvShow.id)
+
+        viewModel.observeTvShow.observeForTesting {
+            assertThat(viewModel.observeTvShow.value).isEqualTo(Resource.Success(dummyTvShow))
+        }
+
+        whenever(localPersistRepository.deleteTvShowFromFavorite(dummyTvShow)).thenReturn(1)
+
+        //call
+        viewModel.deleteFromFavorite()
+
+        verify(localPersistRepository).deleteTvShowFromFavorite(dummyTvShow)
+
+        //assert when TvShow get deleted, observedeleting has the rowDeleted count
+        viewModel.observeDeleting.observeForTesting {
+            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(1))
+        }
+    }
+
 }

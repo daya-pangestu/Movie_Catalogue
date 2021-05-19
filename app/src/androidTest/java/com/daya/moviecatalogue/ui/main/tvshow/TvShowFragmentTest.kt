@@ -18,6 +18,7 @@ import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.launchFragmentInHiltContainer
 import com.daya.moviecatalogue.ui.detail.DetailActivity
+import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After

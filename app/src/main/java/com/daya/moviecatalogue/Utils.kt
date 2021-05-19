@@ -78,6 +78,30 @@ fun TvShow.mapToTvShowEntity() : TvShowEntity {
     )
 }
 
+//entity to general
+fun MovieEntity.mapToMovie(): Movie {
+    return Movie(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        image_url = this.image_url,
+        release_date = this.release_date,
+        user_score = this.user_score,
+        year = this.year
+    )
+}
+
+fun TvShowEntity.mapToTvShow() : TvShow {
+    return TvShow(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        image_url = this.image_url,
+        user_score = this.user_score,
+        year = this.year
+    )
+}
+
 fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this,text,duration).show()
 }
