@@ -10,7 +10,7 @@ import com.daya.moviecatalogue.ui.main.favorite.movie.MovieFavFragment
 import com.daya.moviecatalogue.ui.main.favorite.tvshow.TvShowFavFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ContainerFavFragment : Fragment(R.layout.fragment_item_list) {
+class ContainerFavFragment : Fragment(R.layout.fragment_container) {
 
     private val binding by viewBinding<FragmentContainerBinding>()
 
