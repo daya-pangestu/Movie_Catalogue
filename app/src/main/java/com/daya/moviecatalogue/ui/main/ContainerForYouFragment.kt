@@ -12,6 +12,7 @@ import com.daya.moviecatalogue.ui.main.MainPagerStateAdapter
 import com.daya.moviecatalogue.ui.main.foryou.movie.MovieFragment
 import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import timber.log.Timber
 
 class ContainerForYouFragment : Fragment(R.layout.fragment_container) {
 
@@ -19,6 +20,7 @@ class ContainerForYouFragment : Fragment(R.layout.fragment_container) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.i("container for you ")
 
         val pagerAdapter = MainPagerStateAdapter(childFragmentManager, lifecycle)
         pagerAdapter.addFragments(MovieFragment(),TvShowFragment())

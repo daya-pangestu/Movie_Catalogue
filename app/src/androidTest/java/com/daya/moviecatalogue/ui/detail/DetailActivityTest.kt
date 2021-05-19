@@ -10,13 +10,11 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.DataDummy
-import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_TV_SHOW
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
 import org.junit.Before
@@ -35,12 +33,12 @@ class DetailActivityTest{
     fun setUp() {
         hiltAndroidRule.inject()
 
-        IdlingRegistry.getInstance().register(TestIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().register(TestIdlingResource.get)
     }
 
     @After
     fun tearDown() {
-        IdlingRegistry.getInstance().register(TestIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().register(TestIdlingResource.get)
     }
 
     @Test

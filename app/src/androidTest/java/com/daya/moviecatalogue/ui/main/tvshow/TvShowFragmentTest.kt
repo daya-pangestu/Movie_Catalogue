@@ -14,7 +14,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.RecyclerViewItemCountAssertion
-import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.launchFragmentInHiltContainer
 import com.daya.moviecatalogue.ui.detail.DetailActivity
@@ -22,12 +21,10 @@ import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -43,12 +40,12 @@ class TvShowFragmentTest {
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
-        IdlingRegistry.getInstance().register(testIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().register(testIdlingResource.get)
     }
 
     @After
     fun tearDown() {
-        IdlingRegistry.getInstance().unregister(testIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().unregister(testIdlingResource.get)
     }
 
     @Test

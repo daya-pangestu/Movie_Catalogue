@@ -37,12 +37,12 @@ class MovieFragmentTest{
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
-        IdlingRegistry.getInstance().register(testIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().register(testIdlingResource.get)
     }
 
     @After
     fun tearDown() {
-        IdlingRegistry.getInstance().unregister(testIdlingResource.idlingResources)
+        IdlingRegistry.getInstance().unregister(testIdlingResource.get)
     }
 
     @Test

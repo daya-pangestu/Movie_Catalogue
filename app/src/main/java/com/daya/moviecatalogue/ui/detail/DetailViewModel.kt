@@ -53,7 +53,6 @@ constructor(
 
     val observeMovie = _observeMovie
 
-
     val _observeTvShow = tvShowIdLiveData.switchMap {
         liveData {
             emit(Resource.Loading)
@@ -86,8 +85,6 @@ constructor(
             saveMovie(it)
         }?:sanitaizeTvShow(observeTvShow.value){
             saveTvShow(it)
-        } ?: run {
-            Timber.d("both movie and tvshow are null ")
         }
     }
 
@@ -122,8 +119,6 @@ constructor(
             deleteMovie(it)
         }?: sanitaizeTvShow(observeTvShow.value){
             deleteTvShow(it)
-        } ?: run {
-            Timber.d("both movie and tvshow are null")
         }
     }
 

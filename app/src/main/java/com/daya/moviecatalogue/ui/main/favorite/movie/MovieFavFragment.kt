@@ -12,14 +12,16 @@ import com.daya.moviecatalogue.databinding.FragmentItemListBinding
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.MovieRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MovieFavFragment : Fragment(R.layout.fragment_item_list) {
     private val binding by viewBinding<FragmentItemListBinding>()
 
     private val viewModel by viewModels<MovieFavViewModel>()
 
-    private val idlingResources = TestIdlingResource
+    private val idlingRes = TestIdlingResource
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,9 +29,9 @@ class MovieFavFragment : Fragment(R.layout.fragment_item_list) {
     }
 
     fun observerFavoriteMovies() {
-        idlingResources.increment()
+        idlingRes.increment()
         viewModel.favoriteMovies.observe(viewLifecycleOwner) {
-            idlingResources.decrement()
+           if (idlingRes.get.isIdleNow) idlingRes.decrement()
             binding.progressCircular.isVisible = false
             val listMovie = it
             Timber.i(" observerMovie succes : $listMovie")
