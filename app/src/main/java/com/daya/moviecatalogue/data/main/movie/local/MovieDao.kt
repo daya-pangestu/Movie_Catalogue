@@ -10,15 +10,12 @@ interface MovieDao {
     fun getMovies(): Flow<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovie(movie: MovieEntity) : Long
+    suspend fun insertMovie(movie: MovieEntity) : Long
 
     @Delete
-    fun deleteMovie(movie: MovieEntity) : Int
+    suspend fun deleteMovie(movie: MovieEntity) : Int
 
     @Query("SELECT * from movie_entity WHERE movieId = :movieId")
     suspend fun getMovieById(movieId: Int): MovieEntity?
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    @Query("SELECT * from movie_entity WHERE movieId = :movieId")
-    fun getMovieByIdTesting(movieId: Int): MovieEntity
 }

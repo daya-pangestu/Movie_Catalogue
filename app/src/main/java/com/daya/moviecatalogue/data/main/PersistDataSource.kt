@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface PersistDataSource {
-    fun addMovieToFavorite(movie: MovieEntity) : Long
+    suspend fun addMovieToFavorite(movie: MovieEntity) : Long
     suspend fun addTvShowToFavorte(tvShow: TvShowEntity): Long
 
     suspend fun deleteMovieFromFavorite(movie: MovieEntity): Int
@@ -24,7 +24,7 @@ constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao,
 ) : PersistDataSource {
-    override fun addMovieToFavorite(movie: MovieEntity): Long {
+    override suspend fun addMovieToFavorite(movie: MovieEntity): Long {
         return movieDao.insertMovie(movie)
     }
 

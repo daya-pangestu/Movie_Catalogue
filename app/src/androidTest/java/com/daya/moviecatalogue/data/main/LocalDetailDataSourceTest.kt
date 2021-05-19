@@ -7,41 +7,34 @@ import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.data.db.MovieCatDatabase
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.mapToMovieEntity
+import com.daya.moviecatalogue.util.MainCoroutineRule
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltTestApplication
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class LocalPersistDataSourceTest {
+class LocalDetailDataSourceTest{
+
     private lateinit var movieDao : MovieDao
     private lateinit var db : MovieCatDatabase
+    private lateinit var localDetailDataSource : LocalDetailDataSource
 
-    @Before
-    fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<HiltTestApplication>()
-        db = Room.inMemoryDatabaseBuilder(context, MovieCatDatabase::class.java).build()
-        movieDao = db.movieDao()
-    }
+    private val dummyMovie = DataDummy.getListMovie()[7]
 
-    @After
-    @Throws(IOException::class)
-    fun tearDown() {
-        db.close()
-    }
+    @get:Rule
+    var maincoroutineRule = MainCoroutineRule()
 
-    @Test
-    @Throws(Exception::class)
-    fun writeMovieAndReadInList() {
-        val movie = DataDummy.getListMovie()[9].mapToMovieEntity()
 
-        movieDao.insertMovie(movie)
-        val byId = movieDao.getMovieByIdTesting(movie.id)
-
-       assertThat(byId).isEqualTo(movie)
-    }
 
 }
