@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.ui.main.tvshow
+package com.daya.moviecatalogue.ui.main.foryou.tvshow
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,22 +6,22 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.databinding.FragmentItemListBinding
-import com.daya.moviecatalogue.di.idlingresource.IdlingResources
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity
-import com.daya.moviecatalogue.ui.main.MainViewModel
+import com.daya.moviecatalogue.ui.main.TvShowRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class TvShowFragment : Fragment(R.layout.fragment_item_list) {
 
-    private val mainViewModel by activityViewModels<MainViewModel>()
+    private val mainViewModel by viewModels<TvShowViewModel>()
 
     val binding: FragmentItemListBinding by viewBinding()
 

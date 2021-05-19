@@ -26,6 +26,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         supportActionBar?.apply {
             title = getString(R.string.detail_toolbar_title)
             setDisplayHomeAsUpEnabled(true)

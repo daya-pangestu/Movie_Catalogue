@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/main_action_for_you"
+        android:icon="@drawable/ic_baseline_insights_24"
+        android:title="for you"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/main_action_favorite"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="favorite"
+        app:showAsAction="always" />
+</menu>
