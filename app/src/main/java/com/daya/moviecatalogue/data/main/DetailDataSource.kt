@@ -18,14 +18,19 @@ import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+interface DetailDataSource<DETAILMOVIE,DETAILTVSHOW>{
+    suspend fun getDetailMovie(movieId: Int) : DETAILMOVIE
+    suspend fun getDetailTvShow(tvShowId: Int) : DETAILTVSHOW
+}
+
 @Singleton
 class RemoteDetailDataSource
 @Inject
 constructor(
     private val api: TheMovieDbApi
-)  {
+) : DetailDataSource<DetailMovieResponse,DetailTvShowResponse> {
 
-     suspend fun getDetailMovie(movieId: Int): DetailMovieResponse = suspendCancellableCoroutine { continuation ->
+     override suspend fun getDetailMovie(movieId: Int): DetailMovieResponse = suspendCancellableCoroutine { continuation ->
         val client = api.getDetailMovie(movieId)
 
         client.enqueue(object : Callback<DetailMovieResponse>{
@@ -44,7 +49,7 @@ constructor(
         }
     }
 
-     suspend fun getDetailTvShow(tvShowId: Int): DetailTvShowResponse = suspendCancellableCoroutine { continuation ->
+     override suspend fun getDetailTvShow(tvShowId: Int): DetailTvShowResponse = suspendCancellableCoroutine { continuation ->
         val client = api.getDetailTvShow(tvShowId)
 
         client.enqueue(object : Callback<DetailTvShowResponse>{
@@ -70,13 +75,13 @@ class LocalDetailDataSource
 constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao
-) {
+) :DetailDataSource<MovieEntity?,TvShowEntity?>{
 
-    fun getDetailMovie(movieId: Int): Flow<MovieEntity?> {
+    override suspend fun getDetailMovie(movieId: Int): MovieEntity? {
         return movieDao.getMovieById(movieId)
     }
 
-    fun getDetailTvShow(tvShowId: Int): Flow<TvShowEntity?> {
+    override suspend fun getDetailTvShow(tvShowId: Int): TvShowEntity? {
         return tvShowDao.getTvShowById(tvShowId)
     }
 

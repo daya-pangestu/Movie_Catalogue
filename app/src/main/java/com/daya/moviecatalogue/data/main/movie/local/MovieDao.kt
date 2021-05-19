@@ -16,7 +16,7 @@ interface MovieDao {
     fun deleteMovie(movie: MovieEntity) : Int
 
     @Query("SELECT * from movie_entity WHERE movieId = :movieId")
-    fun getMovieById(movieId: Int): Flow<MovieEntity?>
+    suspend fun getMovieById(movieId: Int): MovieEntity?
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     @Query("SELECT * from movie_entity WHERE movieId = :movieId")

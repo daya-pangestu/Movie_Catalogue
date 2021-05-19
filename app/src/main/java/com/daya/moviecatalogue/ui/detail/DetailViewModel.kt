@@ -22,7 +22,7 @@ constructor(
     private val movieIdLiveData = MutableLiveData<Int>()
     private val tvShowIdLiveData = MutableLiveData<Int>()
 
-    private val idForObserveFavorite = MutableLiveData<Int>()
+    private val idIsFavorite = MutableLiveData<Int>()
 
     private val _savingProgress = MutableLiveData<Resource<Long>>()
     private val _deletingProgress = MutableLiveData<Resource<Int>>()
@@ -36,7 +36,7 @@ constructor(
     }
 
     fun startObserveIsFavorite(id: Int) {
-        idForObserveFavorite.value = id
+        idIsFavorite.value = id
     }
 
     val _observeMovie = movieIdLiveData.switchMap {
@@ -69,11 +69,16 @@ constructor(
 
     val observeTvShow = _observeTvShow
 
-    val observeIsFavorite = idForObserveFavorite.switchMap {
-        liveData {
-            val data = localPersistRepository.isFavorite(it)
-            emitSource(data.asLiveData())
-        }
+    val observeIsFavorite = idIsFavorite.switchMap {
+       liveData {
+           emit(Resource.Loading)
+           try {
+               val data = localPersistRepository.isFavorite(it)
+               emit(Resource.Success(data))
+           } catch (e: Exception) {
+               emit(Resource.Error(e.localizedMessage))
+           }
+       }
     }
 
     fun addToFavorite() = viewModelScope.launch {
@@ -137,11 +142,10 @@ constructor(
     private fun deleteTvShow(tvShow: TvShow) = viewModelScope.launch {
         _deletingProgress.value = Resource.Loading
         try {
-            val rowId = async {
+            val rowDeleted = async {
                 localPersistRepository.deleteTvShowFromFavorite(tvShow)
             }.await()
-
-            _deletingProgress.value = Resource.Success(rowId)
+            _deletingProgress.value = Resource.Success(rowDeleted)
         } catch (e: Exception) {
             _savingProgress.value = Resource.Error(e.message)
         }

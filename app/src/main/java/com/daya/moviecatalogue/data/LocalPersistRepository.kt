@@ -11,12 +11,7 @@ import com.daya.moviecatalogue.mapToTvShowEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.zip
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -51,10 +46,9 @@ constructor(
         localPersistRepository.deleteTvShowFromFavorite(entity)
     }.await()
 
-    suspend fun isFavorite(id : Int): Flow<Boolean> {
-        return localDetailDataSource.getDetailMovie(id)
-            .zip(localDetailDataSource.getDetailTvShow(id)){ movieEntity, tvShowEntity ->
-                movieEntity != null || tvShowEntity != null
-            }
+    suspend fun isFavorite(id : Int): Boolean {
+        val movie = localDetailDataSource.getDetailMovie(id)
+        val tvShow = localDetailDataSource.getDetailTvShow(id)
+        return movie != null || tvShow!= null
     }
 }

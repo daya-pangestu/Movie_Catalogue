@@ -13,14 +13,14 @@ import com.daya.moviecatalogue.databinding.ActivityDetailBinding
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
 import com.daya.moviecatalogue.toast
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
 
-    private val viewModel by viewModels< DetailViewModel>()
+    private val viewModel by viewModels<DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,15 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeIsFavorite.observe(this){invalidateOptionsMenu()}
+        //oneshoot operation, called only when activity opened
+        viewModel.observeIsFavorite.observe(this){
+            when (it) {
+                is Resource.Success -> invalidateOptionsMenu()
+                else -> {
+                    Timber.i("isFavorite status $it")
+                }
+            }
+        }
         
         viewModel.observeSaving.observe(this){
             when (it) {
@@ -133,7 +141,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val isFavorite = viewModel.observeIsFavorite.value == true
+        val currentlySaved =
+            (viewModel.observeSaving.value is Resource.Success)
+                    && (viewModel.observeDeleting.value !is Resource.Success)
+
+        val hasSavedBefore = when (val res = viewModel.observeIsFavorite.value) {
+            is Resource.Success -> res.data
+            else -> false
+        }
+
+        val isFavorite = currentlySaved || hasSavedBefore
         menu?.findItem(R.id.action_favorite)?.isVisible = !isFavorite
         menu?.findItem(R.id.action_unfavorite)?.isVisible = isFavorite
         return super.onPrepareOptionsMenu(menu)
