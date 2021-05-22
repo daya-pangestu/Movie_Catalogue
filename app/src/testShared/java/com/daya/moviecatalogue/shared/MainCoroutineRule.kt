@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.util
+package com.daya.moviecatalogue.shared
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

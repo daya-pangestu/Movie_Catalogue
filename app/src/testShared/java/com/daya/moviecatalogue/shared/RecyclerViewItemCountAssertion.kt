@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue
+package com.daya.moviecatalogue.shared
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

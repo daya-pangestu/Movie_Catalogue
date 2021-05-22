@@ -42,6 +42,16 @@ android {
         }
     }
 
+    sourceSets {
+        final String SHARED_TEST_DIR = 'src/testShared/java'
+        test {
+            java.srcDirs += SHARED_TEST_DIR
+        }
+        androidTest {
+            java.srcDirs += SHARED_TEST_DIR
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LPGL2.1'

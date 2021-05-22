@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue
+package com.daya.moviecatalogue.shared
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
