@@ -21,3 +21,4 @@ interface TvShowDao {
     @Query("SELECT * from tvShow_entity WHERE tvShowId = :tvShowId")
     suspend fun getTvShowById(tvShowId: Int): TvShowEntity?
 }
+

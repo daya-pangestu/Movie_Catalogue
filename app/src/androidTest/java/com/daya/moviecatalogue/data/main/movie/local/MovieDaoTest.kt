@@ -22,7 +22,6 @@ import org.junit.runner.RunWith
 import java.io.IOException
 import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class MovieDaoTest {
