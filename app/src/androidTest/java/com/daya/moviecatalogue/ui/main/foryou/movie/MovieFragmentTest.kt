@@ -15,9 +15,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.daya.moviecatalogue.*
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
+import com.daya.moviecatalogue.shared.RecyclerViewItemCountAssertion
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import launchFragmentInHiltContainer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

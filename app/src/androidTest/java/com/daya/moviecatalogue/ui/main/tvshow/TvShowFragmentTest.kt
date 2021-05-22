@@ -13,13 +13,13 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.daya.moviecatalogue.R
-import com.daya.moviecatalogue.RecyclerViewItemCountAssertion
+import com.daya.moviecatalogue.shared.RecyclerViewItemCountAssertion
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
-import com.daya.moviecatalogue.launchFragmentInHiltContainer
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import launchFragmentInHiltContainer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

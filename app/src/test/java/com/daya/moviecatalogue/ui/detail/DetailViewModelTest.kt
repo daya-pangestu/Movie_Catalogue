@@ -1,15 +1,15 @@
 package com.daya.moviecatalogue.ui.detail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.daya.moviecatalogue.MainCoroutineRule
+import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.data.DataDummy
 import com.daya.moviecatalogue.data.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
-import com.daya.moviecatalogue.getOrAwaitValue
-import com.daya.moviecatalogue.observeForTesting
+import com.daya.moviecatalogue.shared.getOrAwaitValue
+import com.daya.moviecatalogue.shared.observeForTesting
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
