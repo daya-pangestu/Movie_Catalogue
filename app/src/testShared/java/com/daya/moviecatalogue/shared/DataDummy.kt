@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.data
+package com.daya.moviecatalogue.shared
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow

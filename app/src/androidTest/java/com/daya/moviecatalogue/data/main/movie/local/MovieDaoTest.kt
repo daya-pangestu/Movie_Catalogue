@@ -3,8 +3,7 @@ package com.daya.moviecatalogue.data.main.movie.local
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import app.cash.turbine.test
-import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.db.MovieCatDatabase
 import com.daya.moviecatalogue.data.main.LocalDetailDataSource
 import com.daya.moviecatalogue.mapToMovieEntity
@@ -20,7 +19,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)

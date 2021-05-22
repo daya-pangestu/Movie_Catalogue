@@ -1,20 +1,14 @@
 package com.daya.moviecatalogue.data.main
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.DataDummy
-import com.daya.moviecatalogue.data.db.MovieCatDatabase
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao
 import com.daya.moviecatalogue.mapToMovieEntity
 import com.daya.moviecatalogue.mapToTvShowEntity
 import com.daya.moviecatalogue.shared.MainCoroutineRule
-import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

@@ -1,7 +1,7 @@
 package com.daya.moviecatalogue.data.main
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao

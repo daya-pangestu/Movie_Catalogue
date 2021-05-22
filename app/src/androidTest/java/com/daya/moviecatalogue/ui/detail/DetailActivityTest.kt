@@ -9,7 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
-import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_TV_SHOW

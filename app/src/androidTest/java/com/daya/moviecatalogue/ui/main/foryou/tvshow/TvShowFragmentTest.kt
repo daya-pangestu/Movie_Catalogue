@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.ui.main.tvshow
+package com.daya.moviecatalogue.ui.main.foryou.tvshow
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -16,7 +16,6 @@ import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.shared.RecyclerViewItemCountAssertion
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity
-import com.daya.moviecatalogue.ui.main.foryou.tvshow.TvShowFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import launchFragmentInHiltContainer

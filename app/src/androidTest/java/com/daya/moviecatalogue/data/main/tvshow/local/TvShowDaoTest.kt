@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.data.main.tvshow.local
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.db.MovieCatDatabase
 import com.daya.moviecatalogue.data.main.LocalDetailDataSource
 import com.daya.moviecatalogue.mapToTvShowEntity

@@ -2,7 +2,7 @@ package com.daya.moviecatalogue.ui.detail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.daya.moviecatalogue.shared.MainCoroutineRule
-import com.daya.moviecatalogue.data.DataDummy
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
