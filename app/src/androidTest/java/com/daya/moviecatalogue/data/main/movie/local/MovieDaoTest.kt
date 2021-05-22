@@ -12,6 +12,8 @@ import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -79,10 +81,9 @@ class MovieDaoTest {
 
         movieDao.insertMovie(expected)
 
-        movieDao.getMovies().test {
-            assertThat(expected).isEqualTo(expectItem())
-            expectComplete()
-        }
+        val actual = movieDao.getMovies().take(1).toList().flatten()
+
+        assertThat(expected).isIn(actual)
     }
 
 }
