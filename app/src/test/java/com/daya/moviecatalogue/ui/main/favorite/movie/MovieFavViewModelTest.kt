@@ -2,7 +2,7 @@ package com.daya.moviecatalogue.ui.main.favorite.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.LocalPersistRepository
+import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.getOrAwaitValue
@@ -29,7 +29,6 @@ class MovieFavViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var movieFavFavViewModel: MovieFavViewModel
-
     private lateinit var localPersistRepository: LocalPersistRepository
 
     private val dummyListMovies = DataDummy.getListMovie()

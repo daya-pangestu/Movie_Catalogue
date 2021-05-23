@@ -2,7 +2,7 @@ package com.daya.moviecatalogue.ui.main.favorite.tvshow
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.LocalPersistRepository
+import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.getOrAwaitValue
@@ -10,7 +10,6 @@ import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,7 +29,6 @@ class TvShowFavViewModelTest{
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var tvShowFavViewModel: TvShowFavViewModel
-
     private lateinit var localPersistRepository: LocalPersistRepository
 
     private val dummyListTvShows = DataDummy.getListTvShow()

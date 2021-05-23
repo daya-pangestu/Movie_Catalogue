@@ -2,18 +2,14 @@ package com.daya.moviecatalogue.ui.main.foryou.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.daya.moviecatalogue.data.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.getOrAwaitValue
 import com.daya.moviecatalogue.shared.observeForTesting
-import com.daya.moviecatalogue.ui.main.favorite.movie.MovieFavViewModel
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule

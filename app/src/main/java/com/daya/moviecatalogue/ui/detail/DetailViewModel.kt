@@ -1,7 +1,7 @@
 package com.daya.moviecatalogue.ui.detail
 
 import androidx.lifecycle.*
-import com.daya.moviecatalogue.data.LocalPersistRepository
+import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
@@ -9,7 +9,6 @@ import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

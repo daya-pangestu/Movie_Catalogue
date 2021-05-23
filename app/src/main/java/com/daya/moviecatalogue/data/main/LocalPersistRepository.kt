@@ -1,8 +1,5 @@
-package com.daya.moviecatalogue.data
+package com.daya.moviecatalogue.data.main
 
-import com.daya.moviecatalogue.data.main.LocalDetailDataSource
-import com.daya.moviecatalogue.data.main.LocalMainDataSource
-import com.daya.moviecatalogue.data.main.LocalPersistDataSource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.di.coroutine.IoDispatcher
@@ -21,7 +18,7 @@ import javax.inject.Singleton
 class LocalPersistRepository
 @Inject
 constructor(
-    private val localPersistRepository: LocalPersistDataSource,
+    private val localPersistDataSource: LocalPersistDataSource,
     private val localMainDataSource: LocalMainDataSource,
     private val localDetailDataSource: LocalDetailDataSource,
     private val externalScope : CoroutineScope,
@@ -34,28 +31,26 @@ constructor(
 
     suspend fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
         it.map { it.mapToTvShow()}
-
     }
 
      suspend fun addMovieToFavorite(movie: Movie) = externalScope.async(coroutineDispatcher) {
         val entity = movie.mapToMovieEntity()
-       return@async localPersistRepository.addMovieToFavorite(entity)
+       localPersistDataSource.addMovieToFavorite(entity)
     }.await()
 
     suspend fun addTvShowToFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher) {
         val entity = tvShow.mapToTvShowEntity()
-        localPersistRepository.addTvShowToFavorte(entity)
+        localPersistDataSource.addTvShowToFavorte(entity)
     }.await()
 
     suspend fun deleteMovieFromFavorite(movie: Movie)= externalScope.async(coroutineDispatcher) {
         val entity = movie.mapToMovieEntity()
-        localPersistRepository.deleteMovieFromFavorite(entity)
+        localPersistDataSource.deleteMovieFromFavorite(entity)
     }.await()
 
     suspend fun deleteTvShowFromFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher){
         val entity = tvShow.mapToTvShowEntity()
-        localPersistRepository.deleteTvShowFromFavorite(entity)
-
+        localPersistDataSource.deleteTvShowFromFavorite(entity)
     }.await()
 
     suspend fun isFavorite(id : Int): Boolean {

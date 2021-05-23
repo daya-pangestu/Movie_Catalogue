@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.ui.detail
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.DataDummy
-import com.daya.moviecatalogue.data.LocalPersistRepository
+import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.MainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
@@ -55,6 +55,7 @@ class DetailViewModelTest {
         viewModel.observeMovie.observeForTesting {
             assertThat(viewModel.observeMovie.value).isEqualTo(Resource.Success(dummyMovie))
         }
+        verify(mainRepository).getDetailMovie(dummyMovie.id)
     }
 
     @Test
@@ -69,6 +70,7 @@ class DetailViewModelTest {
         viewModel.observeTvShow.observeForTesting {
             assertThat(viewModel.observeTvShow.value).isEqualTo(Resource.Success(dummyTvShow))
         }
+        verify(mainRepository).getDetailTvShow(dummyTvShow.id)
     }
 
     @Test
@@ -194,5 +196,4 @@ class DetailViewModelTest {
             assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(1))
         }
     }
-
 }

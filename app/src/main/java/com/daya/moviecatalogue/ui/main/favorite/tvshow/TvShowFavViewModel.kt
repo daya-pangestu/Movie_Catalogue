@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.ui.main.favorite.tvshow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
-import com.daya.moviecatalogue.data.LocalPersistRepository
+import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
