@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.daya.moviecatalogue.data.LocalPersistRepository
-import com.daya.moviecatalogue.data.main.movie.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,10 +15,10 @@ constructor(
 ) : ViewModel() {
 
 
-    private val _favoriteTvShow = liveData {
+    private val _favoriteTvShows = liveData {
         val list = localPersistRepository.getAllFavoriteTvShow().asLiveData()
         emitSource(list)
     }
 
-    val favoriteMovies = _favoriteTvShow
+    val favoriteTvShows = _favoriteTvShows
 }

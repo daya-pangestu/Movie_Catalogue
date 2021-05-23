@@ -52,7 +52,6 @@ class MovieFavViewModelTest {
     @Test
     fun `verify localPersistRepository#getAllFavoriteMovies get called when favoriteMovies invoked`() = mainCoroutineRule.testDispatcher.runBlockingTest{
         whenever(localPersistRepository.getAllFavoriteMovies()).thenReturn(dummyFlowMovies)
-
         val actual = movieFavViewModel.favoriteMovies.getOrAwaitValue()
 
         verify(localPersistRepository).getAllFavoriteMovies()
