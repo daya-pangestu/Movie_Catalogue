@@ -103,7 +103,7 @@ lint/tmp/
 
 #hilt
 /.idea
-/app/build/generated
+/app/build/
 
 
 
