@@ -45,11 +45,11 @@ class TvShowFragment : Fragment(R.layout.fragment_item_list) {
             when (it) {
                 is Resource.Loading -> {
                     Timber.i(" observerMovie loading")
-                    binding.progressCircular.isVisible = true
+//                    binding.progressCircular.isVisible = true
                 }
                 is Resource.Success -> {
                     idlingResources.decrement()
-                    binding.progressCircular.isVisible = false
+//                    binding.progressCircular.isVisible = false
                     val listTvShow = it.data
                     Timber.i(" observerMovie succes : $listTvShow")
 
@@ -63,7 +63,7 @@ class TvShowFragment : Fragment(R.layout.fragment_item_list) {
                 is Resource.Error -> {
                     idlingResources.decrement()
                     Timber.i(" observerMovie error : ${it.exceptionMessage}")
-                    binding.progressCircular.isVisible = false
+//                    binding.progressCircular.isVisible = false
                 }
             }
         }

@@ -1,16 +1,16 @@
 package com.daya.moviecatalogue.data.main
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
+import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
@@ -33,25 +33,25 @@ constructor(
    private val api : TheMovieDbApi,
 ) : MainDataSource<MovieResponse,TvShowResponse> {
     override suspend fun getListMovies(): MovieResponse = suspendCancellableCoroutine {continuation ->
-        val client = api.discoverMovie()
-        client.enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                val body : MovieResponse = response.body() ?: return continuation.resumeWithException(Exception("body null"))
-                continuation.resume(body)
-            }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                continuation.resumeWithException(t)
-            }
-        })
-
-        continuation.invokeOnCancellation {
-            client.cancel()
-        }
+//        val client = api.discoverMovie()
+//        client.enqueue(object : Callback<MovieResponse> {
+//            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+//                val body : MovieResponse = response.body() ?: return continuation.resumeWithException(Exception("body null"))
+//                continuation.resume(body)
+//            }
+//
+//            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+//                continuation.resumeWithException(t)
+//            }
+//        })
+//
+//        continuation.invokeOnCancellation {
+//            client.cancel()
+//        }
     }
 
     override suspend fun getListTvShow(): TvShowResponse =  suspendCancellableCoroutine {continuation ->
-        val client = api.discoverTvShow()
+        val client = api.discoverTvShow(1)
         client.enqueue(object : Callback<TvShowResponse> {
             override fun onResponse(call: Call<TvShowResponse>, response: Response<TvShowResponse>) {
                 val body : TvShowResponse = response.body() ?: return continuation.resumeWithException(Exception("body null"))
@@ -67,6 +67,34 @@ constructor(
             client.cancel()
         }
     }
+}
+
+@Singleton
+class RemoteDiscoverMoviesPagingSource
+@Inject
+constructor(
+    private val api : TheMovieDbApi
+) : PagingSource<Int, DetailMovieResponse>() {
+
+    override fun getRefreshKey(state: PagingState<Int, DetailMovieResponse>): Int? {
+        return null
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DetailMovieResponse> {
+        try {
+            val nexPage = params.key ?: 1
+            val response = api.discoverMovie(nexPage)
+
+            return LoadResult.Page(
+                data = response.results,
+                prevKey = if (nexPage == 1) null else nexPage - 1,
+                nextKey = nexPage +1
+                )
+        } catch (e: Exception) {
+            return LoadResult.Error(e)
+        }
+    }
+
 }
 
 @Singleton

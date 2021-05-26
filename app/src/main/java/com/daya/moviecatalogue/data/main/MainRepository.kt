@@ -2,14 +2,14 @@ package com.daya.moviecatalogue.data.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.map
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.maptoTvShow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,8 +19,18 @@ class MainRepository
 constructor(
     private val remoteDetailDataSource: RemoteDetailDataSource,
     private val remoteMainDataSource: RemoteMainDataSource,
+    private val remoteDiscoverMoviesPagingSource: RemoteDiscoverMoviesPagingSource
 ){
-    suspend fun discoverMovies() = remoteMainDataSource.getListMovies().results.map { it.mapToMovie() }
+    fun discoverMovies() = Pager(
+        config = PagingConfig(pageSize = 20 ),
+    ){
+        remoteDiscoverMoviesPagingSource
+    }.flow
+        .map { pagingData ->
+            pagingData.map {
+                it.mapToMovie()
+            }
+        }
 
     suspend fun discoverTvShow() = remoteMainDataSource.getListTvShow().results.map { it.maptoTvShow() }
 

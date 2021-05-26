@@ -33,7 +33,7 @@ class TvShowFavFragment : Fragment(R.layout.fragment_item_list) {
         idlingRes.increment()
         viewModel.favoriteTvShows.observe(viewLifecycleOwner) {
            idlingRes.decrement()
-            binding.progressCircular.isVisible = false
+//            binding.progressCircular.isVisible = false
             val listTvShow = it
             Timber.i(" observerMovie succes : $listTvShow")
             binding.rvList.adapter = TvShowRecyclerViewAdapter(listTvShow) {
