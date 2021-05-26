@@ -5,17 +5,21 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
-import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
+import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_MOVIE
 import com.daya.moviecatalogue.ui.detail.DetailActivity.Companion.DETAIL_EXTRA_TV_SHOW
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -29,16 +33,18 @@ class DetailActivityTest{
     @get:Rule(order = 0)
     val hiltAndroidRule = HiltAndroidRule(this)
 
+    val testIdlingResource = TestIdlingResource
+
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
 
-        IdlingRegistry.getInstance().register(TestIdlingResource.get)
+        IdlingRegistry.getInstance().register(testIdlingResource.get)
     }
 
     @After
     fun tearDown() {
-        IdlingRegistry.getInstance().register(TestIdlingResource.get)
+        IdlingRegistry.getInstance().register(testIdlingResource.get)
     }
 
     @Test
@@ -53,6 +59,44 @@ class DetailActivityTest{
         onView(withId(R.id.detail_tv_desc)).check(matches(withText(containsString(expectedMovie.description))))
         onView(withId(R.id.detail_tv_release_date)).check(matches(withText(containsString(expectedMovie.release_date))))
         onView(withId(R.id.detail_tv_score)).check(matches(withText(containsString(expectedMovie.user_score.toString()))))
+
+        scenario.close()
+    }
+
+    @Test
+    fun detail_activity_that_display_detailMovie_can_save_movie() {//it only work one time only
+        val expectedMovie = DataDummy.getListMovie()[9]
+
+        val detailMovieIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java)
+            .putExtra(DETAIL_EXTRA_MOVIE,expectedMovie.id)
+        val scenario = launchActivity<DetailActivity>(detailMovieIntent)
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
+
+        onView(withId(R.id.action_favorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(doesNotExist())
+        onView(withId(R.id.action_unfavorite)).check(matches(isDisplayed()))
+
+        scenario.close()
+    }
+
+    @Test
+    fun detail_activity_that_display_detailTvShow_can_save_tvshow() {//it only work one time only
+        val expectedTvShow = DataDummy.getListTvShow()[9]
+
+        val detailTvShowIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java)
+            .putExtra(DETAIL_EXTRA_TV_SHOW,expectedTvShow.id)
+        val scenario = launchActivity<DetailActivity>(detailTvShowIntent)
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
+
+        onView(withId(R.id.action_favorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(doesNotExist())
+        onView(withId(R.id.action_unfavorite)).check(matches(isDisplayed()))
 
         scenario.close()
     }

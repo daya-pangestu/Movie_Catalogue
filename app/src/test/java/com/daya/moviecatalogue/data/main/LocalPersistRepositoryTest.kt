@@ -58,16 +58,16 @@ class LocalPersistRepositoryTest {
         )
     }
 
-    @Test
-    fun `LocalPersistRepository#getAllFavoriteMovies`() =
-        mainCoroutineRule.testDispatcher.runBlockingTest {
-            whenever(localMainDataSource.getListMovies()).thenReturn(flowOf(dummyFavoriteMovies.map { it.mapToMovieEntity() }))
-
-            localPersistRepository.getAllFavoriteMovies().test {
-                assertThat(dummyFavoriteMovies).isEqualTo(expectItem())
-                expectComplete()
-            }
-        }
+//    @Test
+//    fun `LocalPersistRepository#getAllFavoriteMovies`() =
+//        mainCoroutineRule.testDispatcher.runBlockingTest {
+//            whenever(localMainDataSource.getListMovies()).thenReturn(flowOf(dummyFavoriteMovies.map { it.mapToMovieEntity() }))
+//
+//            localPersistRepository.getAllFavoriteMovies().test {
+//                assertThat(dummyFavoriteMovies).isEqualTo(expectItem())
+//                expectComplete()
+//            }
+//        }
 
     @Test
     fun `LocalPersistRepository#getAllFavoriteTvShow`() =

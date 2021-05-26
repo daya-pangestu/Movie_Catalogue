@@ -14,7 +14,6 @@ constructor(
     private val localPersistRepository: LocalPersistRepository
 ) : ViewModel() {
 
-
     private val _favoriteTvShows = liveData {
         val list = localPersistRepository.getAllFavoriteTvShow().asLiveData()
         emitSource(list)

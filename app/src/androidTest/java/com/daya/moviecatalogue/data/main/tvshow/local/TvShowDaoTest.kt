@@ -8,6 +8,9 @@ import com.daya.moviecatalogue.data.db.MovieCatDatabase
 import com.daya.moviecatalogue.data.main.LocalDetailDataSource
 import com.daya.moviecatalogue.mapToTvShowEntity
 import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.take
@@ -15,38 +18,35 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class TvShowDaoTest{
 
-    private lateinit var tvShowDao : TvShowDao
-    private lateinit var db : MovieCatDatabase
-    private lateinit var localDetailDataSource : LocalDetailDataSource
+    @get:Rule
+    var hiltAndroidRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var tvShowDao : TvShowDao
 
     private val dummyTvShow = DataDummy.getListTvShow()[7].mapToTvShowEntity()
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<HiltTestApplication>()
-        db = Room.inMemoryDatabaseBuilder(context, MovieCatDatabase::class.java).build()
-        tvShowDao = db.TvShowDao()
-    }
-
-    @After
-    @Throws(IOException::class)
-    fun tearDown() {
-        db.close()
+        hiltAndroidRule.inject()
     }
 
     @Test
     fun insertTvShow_should_return_rowId() = runBlocking {
         val actualRowId = tvShowDao.insertTvShow(dummyTvShow)
 
-        Truth.assertThat(actualRowId).isEqualTo(dummyTvShow.id)
+        assertThat(actualRowId).isEqualTo(dummyTvShow.id)
     }
 
     @Test
@@ -54,28 +54,23 @@ class TvShowDaoTest{
         tvShowDao.insertTvShow(dummyTvShow)
 
         val actualValue = tvShowDao.getTvShowById(dummyTvShow.id)
-        Truth.assertThat(actualValue).isEqualTo(dummyTvShow)
+        assertThat(actualValue).isEqualTo(dummyTvShow)
     }
 
     @Test
-    fun deleteTvShow_should_return_rowdeleted_count() = runBlocking {
+    fun deleteTvShow_should_return_rowDeleted_count() = runBlocking {
         val actualRowId = tvShowDao.insertTvShow(dummyTvShow)
-
-        Truth.assertThat(actualRowId).isEqualTo(dummyTvShow.id)
+        assertThat(actualRowId).isEqualTo(dummyTvShow.id)
 
         val rowDeleted = tvShowDao.deleteTvShow(dummyTvShow)
-
-        Truth.assertThat(rowDeleted).isEqualTo(1L)
+        assertThat(rowDeleted).isEqualTo(1L)
     }
 
     @Test
-    fun getTvShows_should_return_flow_list_movieentity() = runBlocking {
-
+    fun getTvShows_should_return_flow_list_moviEentity() = runBlocking {
         tvShowDao.insertTvShow(dummyTvShow)
 
         val actual = tvShowDao.getTvShows().take(1).toList().flatten()
-
-        Truth.assertThat(dummyTvShow).isIn(actual)
+        assertThat(dummyTvShow).isIn(actual)
     }
-
 }

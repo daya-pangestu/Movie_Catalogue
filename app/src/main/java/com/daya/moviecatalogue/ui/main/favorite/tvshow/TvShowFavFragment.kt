@@ -32,7 +32,7 @@ class TvShowFavFragment : Fragment(R.layout.fragment_item_list) {
     fun observerFavoriteTvShow() {
         idlingRes.increment()
         viewModel.favoriteTvShows.observe(viewLifecycleOwner) {
-           if (idlingRes.get.isIdleNow)idlingRes.decrement()
+           idlingRes.decrement()
             binding.progressCircular.isVisible = false
             val listTvShow = it
             Timber.i(" observerMovie succes : $listTvShow")
