@@ -3,6 +3,8 @@ package com.daya.moviecatalogue.ui.main.favorite.movie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,10 +15,6 @@ class MovieFavViewModel
 constructor(
     private val localPersistRepository: LocalPersistRepository
 ) : ViewModel() {
-    private val _favoriteMovies = liveData {
-        val list = localPersistRepository.getAllFavoriteMovies().asLiveData()
-        emitSource(list)
-    }
 
-    val favoriteMovies = _favoriteMovies
+    val favoriteMovies = localPersistRepository.getAllFavoriteMovies().cachedIn(viewModelScope)
 }

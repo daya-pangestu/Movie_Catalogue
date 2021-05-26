@@ -1,5 +1,8 @@
 package com.daya.moviecatalogue.data.main
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
@@ -72,11 +75,21 @@ class LocalMainDataSource
 constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao
-) : MainDataSource<Flow<List<MovieEntity>>,Flow<List<TvShowEntity>>> {
-    override suspend fun getListMovies(): Flow<List<MovieEntity>> {
+) {
+   /* override suspend fun getListMovies(): Flow<List<MovieEntity>> {
         return  movieDao.getMovies()
+    }*/
+     fun getListMovies(): Flow<PagingData<MovieEntity>> {
+      return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+            )
+        ){
+           movieDao.getMoviesPaged()
+       }.flow
     }
-    override suspend fun getListTvShow(): Flow<List<TvShowEntity>> {
+
+    fun getListTvShow(): Flow<List<TvShowEntity>> {
         return tvShowDao.getTvShows()
     }
 }

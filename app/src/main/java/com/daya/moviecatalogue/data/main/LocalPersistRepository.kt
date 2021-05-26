@@ -1,5 +1,6 @@
 package com.daya.moviecatalogue.data.main
 
+import androidx.paging.map
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.di.coroutine.IoDispatcher
@@ -24,12 +25,15 @@ constructor(
     private val externalScope : CoroutineScope,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) {
-
-    suspend fun getAllFavoriteMovies() = localMainDataSource.getListMovies().map {
-        it.map { it.mapToMovie() }
+    fun getAllFavoriteMovies() = localMainDataSource
+        .getListMovies()
+        .map { pagingData ->
+            pagingData
+                .map { it.mapToMovie()
+                }
     }
 
-    suspend fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
+    fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
         it.map { it.mapToTvShow()}
     }
 

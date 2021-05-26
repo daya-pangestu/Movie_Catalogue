@@ -1,6 +1,7 @@
 package com.daya.moviecatalogue.data.main.movie.local
 
 import androidx.annotation.VisibleForTesting
+import androidx.paging.PagingSource
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -8,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
     @Query("SELECT * FROM movie_entity")
     fun getMovies(): Flow<List<MovieEntity>>
+
+    @Query("SELECT * FROM movie_entity")
+    fun getMoviesPaged(): PagingSource<Int,MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieEntity) : Long
@@ -21,6 +25,6 @@ interface MovieDao {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun batchInsertMovie(movies: List<MovieEntity>)
+    suspend fun batchInsertMovie(movies: List<MovieEntity>) : List<Long>
 
 }

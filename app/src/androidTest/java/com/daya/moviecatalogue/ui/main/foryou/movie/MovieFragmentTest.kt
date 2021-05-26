@@ -28,7 +28,6 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@LargeTest
 class MovieFragmentTest{
 
     @get:Rule(order = 0)

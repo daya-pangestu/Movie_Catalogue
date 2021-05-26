@@ -1,30 +1,29 @@
 package com.daya.moviecatalogue.ui.main
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.databinding.ItemMovieBinding
 import com.daya.moviecatalogue.loadImage
+import com.daya.moviecatalogue.movieDiffCallback
 
 class MovieRecyclerViewAdapter(
-        private val values: List<Movie>,
         private val onItemClick : (Movie) -> Unit
-) : RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>() {
+) : PagingDataAdapter<Movie,MovieRecyclerViewAdapter.ViewHolder>(movieDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return  ViewHolder(binding){
-            val item = values[it]
-            onItemClick(item)
+            val item = getItem(it)
+            onItemClick(item!!)
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(values[position])
+        holder.bind(getItem(position)!!)
     }
-
-    override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(private val binding: ItemMovieBinding, onItemClick: (Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {

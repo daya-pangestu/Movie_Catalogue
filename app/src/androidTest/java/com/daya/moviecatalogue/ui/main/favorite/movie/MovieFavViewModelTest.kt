@@ -2,7 +2,6 @@ package com.daya.moviecatalogue.ui.main.favorite.movie
 
 import androidx.paging.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import app.cash.turbine.test
 import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
@@ -15,7 +14,6 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -26,13 +24,11 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
-
-@ExperimentalTime
+//use actual database
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class MovieFavViewModelTest {
+class MovieFavViewModelTests {
 
     @get:Rule(order = 0)
     var hiltAndroidRule = HiltAndroidRule(this)
@@ -57,10 +53,9 @@ class MovieFavViewModelTest {
     }
 
     @Test
-    fun `verify`() =
+    fun `verify_localPersistRepositorygetAllFavoriteMoviesgetcalledwhenfavoriteMoviesinvoked`() =
         runBlocking(mainCoroutineRule.testDispatcher) {
-            val insertedRowIds = movieDao.batchInsertMovie(dummyListMovies)
-            assertThat(insertedRowIds).isEqualTo(dummyListMovies.map { it.id.toLong() })
+            movieDao.batchInsertMovie(dummyListMovies)
 
             val differ = GetDiffer<Movie>(
                 difffCallback = movieDiffCallback,
@@ -73,7 +68,6 @@ class MovieFavViewModelTest {
                     differ.submitData(it)
                 }
             }
-            delay(3000)
             assertThat(differ.snapshot().items.size).isEqualTo(dummyListMovies.size)
             job.cancel()
         }

@@ -54,7 +54,7 @@ class MovieFragment : Fragment(R.layout.fragment_item_list) {
                     val listMovie = it.data
                     Timber.i(" observerMovie succes : $listMovie")
 
-                    binding.rvList.adapter = MovieRecyclerViewAdapter(listMovie) {
+                    binding.rvList.adapter = MovieRecyclerViewAdapter {
                         val intent = Intent(context, DetailActivity::class.java).apply {
                             putExtra(DETAIL_EXTRA_MOVIE, it.id)
                         }
@@ -65,7 +65,6 @@ class MovieFragment : Fragment(R.layout.fragment_item_list) {
                     idlingResources.decrement()
                     Timber.i(" observerMovie error : ${it.exceptionMessage}")
                     binding.progressCircular.isVisible = false
-
                 }
             }
         }
