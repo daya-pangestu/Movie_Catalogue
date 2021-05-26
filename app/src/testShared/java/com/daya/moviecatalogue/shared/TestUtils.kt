@@ -2,6 +2,10 @@ package com.daya.moviecatalogue.shared
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
+import kotlinx.coroutines.CoroutineDispatcher
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -41,4 +45,28 @@ fun <T> LiveData<T>.observeForTesting(block: () -> Unit) {
     } finally {
         removeObserver(observer)
     }
+}
+
+class GetDiffer<T : Any>(
+    private val difffCallback : DiffUtil.ItemCallback<T>,
+    private val updateCallback : ListUpdateCallback = noopListCallback,
+    private val mainDispatcer : CoroutineDispatcher,
+    private val workerDispatcher: CoroutineDispatcher
+){
+    operator fun invoke(): AsyncPagingDataDiffer<T> {
+        return AsyncPagingDataDiffer<T>(
+            diffCallback = difffCallback,
+            updateCallback = updateCallback,
+            mainDispatcher = mainDispatcer,
+            workerDispatcher = workerDispatcher
+        )
+    }
+}
+
+private val noopListCallback = object : ListUpdateCallback {
+    override fun onInserted(position: Int, count: Int) {}
+    override fun onRemoved(position: Int, count: Int) {}
+    override fun onMoved(fromPosition: Int, toPosition: Int) {}
+    override fun onChanged(position: Int, count: Int, payload: Any?) {}
+
 }
