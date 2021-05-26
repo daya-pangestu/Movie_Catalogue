@@ -100,3 +100,13 @@ lint/tmp/
 # Android Profiling
 *.hprof
 /.idea/inspectionProfiles/
+
+#hilt
+/.idea
+/app/build/generated
+
+
+
+
+
+

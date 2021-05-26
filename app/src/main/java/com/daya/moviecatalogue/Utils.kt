@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
@@ -105,3 +106,22 @@ fun TvShowEntity.mapToTvShow() : TvShow {
 fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this,text,duration).show()
 }
+
+val movieDiffCallback = object : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie)=
+        oldItem == newItem
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie)=
+        oldItem.id == newItem.id
+}
+
+val tvShowDiffCallback = object : DiffUtil.ItemCallback<TvShow>() {
+    override fun areItemsTheSame(oldItem: TvShow, newItem: TvShow)=
+        oldItem == newItem
+
+    override fun areContentsTheSame(oldItem: TvShow, newItem: TvShow)=
+        oldItem.id == newItem.id
+}
+
+
+
