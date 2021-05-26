@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import javax.inject.Inject
-//use actual database
+//use an actual database, so this test placed in androidTest
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -41,9 +41,7 @@ class MovieFavViewModelTests {
 
     @Inject
     lateinit var LocalPersistRepository : LocalPersistRepository
-
     lateinit var  movieFavFavViewModel : MovieFavViewModel
-
     private val dummyListMovies = DataDummy.getListMovie().map { it.mapToMovieEntity() }
 
     @Before
@@ -53,7 +51,8 @@ class MovieFavViewModelTests {
     }
 
     @Test
-    fun `verify_localPersistRepositorygetAllFavoriteMoviesgetcalledwhenfavoriteMoviesinvoked`() =
+    fun `favoriteMovies_get_pagingData`() =
+        //dont use runBlokingTest yet, see
         runBlocking(mainCoroutineRule.testDispatcher) {
             movieDao.batchInsertMovie(dummyListMovies)
 

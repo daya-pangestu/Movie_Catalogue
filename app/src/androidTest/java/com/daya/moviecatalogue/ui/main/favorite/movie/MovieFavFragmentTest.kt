@@ -73,16 +73,17 @@ class MovieFavFragmentTest{
             launchFragmentInHiltContainer<MovieFavFragment>()
 
             //check if rv is displayed,
-            onView(withId(R.id.rv_list))
-                .check(ViewAssertions.matches(isDisplayed()))
-            onView(withId(R.id.rv_list))
-                .check(RecyclerViewItemCountAssertion(expectedCount = 5))
-
+            onView(withId(R.id.rv_list)).check { view, noViewFoundException ->
+                noViewFoundException?.let { throw noViewFoundException }
+                val recyclerView = view as RecyclerView
+                assertThat(recyclerView.adapter).isNotNull()
+                assertThat(recyclerView.adapter!!.itemCount).isGreaterThan(0)
+            }
             //click one of the item
             init()
             onView(withId(R.id.rv_list)).perform(
                 scrollToPosition<RecyclerView.ViewHolder>(
-                    5
+                    0
                 ), click()
             )
             //make sure intent is fired
