@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class LocalPersistRepository
 @Inject
 constructor(
@@ -33,31 +32,31 @@ constructor(
                 }
     }
 
-    fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
+    override fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
         it.map { it.mapToTvShow()}
     }
 
-     suspend fun addMovieToFavorite(movie: Movie) = externalScope.async(coroutineDispatcher) {
+    override suspend fun addMovieToFavorite(movie: Movie) = externalScope.async(coroutineDispatcher) {
         val entity = movie.mapToMovieEntity()
        localPersistDataSource.addMovieToFavorite(entity)
     }.await()
 
-    suspend fun addTvShowToFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher) {
+    override suspend fun addTvShowToFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher) {
         val entity = tvShow.mapToTvShowEntity()
         localPersistDataSource.addTvShowToFavorte(entity)
     }.await()
 
-    suspend fun deleteMovieFromFavorite(movie: Movie)= externalScope.async(coroutineDispatcher) {
+    override suspend fun deleteMovieFromFavorite(movie: Movie)= externalScope.async(coroutineDispatcher) {
         val entity = movie.mapToMovieEntity()
         localPersistDataSource.deleteMovieFromFavorite(entity)
     }.await()
 
-    suspend fun deleteTvShowFromFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher){
+    override suspend fun deleteTvShowFromFavorite(tvShow: TvShow) = externalScope.async(coroutineDispatcher){
         val entity = tvShow.mapToTvShowEntity()
         localPersistDataSource.deleteTvShowFromFavorite(entity)
     }.await()
 
-    suspend fun isFavorite(id : Int): Boolean {
+    override suspend fun isFavorite(id : Int): Boolean {
         val movie = localDetailDataSource.getDetailMovie(id)
         val tvShow = localDetailDataSource.getDetailTvShow(id)
         return movie != null || tvShow!= null
