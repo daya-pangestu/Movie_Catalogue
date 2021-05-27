@@ -24,8 +24,8 @@ constructor(
     private val localDetailDataSource: LocalDetailDataSource,
     private val externalScope : CoroutineScope,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-) {
-    fun getAllFavoriteMovies() = localMainDataSource
+) :PersistRepository {
+   override fun getAllFavoriteMovies() = localMainDataSource
         .getListMovies()
         .map { pagingData ->
             pagingData
