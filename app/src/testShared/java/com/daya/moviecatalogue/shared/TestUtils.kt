@@ -2,6 +2,10 @@ package com.daya.moviecatalogue.shared
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.daya.moviecatalogue.data.main.movie.Movie
+import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
+import com.daya.moviecatalogue.mapToMovie
+import com.daya.moviecatalogue.mapToMovieEntity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -42,3 +46,8 @@ fun <T> LiveData<T>.observeForTesting(block: () -> Unit) {
         removeObserver(observer)
     }
 }
+
+fun List<Movie>.mapListMovieToMovieEntity() = this.map { it.mapToMovieEntity() }
+fun List<MovieEntity>.mapListMovieEntityToMovie() = this.map { it.mapToMovie() }
+
+
