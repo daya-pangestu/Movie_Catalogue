@@ -1,4 +1,4 @@
-package com.daya.moviecatalogue.shared
+package com.daya.moviecatalogue.shared.di
 
 import android.content.Context
 import androidx.room.Room

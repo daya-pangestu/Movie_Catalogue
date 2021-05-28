@@ -1,10 +1,10 @@
-package com.daya.moviecatalogue.shared
+package com.daya.moviecatalogue.shared.data
 
 import androidx.paging.*
 import com.daya.moviecatalogue.data.main.PersistRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
-import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.shared.DataDummy
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
