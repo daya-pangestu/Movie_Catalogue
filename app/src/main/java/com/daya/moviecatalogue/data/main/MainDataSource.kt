@@ -19,7 +19,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 interface MainDataSource<Movies,TvShows> {
-    suspend fun getListMovies() : Movies
+    fun getListMovies() : Movies
     suspend fun getListTvShow() : TvShows
 }
 
@@ -28,8 +28,8 @@ class RemoteMainDataSource
 @Inject
 constructor(
    private val api : TheMovieDbApi,
-)   {
-    fun getListMovies(): PagingSource<Int, DetailMovieResponse> {
+) :MainDataSource<PagingSource<Int, DetailMovieResponse>,TvShowResponse> { //TODO replace tvshow with paging3 implementation
+   override fun getListMovies(): PagingSource<Int, DetailMovieResponse> {
        return object : PagingSource<Int, DetailMovieResponse>() {
             override fun getRefreshKey(state: PagingState<Int, DetailMovieResponse>): Int? {
                 return state.anchorPosition?.let { anchorPosition ->
@@ -57,7 +57,7 @@ constructor(
         }
     }
 
-    suspend fun getListTvShow(): TvShowResponse =  suspendCancellableCoroutine {continuation ->
+    override suspend fun getListTvShow(): TvShowResponse =  suspendCancellableCoroutine {continuation ->
         val client = api.discoverTvShow()
         client.enqueue(object : Callback<TvShowResponse> {
             override fun onResponse(call: Call<TvShowResponse>, response: Response<TvShowResponse>) {
