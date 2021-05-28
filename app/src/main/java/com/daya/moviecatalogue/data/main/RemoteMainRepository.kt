@@ -2,13 +2,11 @@ package com.daya.moviecatalogue.data.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.maptoTvShow
 import kotlinx.coroutines.flow.*
@@ -20,7 +18,7 @@ class RemoteMainRepository
 @Inject
 constructor(
     private val remoteDetailDataSource: RemoteDetailDataSource,
-    private val remoteMainDataSource: RemoteMainDataSource,
+    private val remoteMainDataSource: MainDataSource<PagingSource<Int, DetailMovieResponse>, TvShowResponse>,
 ) : MainRepository{
     override fun discoverMovies(): Flow<PagingData<Movie>> {
         return Pager(config = PagingConfig(pageSize = 20)){
