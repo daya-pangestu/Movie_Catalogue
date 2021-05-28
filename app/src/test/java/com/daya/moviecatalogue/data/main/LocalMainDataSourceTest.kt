@@ -65,15 +65,14 @@ class LocalMainDataSourceTest {
         flow<List<TvShowEntity>> { DataDummy.getListTvShow().map { it.mapToTvShowEntity() } }
 
     @Test
-    fun `verify localMainDataSource#getListMovies called movieDao#getMoviesPaged`() = runBlocking(mainCoroutineRule.testDispatcher) {
+    fun `getListMovies called movieDao#getMoviesPaged`() = runBlocking(mainCoroutineRule.testDispatcher) {
         whenever(movieDao.getMoviesPaged()).thenReturn(dummyPagingMovies)
 
         val actual = localMainDataSource
             .getListMovies()
-            .first() //wait till first item collected
 
         verify(movieDao).getMoviesPaged()
-        assertThat(actual).isNotNull()
+        assertThat(actual).isEqualTo(dummyPagingMovies)
     }
 
     @Test
