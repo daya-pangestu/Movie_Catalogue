@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
+import com.daya.moviecatalogue.mapToDetailMovieResponse
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.mapToMovieEntity
 import java.util.concurrent.CountDownLatch
@@ -49,5 +50,5 @@ fun <T> LiveData<T>.observeForTesting(block: () -> Unit) {
 
 fun List<Movie>.mapListMovieToMovieEntity() = this.map { it.mapToMovieEntity() }
 fun List<MovieEntity>.mapListMovieEntityToMovie() = this.map { it.mapToMovie() }
-
+fun List<Movie>.mapListMovieToDetailMovieResponse() = this.map{it.mapToDetailMovieResponse()}
 
