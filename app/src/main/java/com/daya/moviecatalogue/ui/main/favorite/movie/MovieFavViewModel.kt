@@ -19,8 +19,8 @@ constructor(
     private val localPersistRepository: PersistRepository,
 ) : ViewModel() {
 
-    private val _favoriteMovies = localPersistRepository.getAllFavoriteMovies()
+    private val _favoriteMovies = localPersistRepository.getAllFavoriteMovies().cachedIn(viewModelScope)
 
-    val favoriteMovies = _favoriteMovies.cachedIn(viewModelScope)
+    val favoriteMovies = _favoriteMovies
 
 }
