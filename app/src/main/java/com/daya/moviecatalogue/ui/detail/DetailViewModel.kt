@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.ui.detail
 import androidx.lifecycle.*
 import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
-import com.daya.moviecatalogue.data.main.MainRepository
+import com.daya.moviecatalogue.data.main.RemoteMainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class DetailViewModel
 @Inject
 constructor(
-    private val mainRepository: MainRepository,
+    private val remoteMainRepository: RemoteMainRepository,
     private val localPersistRepository: LocalPersistRepository
 ) : ViewModel() {
     private val movieIdLiveData = MutableLiveData<Int>()
@@ -42,7 +42,7 @@ constructor(
         liveData {
             emit(Resource.Loading)
             try {
-                val data = mainRepository.getDetailMovie(it)
+                val data = remoteMainRepository.getDetailMovie(it)
                 emit(Resource.Success(data))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))
@@ -56,7 +56,7 @@ constructor(
         liveData {
             emit(Resource.Loading)
             try {
-                val data = mainRepository.getDetailTvShow(it)
+                val data = remoteMainRepository.getDetailTvShow(it)
                 emit(Resource.Success(data))
 
             } catch (e: Exception) {

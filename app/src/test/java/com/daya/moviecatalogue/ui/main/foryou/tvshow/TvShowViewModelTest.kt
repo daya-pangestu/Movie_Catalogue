@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.ui.main.foryou.tvshow
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.data.Resource
-import com.daya.moviecatalogue.data.main.MainRepository
+import com.daya.moviecatalogue.data.main.RemoteMainRepository
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.getOrAwaitValue
@@ -11,7 +11,6 @@ import com.daya.moviecatalogue.shared.observeForTesting
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,20 +29,20 @@ class TvShowViewModelTest{
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var mainRepository: MainRepository
+    private lateinit var remoteMainRepository: RemoteMainRepository
     private lateinit var tvShowViewModel: TvShowViewModel
 
     private val dummyListTvShows = DataDummy.getListTvShow()
 
     @Before
     fun setUp() {
-        mainRepository = mock()
-        tvShowViewModel = TvShowViewModel(mainRepository)
+        remoteMainRepository = mock()
+        tvShowViewModel = TvShowViewModel(remoteMainRepository)
     }
 
     @Test
     fun `TvShowViewModel#discoverTvShow should return resSucces listTvShows`() = mainCoroutineRule.testDispatcher.runBlockingTest{
-        whenever(mainRepository.discoverTvShow()).thenReturn(dummyListTvShows)
+        whenever(remoteMainRepository.discoverTvShow()).thenReturn(dummyListTvShows)
 
         //initial value
         val actualResLoading = tvShowViewModel.discoverTvShow.getOrAwaitValue()
@@ -53,6 +52,6 @@ class TvShowViewModelTest{
         tvShowViewModel.discoverTvShow.observeForTesting {
             Truth.assertThat(tvShowViewModel.discoverTvShow.value).isEqualTo(Resource.Success(dummyListTvShows))
         }
-        verify(mainRepository).discoverTvShow()
+        verify(remoteMainRepository).discoverTvShow()
     }
 }

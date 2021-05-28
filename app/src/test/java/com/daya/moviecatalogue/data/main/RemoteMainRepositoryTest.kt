@@ -1,7 +1,6 @@
 package com.daya.moviecatalogue.data.main
 
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
-import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.fake.Fake
@@ -17,17 +16,17 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-class MainRepositoryTest {
+class RemoteMainRepositoryTest {
 
     private val mainDataSource: RemoteMainDataSource = mock()
     private val detailDataSource : RemoteDetailDataSource = mock()
-    lateinit var mainRepository :MainRepository
+    lateinit var remoteMainRepository :RemoteMainRepository
 
     private val moshi = Moshi.Builder().build()
 
     @Before
     fun setUp() {
-        mainRepository = MainRepository(detailDataSource,mainDataSource)
+        remoteMainRepository = RemoteMainRepository(detailDataSource,mainDataSource)
     }
 
     @Test
@@ -61,7 +60,7 @@ class MainRepositoryTest {
 
         runBlocking {
             whenever(mainDataSource.getListTvShow()).thenReturn(expectedTvShowResponse)
-            val listTvShow = mainRepository.discoverTvShow()
+            val listTvShow = remoteMainRepository.discoverTvShow()
             verify(mainDataSource).getListTvShow()
 
             assertThat(listTvShow).isNotNull()
@@ -82,7 +81,7 @@ class MainRepositoryTest {
 
         runBlocking {
             whenever(detailDataSource.getDetailMovie(movieId)).thenReturn(expectedDetailMovie)
-            val actualDetailMovie = mainRepository.getDetailMovie(movieId)
+            val actualDetailMovie = remoteMainRepository.getDetailMovie(movieId)
 
             verify(detailDataSource).getDetailMovie(movieId)
             assertThat(actualDetailMovie).isNotNull()
@@ -101,7 +100,7 @@ class MainRepositoryTest {
 
         runBlocking {
             whenever(detailDataSource.getDetailTvShow(movieId)).thenReturn(expectedDetailTvShow)
-            val actualDetailTvShow = mainRepository.getDetailTvShow(movieId)
+            val actualDetailTvShow = remoteMainRepository.getDetailTvShow(movieId)
 
             verify(detailDataSource).getDetailTvShow(movieId)
             assertThat(actualDetailTvShow).isNotNull()

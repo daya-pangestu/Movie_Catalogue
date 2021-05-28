@@ -44,7 +44,7 @@ class RemoteMainDataSourceTest {
     }
 
     @Test
-    fun `discoverMovie should return MovieResponse`() {
+    fun `discoverMovie should load pagingSource movie`() {
         runBlocking(mainCoroutineRule.testDispatcher) {
             mockWebServer.enqueue(
                 MockResponse()

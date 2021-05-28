@@ -5,7 +5,7 @@ import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.main.LocalPersistRepository
 import com.daya.moviecatalogue.data.Resource
-import com.daya.moviecatalogue.data.main.MainRepository
+import com.daya.moviecatalogue.data.main.RemoteMainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.shared.getOrAwaitValue
@@ -33,19 +33,19 @@ class DetailViewModelTest {
     private val dummyTvShow : TvShow = DataDummy.getListTvShow()[7]
 
     private lateinit var viewModel: DetailViewModel
-    private lateinit var mainRepository: MainRepository
+    private lateinit var remoteMainRepository: RemoteMainRepository
     private lateinit var localPersistRepository: LocalPersistRepository
 
     @Before
     fun setUp() {
-        mainRepository = mock()
+        remoteMainRepository = mock()
         localPersistRepository = mock()
-        viewModel = DetailViewModel(mainRepository,localPersistRepository)
+        viewModel = DetailViewModel(remoteMainRepository,localPersistRepository)
     }
 
     @Test
     fun `observeMovie should return movie based by id`() = mainCoroutineRule.testDispatcher.runBlockingTest {
-        whenever(mainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+        whenever(remoteMainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
         viewModel.submitMovie(dummyMovie.id)
 
         //initial value
@@ -55,12 +55,12 @@ class DetailViewModelTest {
         viewModel.observeMovie.observeForTesting {
             assertThat(viewModel.observeMovie.value).isEqualTo(Resource.Success(dummyMovie))
         }
-        verify(mainRepository).getDetailMovie(dummyMovie.id)
+        verify(remoteMainRepository).getDetailMovie(dummyMovie.id)
     }
 
     @Test
     fun `observeTvShow should return tvShow based by id`() = mainCoroutineRule.testDispatcher.runBlockingTest {
-        whenever(mainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
+        whenever(remoteMainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
         viewModel.submitTvShow(dummyTvShow.id)
 
         //initial value
@@ -70,7 +70,7 @@ class DetailViewModelTest {
         viewModel.observeTvShow.observeForTesting {
             assertThat(viewModel.observeTvShow.value).isEqualTo(Resource.Success(dummyTvShow))
         }
-        verify(mainRepository).getDetailTvShow(dummyTvShow.id)
+        verify(remoteMainRepository).getDetailTvShow(dummyTvShow.id)
     }
 
     @Test
@@ -108,7 +108,7 @@ class DetailViewModelTest {
     @Test
     fun `addTofavorite should save movie`() = mainCoroutineRule.testDispatcher.runBlockingTest {
         //make sure movie is loaded
-        whenever(mainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+        whenever(remoteMainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
         viewModel.submitMovie(dummyMovie.id)
 
         viewModel.observeMovie.observeForTesting {
@@ -131,7 +131,7 @@ class DetailViewModelTest {
     @Test
     fun `addTofavorite should save tvShow`() = mainCoroutineRule.testDispatcher.runBlockingTest {
         //make sure tvshow is loaded
-        whenever(mainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
+        whenever(remoteMainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
         viewModel.submitTvShow(dummyTvShow.id)
 
         viewModel.observeTvShow.observeForTesting {
@@ -154,7 +154,7 @@ class DetailViewModelTest {
     @Test
     fun `deleteFromFavorite should delete movie`() = mainCoroutineRule.testDispatcher.runBlockingTest {
         //make sure movie is loaded
-        whenever(mainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
+        whenever(remoteMainRepository.getDetailMovie(dummyMovie.id)).thenReturn(dummyMovie)
         viewModel.submitMovie(dummyMovie.id)
 
         viewModel.observeMovie.observeForTesting {
@@ -177,7 +177,7 @@ class DetailViewModelTest {
     @Test
     fun `deleteFromFavorite should delete tvShow`() = mainCoroutineRule.testDispatcher.runBlockingTest {
         //make sure TvShow is loaded
-        whenever(mainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
+        whenever(remoteMainRepository.getDetailTvShow(dummyTvShow.id)).thenReturn(dummyTvShow)
         viewModel.submitTvShow(dummyTvShow.id)
 
         viewModel.observeTvShow.observeForTesting {
