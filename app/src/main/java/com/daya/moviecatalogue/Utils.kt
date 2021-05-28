@@ -55,6 +55,37 @@ fun DetailTvShowResponse.maptoTvShow(): TvShow {
     )
 }
 
+//general to response
+fun Movie.mapToDetailMovieResponse(): DetailMovieResponse {
+    return DetailMovieResponse(
+        id = this.id,
+        title = this.title,
+        overview = description,
+        poster_path = image_url,
+        release_date = this.release_date,
+        vote_average = (this.user_score / 10).toDouble(),
+        popularity = 0.00,
+        vote_count = 1,
+        video = false,
+        backdrop_path = "",
+        adult = false,
+        original_language = "english",
+        original_title = title
+    )
+}
+
+//fun DetailTvShowResponse.maptoTvShow(): TvShow {
+//    return TvShow(
+//        id = this.id,
+//        title = this.name,
+//        description = this.overview,
+//        image_url = this.poster_path,
+//        user_score = (this.vote_average * 10).toInt(),
+//        year = this.first_air_date.take(4).toInt()
+//    )
+//}
+
+
 //general to entity
 fun Movie.mapToMovieEntity(): MovieEntity {
     return MovieEntity(
