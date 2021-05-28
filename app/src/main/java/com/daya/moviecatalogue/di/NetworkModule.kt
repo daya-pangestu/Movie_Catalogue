@@ -71,6 +71,9 @@ interface TheMovieDbApi{
     @GET("discover/movie")
     fun discoverMovie() : Call<MovieResponse>
 
+    @GET("discover/movie")
+    suspend fun discoverMovieCoroutine() : MovieResponse
+
     @GET("movie/{movie_id}")
     fun getDetailMovie(
             @Path("movie_id") movie_Id : Int

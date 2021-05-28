@@ -1,5 +1,7 @@
 package com.daya.moviecatalogue.data.main
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.map
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
@@ -24,13 +26,20 @@ constructor(
     private val externalScope : CoroutineScope,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) :PersistRepository {
-   override fun getAllFavoriteMovies() = localMainDataSource
-        .getListMovies()
-        .map { pagingData ->
-            pagingData
-                .map { it.mapToMovie()
-                }
-    }
+   override fun getAllFavoriteMovies() =
+       Pager(
+           config = PagingConfig(
+               pageSize = 20,
+           )
+       ) {
+           localMainDataSource.getListMovies()
+       }.flow
+           .map { pagingData ->
+               pagingData
+                   .map {
+                       it.mapToMovie()
+                   }
+           }
 
     override fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
         it.map { it.mapToTvShow()}

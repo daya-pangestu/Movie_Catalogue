@@ -103,6 +103,10 @@ fun TvShowEntity.mapToTvShow() : TvShow {
     )
 }
 
+fun List<Movie>.mapListMovieToMovieEntity() = this.map { it.mapToMovieEntity() }
+fun List<MovieEntity>.mapListMovieEntityToMovie() = this.map { it.mapToMovie() }
+fun List<DetailMovieResponse>.mapListDetailMovieToMovie() = this.map { it.mapToMovie() }
+
 fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this,text,duration).show()
 }
