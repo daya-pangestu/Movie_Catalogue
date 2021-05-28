@@ -36,7 +36,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @HiltAndroidTest
-class MovieFavViewModelTests {
+class MovieFavViewModelTest {
 
     @get:Rule(order = 0)
     var hiltAndroidRule = HiltAndroidRule(this)
