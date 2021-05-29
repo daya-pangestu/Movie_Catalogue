@@ -5,6 +5,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -32,7 +34,6 @@ class DetailActivityTest{
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
-
         IdlingRegistry.getInstance().register(TestIdlingResource.get)
     }
 
@@ -58,6 +59,30 @@ class DetailActivityTest{
     }
 
     @Test
+    fun detail_that_display_movie_shoul_able_to_save_and_delete_movie_from_favorite() {
+        val expectedMovie = DataDummy.getListMovie()[9]
+
+        val detailMovieIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java)
+            .putExtra(DETAIL_EXTRA_MOVIE,expectedMovie.id)
+        val scenario = launchActivity<DetailActivity>(detailMovieIntent)
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
+
+        onView(withId(R.id.action_favorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(doesNotExist())
+        onView(withId(R.id.action_unfavorite)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.action_unfavorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
+
+        scenario.close()
+    }
+
+    @Test
     fun detail_activity_should_display_detailTvShow() {
         val expectedTvShow = DataDummy.getListTvShow()[9]
 
@@ -68,6 +93,30 @@ class DetailActivityTest{
         onView(withId(R.id.detail_tv_title)).check(matches(withText(containsString("${expectedTvShow.title}(${expectedTvShow.year})"))))
         onView(withId(R.id.detail_tv_desc)).check(matches(withText(containsString(expectedTvShow.description))))
         onView(withId(R.id.detail_tv_score)).check(matches(withText(containsString(expectedTvShow.user_score.toString()))))
+
+        scenario.close()
+    }
+
+    @Test
+    fun detail_that_display_tvshow_should_able_to_save_and_delete_tvshow_from_favorite() {
+        val expectedMovie = DataDummy.getListTvShow()[9]
+
+        val detailMovieIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java)
+            .putExtra(DETAIL_EXTRA_TV_SHOW,expectedMovie.id)
+        val scenario = launchActivity<DetailActivity>(detailMovieIntent)
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
+
+        onView(withId(R.id.action_favorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(doesNotExist())
+        onView(withId(R.id.action_unfavorite)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.action_unfavorite)).perform(click())
+
+        onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_unfavorite)).check(doesNotExist())
 
         scenario.close()
     }

@@ -6,6 +6,7 @@ import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.RemoteMainRepository
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -23,8 +24,10 @@ constructor(
 
     private val idIsFavorite = MutableLiveData<Int>()
 
-    private val _savingProgress = MutableLiveData<Resource<Long>>()
-    private val _deletingProgress = MutableLiveData<Resource<Int>>()
+    private val _savingProgress = MutableLiveData<Resource<Boolean>>()
+    private val _deletingProgress = MutableLiveData<Resource<Boolean>>()
+
+    var isFavorite = false
 
     fun submitTvShow(tvShowId: Int) {
         tvShowIdLiveData.value = tvShowId
@@ -42,10 +45,13 @@ constructor(
         liveData {
             emit(Resource.Loading)
             try {
+                TestIdlingResource.increment()
                 val data = remoteMainRepository.getDetailMovie(it)
                 emit(Resource.Success(data))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))
+            }finally {
+                TestIdlingResource.decrement()
             }
         }
     }
@@ -56,22 +62,27 @@ constructor(
         liveData {
             emit(Resource.Loading)
             try {
+                TestIdlingResource.increment()
                 val data = remoteMainRepository.getDetailTvShow(it)
                 emit(Resource.Success(data))
 
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))
+            }finally {
+                TestIdlingResource.decrement()
             }
         }
     }
 
     val observeTvShow = _observeTvShow
 
-    val observeIsFavorite = idIsFavorite.switchMap {
+    //one-shot operation
+    val checkIsFavorite = idIsFavorite.switchMap {
        liveData {
            emit(Resource.Loading)
            try {
                val data = localPersistRepository.isFavorite(it)
+               isFavorite = data
                emit(Resource.Success(data))
            } catch (e: Exception) {
                emit(Resource.Error(e.localizedMessage))
@@ -93,7 +104,7 @@ constructor(
             val rowId = async {
                 localPersistRepository.addMovieToFavorite(movie)
             }.await()
-            _savingProgress.value = Resource.Success(rowId)
+            _savingProgress.value = Resource.Success(rowId > 0)
         } catch (e: Exception) {
             _savingProgress.value = Resource.Error(e.message)
         }
@@ -105,7 +116,7 @@ constructor(
             val rowId = async {
                 localPersistRepository.addTvShowToFavorite(tvShow)
             }.await()
-            _savingProgress.value = Resource.Success(rowId)
+            _savingProgress.value = Resource.Success(rowId>0)
         } catch (e: Exception) {
             _savingProgress.value = Resource.Error(e.message)
         }
@@ -127,8 +138,7 @@ constructor(
             val rowDeleted = async {
                 localPersistRepository.deleteMovieFromFavorite(movie)
             }.await()
-
-            _deletingProgress.value = Resource.Success(rowDeleted)
+            _deletingProgress.value = Resource.Success(rowDeleted > 0)
         } catch (e: Exception) {
             _deletingProgress.value = Resource.Error(e.message)
         }
@@ -140,7 +150,7 @@ constructor(
             val rowDeleted = async {
                 localPersistRepository.deleteTvShowFromFavorite(tvShow)
             }.await()
-            _deletingProgress.value = Resource.Success(rowDeleted)
+            _deletingProgress.value = Resource.Success(rowDeleted > 0)
         } catch (e: Exception) {
             _deletingProgress.value = Resource.Error(e.message)
         }

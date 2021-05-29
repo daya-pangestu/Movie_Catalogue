@@ -10,7 +10,6 @@ import com.daya.moviecatalogue.data.Resource
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.databinding.ActivityDetailBinding
-import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.loadImage
 import com.daya.moviecatalogue.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,11 +35,9 @@ class DetailActivity : AppCompatActivity() {
 
         when {
             movie != 0 -> {
-                TestIdlingResource.increment()
                 viewModel.submitMovie(movie)
             }
             tvShow != 0 -> {
-                TestIdlingResource.increment()
                 viewModel.submitTvShow(tvShow)
             }
         }
@@ -50,11 +47,10 @@ class DetailActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    TestIdlingResource.decrement()
                     renderWithMovie(it.data)
                 }
                 is Resource.Error -> {
-                    TestIdlingResource.decrement()
+                    toast(getString(R.string.fail_to_load))
                 }
             }
         }
@@ -64,20 +60,21 @@ class DetailActivity : AppCompatActivity() {
 
                 }
                 is Resource.Success -> {
-                    TestIdlingResource.decrement()
                     renderWithTvShow(it.data)
                 }
                 is Resource.Error -> {
-                    TestIdlingResource.decrement()
                     toast(getString(R.string.fail_to_load))
                 }
             }
         }
 
-        //oneshoot operation, called only when activity opened
-        viewModel.observeIsFavorite.observe(this){
+        //oneshoot operation, called only when activity opened,
+        viewModel.checkIsFavorite.observe(this){
             when (it) {
-                is Resource.Success -> invalidateOptionsMenu()
+                is Resource.Success -> {
+                    viewModel.isFavorite = it.data
+                    invalidateOptionsMenu()
+                }
                 else -> {
                     Timber.i("isFavorite status $it")
                 }
@@ -89,6 +86,7 @@ class DetailActivity : AppCompatActivity() {
                 is Resource.Loading -> toast("adding to favorite")
                 is Resource.Success -> {
                     toast("added to favorite")
+                    viewModel.isFavorite = it.data
                     invalidateOptionsMenu()
                 }
                 is Resource.Error -> toast("error ${it.exceptionMessage}")
@@ -100,6 +98,7 @@ class DetailActivity : AppCompatActivity() {
                 is Resource.Loading -> toast("removing from favorite")
                 is Resource.Success -> {
                     toast("removed from favorite")
+                    viewModel.isFavorite = !it.data
                     invalidateOptionsMenu()
                 }
                 is Resource.Error -> toast("error ${it.exceptionMessage}")
@@ -146,12 +145,12 @@ class DetailActivity : AppCompatActivity() {
             (viewModel.observeSaving.value is Resource.Success)
                     && (viewModel.observeDeleting.value !is Resource.Success)
 
-        val hasSavedBefore = when (val res = viewModel.observeIsFavorite.value) {
+        val hasSavedBefore = when (val res = viewModel.checkIsFavorite.value) {
             is Resource.Success -> res.data
             else -> false
         }
 
-        val isFavorite = currentlySaved || hasSavedBefore
+        val isFavorite = viewModel.isFavorite
         menu?.findItem(R.id.action_favorite)?.isVisible = !isFavorite
         menu?.findItem(R.id.action_unfavorite)?.isVisible = isFavorite
         return super.onPrepareOptionsMenu(menu)
