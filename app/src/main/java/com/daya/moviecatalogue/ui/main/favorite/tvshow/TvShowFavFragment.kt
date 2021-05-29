@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.databinding.FragmentItemListBinding
@@ -13,6 +15,8 @@ import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.ui.detail.DetailActivity
 import com.daya.moviecatalogue.ui.main.TvShowRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -21,8 +25,6 @@ class TvShowFavFragment : Fragment(R.layout.fragment_item_list) {
 
     private val viewModel by viewModels<TvShowFavViewModel>()
 
-    private val idlingRes = TestIdlingResource
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -30,17 +32,16 @@ class TvShowFavFragment : Fragment(R.layout.fragment_item_list) {
     }
 
     fun observerFavoriteTvShow() {
-        idlingRes.increment()
-        viewModel.favoriteTvShows.observe(viewLifecycleOwner) {
-           if (idlingRes.get.isIdleNow)idlingRes.decrement()
-            binding.progressCircular.isVisible = false
-            val listTvShow = it
-            Timber.i(" observerMovie succes : $listTvShow")
-            binding.rvList.adapter = TvShowRecyclerViewAdapter(listTvShow) {
-                val intent = Intent(context, DetailActivity::class.java).apply {
-                    putExtra(DetailActivity.DETAIL_EXTRA_MOVIE, it.id)
-                }
-                startActivity(intent)
+        val adapter = TvShowRecyclerViewAdapter {
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                putExtra(DetailActivity.DETAIL_EXTRA_TV_SHOW, it.id)
+            }
+            startActivity(intent)
+        }
+        binding.rvList.adapter = adapter
+        lifecycleScope.launch {
+            viewModel.favoriteTvShows.collectLatest {
+                adapter.submitData(it)
             }
         }
     }

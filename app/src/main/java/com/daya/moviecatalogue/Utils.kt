@@ -38,9 +38,9 @@ fun DetailMovieResponse.mapToMovie(): Movie {
         title = this.title ?: "",
         description = this.overview ?: "",
         image_url = this.poster_path,
-        release_date = this.release_date,
+        release_date = this.release_date ?: "",
         user_score = (this.vote_average * 10).toInt(),
-        year = this.release_date.take(4).toInt()
+        year = this.release_date?.take(4)?.toInt() ?: 0
     )
 }
 
@@ -73,6 +73,25 @@ fun Movie.mapToDetailMovieResponse(): DetailMovieResponse {
         original_title = title
     )
 }
+
+fun TvShow.mapToDetailTvShowResponse(): DetailTvShowResponse {
+    return DetailTvShowResponse(
+        id = this.id,
+        name = this.title,
+        overview = description,
+        poster_path = image_url,
+        vote_average = (this.user_score / 10).toDouble(),
+        popularity = 0.00,
+        vote_count = 1,
+        backdrop_path = "",
+        original_language = "english",
+        first_air_date = "2000",
+        genre_ids = emptyList(),
+        origin_country = emptyList(),
+        original_name = this.title
+    )
+}
+
 
 //fun DetailTvShowResponse.maptoTvShow(): TvShow {
 //    return TvShow(

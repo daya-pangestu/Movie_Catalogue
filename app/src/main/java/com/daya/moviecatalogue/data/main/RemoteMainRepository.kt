@@ -6,7 +6,9 @@ import androidx.paging.*
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.maptoTvShow
 import kotlinx.coroutines.flow.*
@@ -18,10 +20,10 @@ class RemoteMainRepository
 @Inject
 constructor(
     private val remoteDetailDataSource: RemoteDetailDataSource,
-    private val remoteMainDataSource: MainDataSource<PagingSource<Int, DetailMovieResponse>, TvShowResponse>,
+    private val remoteMainDataSource: MainDataSource<PagingSource<Int, DetailMovieResponse>, PagingSource<Int, DetailTvShowResponse>>,
 ) : MainRepository{
     override fun discoverMovies(): Flow<PagingData<Movie>> {
-        return Pager(config = PagingConfig(pageSize = 20)){
+        return Pager(config = PagingConfig(pageSize = 20)) {
             remoteMainDataSource.getListMovies()
         }.flow
             .map {
@@ -31,7 +33,18 @@ constructor(
             }
     }
 
-    override suspend fun discoverTvShow() : List<TvShow> = remoteMainDataSource.getListTvShow().results.map { it.maptoTvShow() }
+    override fun discoverTvShow() : Flow<PagingData<TvShow>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20)){
+            remoteMainDataSource.getListTvShow()
+        }.flow
+            .map {
+                it.map {
+                    it.maptoTvShow()
+                }
+            }
+
+    }
 
     override suspend fun getDetailMovie(movieId: Int): Movie = remoteDetailDataSource.getDetailMovie(movieId).mapToMovie()
 

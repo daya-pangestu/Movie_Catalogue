@@ -7,6 +7,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
+import androidx.paging.LoadType
+import androidx.recyclerview.widget.ItemTouchHelper
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.daya.moviecatalogue.R
 import com.daya.moviecatalogue.databinding.FragmentItemListBinding
@@ -37,7 +41,6 @@ class MovieFavFragment : Fragment(R.layout.fragment_item_list) {
             startActivity(intent)
         }
         binding.rvList.adapter = adapter
-
         lifecycleScope.launch {
             viewModel.favoriteMovies.collectLatest {
                 adapter.submitData(it)

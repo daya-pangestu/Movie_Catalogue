@@ -22,7 +22,7 @@ interface MovieDao {
     @Query("SELECT * from movie_entity WHERE movieId = :movieId")
     suspend fun getMovieById(movieId: Int): MovieEntity?
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun batchInsertMovie(movies: List<MovieEntity>) : List<Long>

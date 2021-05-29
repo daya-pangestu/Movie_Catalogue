@@ -6,6 +6,7 @@ import androidx.paging.map
 import com.daya.moviecatalogue.data.main.movie.Movie
 import com.daya.moviecatalogue.data.main.tvshow.TvShow
 import com.daya.moviecatalogue.di.coroutine.IoDispatcher
+import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.mapToMovieEntity
 import com.daya.moviecatalogue.mapToMovie
 import com.daya.moviecatalogue.mapToTvShow
@@ -41,9 +42,20 @@ constructor(
                    }
            }
 
-    override fun getAllFavoriteTvShow() = localMainDataSource.getListTvShow().map {
-        it.map { it.mapToTvShow()}
-    }
+    override fun getAllFavoriteTvShow() = Pager(
+        config = PagingConfig(
+            pageSize = 20
+        )
+    ){
+        localMainDataSource.getListTvShow()
+    }.flow
+        .map {
+            pagingData ->
+            pagingData
+                .map {
+                    it.mapToTvShow()
+                }
+        }
 
     override suspend fun addMovieToFavorite(movie: Movie) = externalScope.async(coroutineDispatcher) {
         val entity = movie.mapToMovieEntity()

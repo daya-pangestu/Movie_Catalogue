@@ -16,6 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import javax.inject.Singleton
 
 @Module
@@ -68,11 +69,18 @@ interface TheMovieDbApi{
     @GET("discover/tv")
     fun discoverTvShow() : Call<TvShowResponse>
 
-    @GET("discover/movie")
-    fun discoverMovie() : Call<MovieResponse>
+    @GET("discover/tv")
+    suspend fun discoverTvShowCorooutine(
+        @Query("page")page :Int
+    ) : TvShowResponse
 
     @GET("discover/movie")
-    suspend fun discoverMovieCoroutine() : MovieResponse
+    fun discoverMovie(): Call<MovieResponse>
+
+    @GET("discover/movie")
+    suspend fun discoverMovieCoroutine(
+        @Query("page")page :Int
+    ) : MovieResponse
 
     @GET("movie/{movie_id}")
     fun getDetailMovie(
