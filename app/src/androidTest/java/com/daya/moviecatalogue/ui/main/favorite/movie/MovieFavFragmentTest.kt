@@ -19,6 +19,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.R
+import com.daya.moviecatalogue.data.db.MovieCatDatabase
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.di.idlingresource.TestIdlingResource
 import com.daya.moviecatalogue.mapToMovieEntity
@@ -46,17 +47,22 @@ class MovieFavFragmentTest{
 
     val testIdlingResource = TestIdlingResource
 
+
     @Inject
+    lateinit var db : MovieCatDatabase
+
     lateinit var movieDao :MovieDao
 
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
+        movieDao = db.movieDao()
         IdlingRegistry.getInstance().register(testIdlingResource.get)
     }
 
     @After
     fun tearDown() {
+        db.close()
         IdlingRegistry.getInstance().unregister(testIdlingResource.get)
     }
 
@@ -72,23 +78,24 @@ class MovieFavFragmentTest{
 
             launchFragmentInHiltContainer<MovieFavFragment>()
 
-            //check if rv is displayed,
             onView(withId(R.id.rv_list))
-                .check(ViewAssertions.matches(isDisplayed()))
-            onView(withId(R.id.rv_list))
-                .check(RecyclerViewItemCountAssertion(expectedCount = 5))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.rv_list)).check { view, noViewFoundException ->
+                if (noViewFoundException != null) throw noViewFoundException
+                val recyclerView = view as RecyclerView
+                assertThat(recyclerView.adapter!!.itemCount).isGreaterThan(0)
+            }
 
-            //click one of the item
             init()
             onView(withId(R.id.rv_list)).perform(
                 scrollToPosition<RecyclerView.ViewHolder>(
-                    5
+                    0
                 ), click()
             )
-            //make sure intent is fired
+
             intended(hasComponent(DetailActivity::class.java.name))
             release()
-            //make sure menu item action_unfavorite is displayed
+
             onView(withId(R.id.action_unfavorite)).check(matches(isDisplayed()))
         }
     }

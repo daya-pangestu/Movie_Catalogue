@@ -42,7 +42,7 @@ class MovieDaoTest {
     lateinit var movieDao: MovieDao
 
     private val dummyListMovie =DataDummy.getListMovie()
-    private val dummyMovie = dummyListMovie[7]
+    private val dummyMovie = dummyListMovie[7].mapToMovieEntity()
 
     @Before
     fun setUp() {
@@ -51,55 +51,53 @@ class MovieDaoTest {
 
     @Test
     fun insertMovie_should_return_rowId() = runBlocking {
-        val expected = dummyMovie.mapToMovieEntity()
-        val actualRowId = movieDao.insertMovie(expected)
+        val actualRowId = movieDao.insertMovie(dummyMovie)
 
-        assertThat(actualRowId).isEqualTo(expected.id)
+        assertThat(actualRowId).isEqualTo(dummyMovie.id)
     }
 
     @Test
     fun getDetailMovieById_should_return_MovieEntity() = runBlocking {
-        val expectedValue = dummyMovie.mapToMovieEntity()
-        movieDao.insertMovie(expectedValue)
+        movieDao.insertMovie(dummyMovie)
 
-        val actualValue = movieDao.getMovieById(expectedValue.id)
-        assertThat(actualValue).isEqualTo(expectedValue)
+        val actualValue = movieDao.getMovieById(dummyMovie.id)
+        assertThat(actualValue).isEqualTo(dummyMovie)
     }
 
     @Test
     fun deleteMovie_should_return_rowDeleted_count() = runBlocking {
-        val expected = dummyMovie.mapToMovieEntity()
-        val actualRowId = movieDao.insertMovie(expected)
+        val actualRowId = movieDao.insertMovie(dummyMovie)
 
-        assertThat(actualRowId).isEqualTo(expected.id)
+        assertThat(actualRowId).isEqualTo(dummyMovie.id)
 
-        val rowDeleted = movieDao.deleteMovie(expected)
+        val rowDeleted = movieDao.deleteMovie(dummyMovie)
         assertThat(rowDeleted).isEqualTo(1L)
     }
 
     @Test
     fun getMovies_should_return_flow_list_movieEntity() = runBlocking {
-        val expected = dummyMovie.mapToMovieEntity()
 
-        movieDao.insertMovie(expected)
+        movieDao.insertMovie(dummyMovie)
 
         val actual = movieDao.getMovies().take(1).toList().flatten()
-        assertThat(expected).isIn(actual)
+        assertThat(dummyMovie).isIn(actual)
     }
 
     @Test
-    fun getMoviesPage_should_return_paging_data_movie() = runBlocking(mainCoroutineRule.testDispatcher) {
-        val rowSavedId = movieDao.batchInsertMovie(dummyListMovie.mapListMovieToMovieEntity())
-        assertThat(rowSavedId.size).isEqualTo(dummyListMovie.size)
-        val pagingSource = movieDao.getMoviesPaged()
+    fun getMoviesPage_should_return_paging_data_movie() =
+        runBlocking(mainCoroutineRule.testDispatcher) {
+            val rowSavedId = movieDao.batchInsertMovie(dummyListMovie.mapListMovieToMovieEntity())
+            assertThat(rowSavedId.size).isEqualTo(dummyListMovie.size)
+            val pagingSource = movieDao.getMoviesPaged()
 
-        val actual = pagingSource.load(
-            PagingSource.LoadParams.Refresh(
-            key = null,
-            loadSize = 20,
-            placeholdersEnabled = false
-        ))
-        assertThat((actual as PagingSource.LoadResult.Page).data.size).isEqualTo(dummyListMovie.size)
-    }
+            val actual = pagingSource.load(
+                PagingSource.LoadParams.Refresh(
+                    key = null,
+                    loadSize = 20,
+                    placeholdersEnabled = false
+                )
+            )
+            assertThat((actual as PagingSource.LoadResult.Page).data.size).isEqualTo(dummyListMovie.size)
+        }
 
 }

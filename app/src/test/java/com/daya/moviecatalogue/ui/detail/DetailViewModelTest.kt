@@ -79,13 +79,13 @@ class DetailViewModelTest {
         viewModel.startObserveIsFavorite(dummyMovie.id)
 
         //initial value
-        assertThat(viewModel.observeIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
+        assertThat(viewModel.checkIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
 
         verify(localPersistRepository).isFavorite(dummyMovie.id)
 
         //latest value
-        viewModel.observeIsFavorite.observeForTesting {
-            assertThat(viewModel.observeIsFavorite.value).isEqualTo(Resource.Success(true))
+        viewModel.checkIsFavorite.observeForTesting {
+            assertThat(viewModel.checkIsFavorite.value).isEqualTo(Resource.Success(true))
         }
     }
 
@@ -95,13 +95,13 @@ class DetailViewModelTest {
         viewModel.startObserveIsFavorite(dummyMovie.id)
 
         //initial value
-        assertThat(viewModel.observeIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
+        assertThat(viewModel.checkIsFavorite.getOrAwaitValue()).isEqualTo(Resource.Loading)
 
         verify(localPersistRepository).isFavorite(dummyMovie.id)
 
         //latest value
-        viewModel.observeIsFavorite.observeForTesting {
-            assertThat(viewModel.observeIsFavorite.value).isEqualTo(Resource.Success(false))
+        viewModel.checkIsFavorite.observeForTesting {
+            assertThat(viewModel.checkIsFavorite.value).isEqualTo(Resource.Success(false))
         }
     }
 
@@ -124,7 +124,7 @@ class DetailViewModelTest {
 
         //assert when movie get saved, observeSaving has the rowId
         viewModel.observeSaving.observeForTesting {
-            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(dummyMovie.id.toLong()))
+            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(true))
         }
     }
 
@@ -147,7 +147,7 @@ class DetailViewModelTest {
 
         //assert when tvshow get saved, observeSaving has the rowId
         viewModel.observeSaving.observeForTesting {
-            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(dummyTvShow.id.toLong()))
+            assertThat(viewModel.observeSaving.value).isEqualTo(Resource.Success(true))
         }
     }
 
@@ -170,7 +170,7 @@ class DetailViewModelTest {
 
         //assert when movie get saved, observedeleting has the rowDeleted count
         viewModel.observeDeleting.observeForTesting {
-            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(1))
+            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(true))
         }
     }
 
@@ -193,7 +193,7 @@ class DetailViewModelTest {
 
         //assert when TvShow get deleted, observedeleting has the rowDeleted count
         viewModel.observeDeleting.observeForTesting {
-            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(1))
+            assertThat(viewModel.observeDeleting.value).isEqualTo(Resource.Success(true))
         }
     }
 }

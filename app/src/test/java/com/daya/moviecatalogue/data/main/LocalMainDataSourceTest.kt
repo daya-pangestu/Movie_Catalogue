@@ -3,15 +3,13 @@ package com.daya.moviecatalogue.data.main
 import androidx.paging.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.daya.moviecatalogue.data.main.movie.Movie
-import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.data.main.movie.local.MovieDao
 import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowDao
 import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
 import com.daya.moviecatalogue.mapToMovieEntity
 import com.daya.moviecatalogue.mapToTvShowEntity
-import com.daya.moviecatalogue.shared.MainCoroutineRule
-import com.daya.moviecatalogue.shared.mapListMovieToMovieEntity
+import com.daya.moviecatalogue.shared.*
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -50,6 +48,29 @@ class LocalMainDataSourceTest {
         localMainDataSource = LocalMainDataSource(movieDao, tvshowDao)
     }
 
+
+    @Test
+    fun `getListMovies called movieDao#getMoviesPaged when invoked`() = runBlocking(mainCoroutineRule.testDispatcher) {
+        whenever(movieDao.getMoviesPaged()).thenReturn(dummyPagingMovies)
+
+        val actual = localMainDataSource
+            .getListMovies()
+
+        verify(movieDao).getMoviesPaged()
+        assertThat(actual).isEqualTo(dummyPagingMovies)
+    }
+
+    @Test
+    fun `getListTvShow called tvShowDao#getTvShows when invoked`() = mainCoroutineRule.testDispatcher.runBlockingTest {
+        whenever(tvshowDao.getTvShowsPaged()).thenReturn(dummyPagingTvShows)
+
+        val actual = localMainDataSource
+            .getListTvShow()
+
+        verify(tvshowDao).getTvShowsPaged()
+        assertThat(actual).isEqualTo(dummyPagingTvShows)
+    }
+
     private val dummyPagingMovies : PagingSource<Int,MovieEntity> = object : PagingSource<Int, MovieEntity>() {
         override fun getRefreshKey(state: PagingState<Int, MovieEntity>) : Int? = null
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieEntity> {
@@ -61,27 +82,14 @@ class LocalMainDataSourceTest {
         }
     }
 
-    private val dummyFlowTvShows =
-        flow<List<TvShowEntity>> { DataDummy.getListTvShow().map { it.mapToTvShowEntity() } }
-
-    @Test
-    fun `getListMovies called movieDao#getMoviesPaged`() = runBlocking(mainCoroutineRule.testDispatcher) {
-        whenever(movieDao.getMoviesPaged()).thenReturn(dummyPagingMovies)
-
-        val actual = localMainDataSource
-            .getListMovies()
-
-        verify(movieDao).getMoviesPaged()
-        assertThat(actual).isEqualTo(dummyPagingMovies)
+    private val dummyPagingTvShows : PagingSource<Int,TvShowEntity> = object : PagingSource<Int, TvShowEntity>() {
+        override fun getRefreshKey(state: PagingState<Int, TvShowEntity>) : Int? = null
+        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowEntity> {
+            return LoadResult.Page(
+                nextKey = null,
+                prevKey = null,
+                data = DataDummy.getListTvShow().mapListTvShowToTvShowEntity()
+            )
+        }
     }
-
-    @Test
-    fun `verify localMainDataSource#getListTvShow called tvShowDao#getTvShows`() = mainCoroutineRule.testDispatcher.runBlockingTest {
-        whenever(tvshowDao.getTvShows()).thenReturn(dummyFlowTvShows)
-        val actual = localMainDataSource.getListTvShow()
-        assertThat(actual).isEqualTo(dummyFlowTvShows)
-
-        //TODO made tvshow test just same as above
-    }
-
 }

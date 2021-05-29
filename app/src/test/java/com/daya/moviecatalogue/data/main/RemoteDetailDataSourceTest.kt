@@ -3,7 +3,7 @@ package com.daya.moviecatalogue.data.main
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.di.TheMovieDbApi
-import com.daya.moviecatalogue.fake.Fake
+import com.daya.moviecatalogue.shared.Fake
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking

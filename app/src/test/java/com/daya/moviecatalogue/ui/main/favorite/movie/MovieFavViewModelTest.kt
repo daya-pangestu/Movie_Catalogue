@@ -13,6 +13,7 @@ import com.daya.moviecatalogue.movieDiffCallback
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
 import com.daya.moviecatalogue.shared.mapListMovieToMovieEntity
+import com.daya.moviecatalogue.shared.noopListCallback
 import com.daya.moviecatalogue.ui.main.MovieRecyclerViewAdapter
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -44,8 +45,6 @@ class MovieFavViewModelTest {
     @get:Rule(order = 1)
     var mainCoroutineRule = MainCoroutineRule()
 
-    val coroutinescope = TestCoroutineScope(mainCoroutineRule.testDispatcher)
-
     @Inject
     lateinit var fakeLocalPersistRepository : PersistRepository
 
@@ -70,21 +69,12 @@ class MovieFavViewModelTest {
                 workerDispatcher = mainCoroutineRule.testDispatcher
             )
 
-            val job = coroutinescope.launch {
+            val job = launch {
                 movieFavFavViewModel.favoriteMovies.collectLatest {
                     differ.submitData(it)
                 }
             }
-
             assertThat(differ.snapshot()).isNotEmpty()
-
             job.cancel()
         }
-
-    private val noopListCallback = object : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int) {}
-        override fun onRemoved(position: Int, count: Int) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
-    }
 }

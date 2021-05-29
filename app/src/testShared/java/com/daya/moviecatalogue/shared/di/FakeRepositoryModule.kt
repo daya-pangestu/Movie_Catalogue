@@ -4,9 +4,13 @@ import androidx.paging.PagingSource
 import com.daya.moviecatalogue.data.main.MainDataSource
 import com.daya.moviecatalogue.data.main.PersistRepository
 import com.daya.moviecatalogue.data.main.RemoteMainDataSource
+import com.daya.moviecatalogue.data.main.movie.local.MovieEntity
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
+import com.daya.moviecatalogue.data.main.tvshow.local.TvShowEntity
+import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.TvShowResponse
 import com.daya.moviecatalogue.di.RepositoryModule
+import com.daya.moviecatalogue.shared.data.FakeLocalMainDataSource
 import com.daya.moviecatalogue.shared.data.FakeLocalPersistRepository
 import com.daya.moviecatalogue.shared.data.FakeRemoteMainDataSource
 import dagger.Binds
@@ -28,6 +32,10 @@ abstract class FakeRepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindFakeRemoteMainDataSource(fakeRemoteMainDataSource: FakeRemoteMainDataSource) : MainDataSource<PagingSource<Int, DetailMovieResponse>, TvShowResponse>
+    abstract fun bindFakeRemoteMainDataSource(fakeRemoteMainDataSource: FakeRemoteMainDataSource) : MainDataSource<PagingSource<Int, DetailMovieResponse>, PagingSource<Int, DetailTvShowResponse>>
+
+    @Singleton
+    @Binds
+    abstract fun bindFakeLocalMainDataSource(fakeLocalMainDataSource: FakeLocalMainDataSource): MainDataSource<PagingSource<Int, MovieEntity>, PagingSource<Int, TvShowEntity>>
 
 }

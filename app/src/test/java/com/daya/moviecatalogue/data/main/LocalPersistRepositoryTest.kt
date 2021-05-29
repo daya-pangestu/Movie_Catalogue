@@ -6,6 +6,8 @@ import com.daya.moviecatalogue.mapToMovieEntity
 import com.daya.moviecatalogue.mapToTvShowEntity
 import com.daya.moviecatalogue.shared.DataDummy
 import com.daya.moviecatalogue.shared.MainCoroutineRule
+import com.daya.moviecatalogue.shared.data.FakeLocalMainDataSource
+import com.daya.moviecatalogue.shared.data.FakeLocalPersistRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,23 +63,21 @@ class LocalPersistRepositoryTest {
     @Test
     fun `LocalPersistRepository#getAllFavoriteMovies`() =
         mainCoroutineRule.testDispatcher.runBlockingTest {
-//            whenever(localMainDataSource.getListMovies()).thenReturn(flowOf(dummyFavoriteMovies.map { it.mapToMovieEntity() }))
-//
-//            localPersistRepository.getAllFavoriteMovies().test {
-//                assertThat(dummyFavoriteMovies).isEqualTo(expectItem())
-//                expectComplete()
-//            }
+            val fakeLocalMainDataSource = FakeLocalMainDataSource()
+            val expectedPagingSource = fakeLocalMainDataSource.getListMovies()
+            whenever(localMainDataSource.getListMovies()).thenReturn(expectedPagingSource)
+            val actual = localPersistRepository.getAllFavoriteMovies()
+            assertThat(actual).isNotNull()
         }
 
     @Test
     fun `LocalPersistRepository#getAllFavoriteTvShow`() =
         mainCoroutineRule.testDispatcher.runBlockingTest {
-            whenever(localMainDataSource.getListTvShow()).thenReturn(flowOf(dummyFavoriteTvShows.map { it.mapToTvShowEntity() }))
-
-            localPersistRepository.getAllFavoriteTvShow().test {
-                assertThat(dummyFavoriteTvShows).isEqualTo(expectItem())
-                expectComplete()
-            }
+            val fakeLocalMainDataSource = FakeLocalMainDataSource()
+            val expectedPagingSource = fakeLocalMainDataSource.getListTvShow()
+            whenever(localMainDataSource.getListTvShow()).thenReturn(expectedPagingSource)
+            val actual = localPersistRepository.getAllFavoriteTvShow()
+            assertThat(actual).isNotNull()
         }
 
     @Test
