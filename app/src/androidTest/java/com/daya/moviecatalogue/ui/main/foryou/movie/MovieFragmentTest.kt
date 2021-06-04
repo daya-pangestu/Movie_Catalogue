@@ -51,7 +51,7 @@ class MovieFragmentTest{
     }
 
     @Test
-    fun movie_Recyclerview_should_be_able_intent_to_detail_activity() {
+    fun movie_Recyclerview_should_be_able_to_display_list_movie_and_intent_to_detail_activity() {
         launchFragmentInHiltContainer<MovieFragment>()
 
         onView(withId(R.id.rv_list)).check(matches(isDisplayed()))

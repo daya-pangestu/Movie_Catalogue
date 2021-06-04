@@ -44,7 +44,7 @@ class MovieFragment : Fragment(R.layout.fragment_item_list) {
         observerMovies()
     }
 
-    fun observerMovies() {
+    private fun observerMovies() {
         val adapter = MovieRecyclerViewAdapter {
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra(DETAIL_EXTRA_MOVIE, it.id)

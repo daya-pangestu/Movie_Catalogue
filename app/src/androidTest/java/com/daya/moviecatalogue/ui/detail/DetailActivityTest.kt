@@ -99,10 +99,10 @@ class DetailActivityTest{
 
     @Test
     fun detail_that_display_tvshow_should_able_to_save_and_delete_tvshow_from_favorite() {
-        val expectedMovie = DataDummy.getListTvShow()[9]
+        val expectedTvShow = DataDummy.getListTvShow()[9]
 
         val detailMovieIntent = Intent(ApplicationProvider.getApplicationContext(),DetailActivity::class.java)
-            .putExtra(DETAIL_EXTRA_TV_SHOW,expectedMovie.id)
+            .putExtra(DETAIL_EXTRA_TV_SHOW,expectedTvShow.id)
         val scenario = launchActivity<DetailActivity>(detailMovieIntent)
 
         onView(withId(R.id.action_favorite)).check(matches(isDisplayed()))

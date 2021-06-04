@@ -59,7 +59,7 @@ class RemoteMainDataSourceTest {
             val expected = PagingSource.LoadResult.Page<Int, DetailMovieResponse>(
                 data = movieResponse!!.results,
                 prevKey = null,
-                nextKey = 1
+                nextKey = 1 + 1
             )
 
             val actualPagingSource = remoteMainDataSource.getListMovies()
@@ -90,7 +90,7 @@ class RemoteMainDataSourceTest {
             val expected = PagingSource.LoadResult.Page<Int, DetailTvShowResponse>(
                 data = tvShowResponse!!.results,
                 prevKey = null,
-                nextKey = 1
+                nextKey = 1 + 1
             )
 
             val actualPagingSource = remoteMainDataSource.getListTvShow()

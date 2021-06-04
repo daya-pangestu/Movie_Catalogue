@@ -41,7 +41,7 @@ class TvShowFragment : Fragment(R.layout.fragment_item_list) {
         tvShowObserver()
     }
 
-    fun tvShowObserver() {
+    private fun tvShowObserver() {
         val adapter = TvShowRecyclerViewAdapter {
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra(DetailActivity.DETAIL_EXTRA_TV_SHOW, it.id)

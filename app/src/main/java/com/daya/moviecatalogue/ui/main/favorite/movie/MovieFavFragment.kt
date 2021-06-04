@@ -33,7 +33,7 @@ class MovieFavFragment : Fragment(R.layout.fragment_item_list) {
         observerFavoriteMovies()
     }
 
-    fun observerFavoriteMovies() {
+    private fun observerFavoriteMovies() {
         val adapter = MovieRecyclerViewAdapter() {
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra(DetailActivity.DETAIL_EXTRA_MOVIE, it.id)

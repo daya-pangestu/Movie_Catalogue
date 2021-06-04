@@ -31,7 +31,7 @@ class TvShowFavFragment : Fragment(R.layout.fragment_item_list) {
         observerFavoriteTvShow()
     }
 
-    fun observerFavoriteTvShow() {
+    private fun observerFavoriteTvShow() {
         val adapter = TvShowRecyclerViewAdapter {
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra(DetailActivity.DETAIL_EXTRA_TV_SHOW, it.id)

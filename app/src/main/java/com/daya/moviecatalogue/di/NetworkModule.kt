@@ -1,5 +1,6 @@
 package com.daya.moviecatalogue.di
 
+import com.daya.moviecatalogue.BuildConfig
 import com.daya.moviecatalogue.data.main.movie.response.DetailMovieResponse
 import com.daya.moviecatalogue.data.main.movie.response.MovieResponse
 import com.daya.moviecatalogue.data.main.tvshow.response.DetailTvShowResponse
@@ -25,7 +26,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(addApiInterceptor : OkHttpClient, moshi : Moshi, httpUrl: HttpUrl) =
+    fun provideRetrofit(addApiInterceptor : OkHttpClient, moshi : Moshi, httpUrl: HttpUrl) :Retrofit =
         Retrofit.Builder()
             .baseUrl(httpUrl)
             .client(addApiInterceptor)
@@ -46,7 +47,7 @@ object NetworkModule {
             val originalHttpUrl = original.url()
 
             val urlWithApiKey = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key","5e4eb4432423f10cc7577597c5cc41e8")
+                .addQueryParameter("api_key",BuildConfig.MOVIE_KEY)
                 .build()
 
             val requestBuilder = original.newBuilder()
@@ -60,7 +61,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMovieDbApi(retrofit: Retrofit) =
+    fun provideMovieDbApi(retrofit: Retrofit) : TheMovieDbApi =
         retrofit.create(TheMovieDbApi::class.java)
 
 }

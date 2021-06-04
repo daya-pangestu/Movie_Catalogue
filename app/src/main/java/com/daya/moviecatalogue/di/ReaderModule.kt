@@ -12,7 +12,7 @@ import javax.inject.Singleton
 object ReaderModule {
     @Provides
     @Singleton
-    fun provideMoshi() =
+    fun provideMoshi() : Moshi =
             Moshi.Builder()
                     .build()
 }
